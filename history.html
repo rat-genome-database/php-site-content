@@ -1,0 +1,224 @@
+<html>
+<body>
+
+<h2>RGD Site's Development History</h2>
+Check here to see what was done to this site's software. 
+<table width=100%>
+<tr><td bgcolor='lightblue'>Date</td><td bgcolor='lightblue'>Who made change</td><td bgcolor='lightblue'>Change<td>
+
+</td>
+</tr>
+
+
+<tr>
+<td valign=top >1/8/08 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Changed timeout in index.php to match servers 12 hours .   
+</UL>	
+</td>
+</tr>
+
+<tr>
+<td valign=top >12/17/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Changed Object Edit option. now works for the very basic QTL Objects. Does NOT create Nomenclature events !!! 
+<li> Changed the index.php to use a case statement per Wes's direction.  
+</UL>	
+</td>
+</tr>
+
+<tr>
+<td valign=top >12/06/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Updated to work with the new framework, no functional changes.  
+</UL>	
+</td>
+</tr>
+
+<tr>
+<td valign=top >7/27/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Updated the "Make An Annotation Tool" to change Aspect selection to radio buttons and display Aspects Choosen on this screen. 
+</UL>	
+</td>
+</tr>
+
+<tr>
+<td valign=top >6/28/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Updated the Term Search tool to shwo the status of the terms before curators select them to curate against.  
+</UL>	
+</td>
+</tr>
+
+<tr>
+<td valign=top >6/5/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> The “lookup tables Maintenance” link has been enabled for all curators to use, they can only update the  RGD_XDB_SPECIES_URL Table for now. 
+<li> Help links to Wiki docs added to report pages as a start. 
+<li> Change in security, now admin gets all funtions of sub types. 
+</UL>	
+</td>
+</tr>
+
+<tr>
+<td valign=top >5/30/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Finished Lookup table maintanance for RGD_XDB_SPECIES_URL table
+</UL>
+</td>
+</tr>
+
+
+<tr>
+<td valign=top >5/24/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Added Lookup table editing for RGD_XDB table
+</UL>
+</td>
+</tr>
+
+</tr>
+<tr>
+<td valign=top >5/16/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI> Moved Administrative tools in left hand navigation bar to "Tools"
+<LI> Added Links for "Create/Edit Objects", "Merge/Retire/Split Objects" and "Notes Editor" ( FUNCTIONALLITY NOT DONE ) 
+<LI> Moved Portal link from table maint to a top level Tool ( FUNCTIONALLITY NOT DONE )
+<LI> Put in Obsolete Terms as top level tool. 
+<LI>Left hand nav bar cleaned up. The links for Curation Tool and Obsolete terms only show up if the user is in that tool. 
+   	
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >4/3/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Changed Links of bucket items to curation.hmgc.mcw.edu from ringo due to move.    	
+</UL>
+</td>
+</tr>
+
+
+<tr>
+<td valign=top >2/14/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Added ability to change description on any gene in basket from the "Make an annotation" screen.   	
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >2/13/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>"Make an Annotation Screen" : Remove all spaces from With_info field without warning. 
+<LI>With Info field is now required with Evedence code of : "ISS","IPI","IGI", "IC" is used
+<LI>Remove from Basket Icon moved in from of the objects, terms and references in basket.   	
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >2/12/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Added SILK icons from http://www.famfamfam.com/lab/icons/silk/ to /icons 
+<LI>Changed site to use the SILK Icons. 
+<LI>Added ability for curation tool to delete any individual object, term or reference in a bucket
+<LI>Added Species icon on "Make an Annotation" page for both existing annotations and the Annotations to be created. 
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >1/31/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Fixed Aspect code , max length in database of this field when doing a annotation is 10 characters. 
+<LI>fixed logic in verifyLinkConstraints() when checking for full_annot_table insert to run dbQuoteString() on parameters . 
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >1/26/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Reference Search on Admin page now displays collored ball for ACTIVE References vs. WITHDRAWN . 
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >1/16/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Modification to Search Terms page. Now searches within term name for search string like Object Search. See Jira:  http://dowler.hmgc.mcw.edu:8080/browse/RGD-88
+<LI>Updated curation.php -> verifyLinkConstraints() to check for new TERM constraint that was added. 
+</UL>
+</td>
+</tr>
+<tr>
+<td valign=top >1/11/07 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Corrected links when deleting from "Our Monthly Annotations" Page 
+</UL>
+</td>
+</tr>
+<tr>
+<td valign=top >10/31/06 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Added RGD's to all curation pop-ups along with species type
+<LI>Added Species to lists of objects in associations. 
+<li>Added export to Excel on Current Gene Reports page. 
+<li>Corected bg where annotations made on last day of the month were not showing up.
+</UL>
+</td>
+</tr>
+<tr>
+<td valign=top >10/19/06 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Corrected issue deletion of annotation that only showed up on production curationMaint.php ( PHP4 )
+<LI>Cleaned up Evidence Codes , now hard coded in program vs determined from database. 
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >10/18/06 </td>
+<td valign=top >George K</td>
+<td valign=top ><UL>
+<LI>Fixed abilty to insert terms with quote characters into full_annot table
+<LI>Fixed ability to look up terms that contain quote characters.
+<LI>Annotation History avaiable to everyone that is logged into the system. 
+<LI>Session timeout set to 8 hours in the conf.inc.php page. Also had to be set in the php.ini file for the server. 
+<LI>Added ability for curators to delete annotations , both with and without removing the Reference to Object mapping
+<LI>Previous Annotations now shown monthly.
+</UL>
+</td>
+</tr>
+
+<tr>
+<td valign=top >10/17/06 </td>
+<td valign=top >George K / Nataliya</td>
+<td valign=top >Final cut over of software from spreadsheets to curation tools. Everything went as expected.</td>
+</tr>
+</table>
+</body>
+</html>

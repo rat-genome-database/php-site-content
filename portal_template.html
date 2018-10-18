@@ -1,0 +1,570 @@
+<HTML>
+<HEAD>
+  <title>[[portaltitle]]</title>
+  <meta name="description" content="[[portaldescription]]">
+  <meta name="author" content="rgd">
+  <link rel=stylesheet type="text/css" href='/common/style/rgd_styles.css'>
+  {{headContent}}
+
+<script type="text/javascript" src="/rgdweb/gviewer/script/jkl-parsexml.js">
+    // ================================================================
+    //  jkl-parsexml.js ---- JavaScript Kantan Library for Parsing XML
+    //  Copyright 2005-2007 Kawasaki Yusuke <u-suke@kawa.net>
+    //  http://www.kawa.net/works/js/jkl/parsexml.html
+    // ================================================================
+    </script>
+    <script type="text/javascript" src="/rgdweb/gviewer/script/dhtmlwindow.js">
+    /***********************************************
+    * DHTML Window script- © Dynamic Drive (http://www.dynamicdrive.com)
+    * This notice MUST stay intact for legal use
+    * Visit http://www.dynamicdrive.com/ for this script and 100s more.
+    ***********************************************/
+    </script>
+    <script type="text/javascript" src="/rgdweb/gviewer/script/util.js"></script>
+    <script type="text/javascript" src="/rgdweb/gviewer/script/gviewer.js"></script>
+    <script type="text/javascript" src="/rgdweb/gviewer/script/domain.js"></script>
+    <script type="text/javascript" src="/rgdweb/gviewer/script/contextMenu.js">
+    /***********************************************
+    * Context Menu script- © Dynamic Drive (http://www.dynamicdrive.com)
+    * This notice MUST stay intact for legal use
+    * Visit http://www.dynamicdrive.com/ for this script and 100s more.
+    ***********************************************/
+    </script>
+    <script type="text/javascript" src="/rgdweb/gviewer/script/event.js"></script>
+    <script type="text/javascript" src="/rgdweb/gviewer/script/ZoomPane.js"></script>
+    <link rel="stylesheet" type="text/css" href="/rgdweb/gviewer/css/gviewer.css" />
+  
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+
+</script>
+
+<script>
+
+var species = "rat";
+var synteny = "";
+var portalID = "";
+function updateSpecies(type) {
+    species = type;
+    document.getElementById("gviewer").innerHTML = "";
+    loadGviewer(portalID);  
+}  
+
+function updateSynteny(type) {
+   synteny = type;    
+   document.getElementById("gviewer").innerHTML = "";
+   loadGviewer(portalID);  
+}
+
+function loadGviewer(id) {
+    portalID = id;
+    var gviewer = new Gviewer("gviewer", 200, 700 );
+    gviewer.loadBands("/rgdweb/gviewer/data/rgd_rat_ideo.xml");
+    gviewer.loadAnnotations("/rgdweb/gviewer/data/hypertension.xml");
+    gviewer.addZoomPane("zoomWrapper", 250, 700);
+}
+
+</script>
+
+<script type="text/javascript">
+_uacct = "UA-2739107-2";
+urchinTracker();
+</script>
+</HEAD>
+
+
+<BODY text="#333333" style="background-image: url(/common/images/header-bkgd.gif);margin-left: 0%; margin-right: 0%; margin-top: 0%;margin-bottom: 0%;background-repeat: repeat-x;" alink="#3399FF" vlink="#000099" Links="#0033FF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="[[portalBodyOnLoad]]">
+
+
+
+<!-- header -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr><td colspan="5" bgcolor="#154062"><img src='/common/images/shim.gif' width="1" height="2"></td></tr>
+
+  <tr align="left" valign="top"> 
+    <td width="440" background='/common/images/header-bkgd.gif' nowrap><img src="[[portalimage]]" border="0"></td>
+
+	<td background='/common/images/header-bkgd.gif' nowrap><img src='/common/images/shim.gif' width="20" height="1"></td>
+	
+    <td width="100%" valign="bottom" nowrap background='/common/images/header-bkgd.gif'><a href="http://pga.mcw.edu"><img src='/common/images/physGen_logo2.gif' border="0"></a></td>
+	
+	<td width="240" background='/common/images/header-bkgd.gif' align="left" valign="middle" nowrap>
+      <table border="0" cellpadding="2" cellspacing="1" width="240">
+        <form method="post" action='/generalSearch/RgdSearch.jsp' onSubmit="return verify(this);">     
+          <tr> 
+            <td><p>&nbsp;<br>
+                <strong>Search&nbsp;RGD</strong>                
+                <input type=text name=searchKeyword size=12 value=" *disease" onFocus="JavaScript:document.forms[0].searchKeyword.value=''">
+                <input type="hidden" name="quickSearch" value=1>
+                <input type=submit value="Go "></p>
+            </td>
+          </tr>
+        </form>
+      </table>
+	</td>
+	  
+    <td width="5" background='/common/images/header-bkgd.gif' nowrap><img src='/common/images/shim.gif' width="5" height="1"></td>
+  </tr>
+</table>
+
+[[portalNavigation]]
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="left" valign="top"> 
+	<td width="5"><img src='/common/images/shim.gif' width="30" height="1"></td>
+	
+    <td width="100%"><p>&nbsp;<br>
+	  <!--  Start CNT_DISEASE INCLUDE FILE FOR MAIN CONTENT-->
+	  
+	  <script type="text/javascript" src="/GViewer/javascript/JavaScriptFlashGateway.js"></script>
+<script type="text/javascript">
+
+var uid = 1234567890; // needs to be unique on page, gets passed to Flash movie too
+
+var flashProxy = new FlashProxy(uid,"/GViewer/javascript/JavaScriptFlashGateway.swf");
+
+
+function doHighlight(action, featureName) {
+
+if(action == 'set') {
+flashProxy.call('setHighlight', featureName);
+}
+else {
+flashProxy.call('unsetHighlight', featureName);
+}
+}
+
+// Function to trigger the Flash method to get the annotation data in html format
+function getAnnotationData() {
+flashProxy.call('getAnnotationData', 'html');
+}
+
+// Function called by flash to display the annotation data
+function displayAnnotationData(data) {
+var generator=window.open('','Annotation Data','height=400,width=600,scrollbars=yes');
+
+generator.document.write('<html><head><title>Annotation Data</title>');
+generator.document.write('<link rel="stylesheet" href="style.css">');
+generator.document.write('</head><body>');
+generator.document.write('<h3>GViewer Annotation Data</h3>');
+generator.document.write(data);
+generator.document.write('<p><a href="javascript:self.close()">Close</a> this window.</p>');
+generator.document.write('</body></html>');
+generator.document.close();
+}
+
+
+</script>
+
+	
+		
+		<img src="../../common/images/shim.gif" width="1" height="15"><br>
+		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
+		  <tr valign="top">
+		    <td colspan="5" align="left">
+			<!-- Start Select -->
+		        <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#777777">
+		          <tr>
+		            <td><table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#E0F1F4">
+		                <tr align="left" valign="top"><td>
+		                {{body}}
+		                </td></tr>
+		            </table></td>
+		          </tr>
+		        </table>
+		        <!-- End Select -->
+		    </td>
+		  </tr>
+		
+		  <tr valign="top">
+		    <td colspan="5" align="left">	
+		        <!-- Start Title Table -->
+		        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+		          <tr>
+		            <td colspan="2"><img src="../../common/images/shim.gif" width="1" height="15"></td>
+		          </tr>
+		          <tr bgcolor="#99CCFF">
+		            <td><img src="../../common/images/shim.gif" width="1" height="30"></td>
+					<td><div><span class="nobr"><strong><em>[[portaltitle]]&nbsp;: </em></strong></span>
+						&nbsp; <span id="category">[[portalSummaryDesc]]</span><span id="diseasename"></span></div>
+					</td>
+		          </tr>
+		          <tr>
+		            <td colspan="2"><img src="../../common/images/shim.gif" width="1" height="10"></td>
+		          </tr>
+		        </table>
+		        <!-- End Title Table -->
+		    </td>
+		  </tr>
+		
+		  <tr valign="top">
+		    <td colspan="5" align="left">
+		
+				<!-- End Summary Table -->
+				<div id="summaryTable"> 
+				<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+					<tr bgcolor="#EEEEEE">
+						<td><p>&nbsp;<strong>Summary</strong><br>
+						    <img src="../../common/images/shim.gif" width="160" height="1"></p></td>
+						<td align="right"><p>Rat&nbsp;&nbsp;<br>
+					  <img src="../../common/images/shim.gif" width="60" height="1"></p></td>
+						<td align="right"><p>Human&nbsp;&nbsp;<br>
+					  <img src="../../common/images/shim.gif" width="70" height="1"></p></td>
+						<td align="right"><p>Mouse&nbsp;&nbsp;<br>
+					  <img src="../../common/images/shim.gif" width="70" height="1"></p></td>
+						<td width="100%"><p>&nbsp;<strong>&nbsp;</strong></p></td>
+					</tr>
+					<tr align="right">
+					  <td bgcolor="#FFFFFF"><p>Genes&nbsp;</p></td>
+						<td bgcolor="#FFFFFF"><span id="genes-sum"></span>&nbsp;&nbsp;</td>
+						<td bgcolor="#FFFFFF"><span id="human-genes-sum"></span>&nbsp;&nbsp;</td>
+						<td bgcolor="#FFFFFF"><span id="mouse-genes-sum"></span>&nbsp;&nbsp;</td>
+						<td rowspan="3" bgcolor="#FFFFFF">   </td>
+					</tr>
+					<tr align="right">
+					  <td bgcolor="#FFFFFF"><p>QTLs&nbsp;</p></td>
+						<td bgcolor="#FFFFFF"><span id="qtls-sum"></span>&nbsp;&nbsp;</td>
+						<td bgcolor="#FFFFFF"><span id="human-qtls-sum"></span>&nbsp;&nbsp;</td>
+						<td bgcolor="#FFFFFF"><span id="mouse-qtls-sum"></span>&nbsp;&nbsp;</td>
+					</tr>
+					<tr align="right">
+					  <td bgcolor="#FFFFFF"><p>Strains&nbsp;</p></td>
+						<td bgcolor="#FFFFFF"><span id="strains-sum"></span>&nbsp;&nbsp;</td>
+						<td bgcolor="#FFFFFF"><span id="human-strains-sum"></span>&nbsp;&nbsp;</td>
+						<td bgcolor="#FFFFFF"><span id="mouse-strains-sum"></span>&nbsp;&nbsp;</td>
+					</tr>
+		      </table>
+		      </div>
+				<br>
+				<!-- End Summary Table -->
+				
+		        <!-- Start GViewer Table -->
+		        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+					<tr>
+						<td>
+							<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#FFFFFF">
+								<tr>
+									<td valign="top">
+										<table width="100%" border="0" cellpadding="1" cellspacing="0">
+											<tr align="center" valign="top" bgcolor="#D6E6EE">
+											    <td align="left"><p>&nbsp;<strong>Gviewer&nbsp;for</strong>...</p></td>
+										    <td id="rat-flash"><a href="javascript:void(0);" onclick="updateSpecies('rat')" > Rat</a> </td>
+												<td id="human-flash"><a href="javascript:void(0);" onclick="updateSpecies('human')" > Human </a></td>
+												<td id="mouse-flash"><a href="javascript:void(0);" onclick="updateSpecies('mouse')" > Mouse </a></td>
+												<td align="right" bgcolor="#D6E6EE">
+													<table width="500" border="0" cellpadding="0" cellspacing="0"><tr>
+														<td width="420" align="right"><p class="alink">Press&nbsp;<font color="#FF0000">[SHIFT]&nbsp;+&nbsp;Click</font>&nbsp;to&nbsp;view&nbsp;individual&nbsp;reports,&nbsp;or&nbsp;read&nbsp;<a href="javascript:openFlashGuide();" class="alink">Gviewer&nbsp;help</a>&nbsp;&nbsp;</p></td>
+														<td width="80"><span id="closeHelp"> </span></td></tr>
+													</table>
+												</td>
+											</tr>
+											<tr>
+												<td align="center" colspan="5">
+													<div id="GViewerGuide" align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:12px"> </div>
+													
+<div id="gviewer" class="gviewer"></div>
+<div id="zoomWrapper" class="zoom-pane"></div>
+<!--
+   <div id="gviewer"> </div>
+													<div id="GViewerSpace"> </div>
+-->													<!-- <form><p align="center">Click button to download annotation data: <input type="button" name="getAnnotationButton" value="View Annotation Data"  onClick="javascript:getAnnotationData();"></p></form> -->
+												</td>
+											</tr>
+											<tr>
+												<td><img src="../../common/images/shim.gif" width="100" height="1"></td>
+												<td><img src="../../common/images/shim.gif" width="40" height="1"></td>
+												<td><img src="../../common/images/shim.gif" width="55" height="1"></td>
+												<td><img src="../../common/images/shim.gif" width="55" height="1"></td>
+												<td width="100%"><img src="../../common/images/shim.gif" width="580" height="1"></td>
+											</tr>
+									  </table>
+									</td>
+		
+									<td align="left" valign="top" bgcolor="#D6E6EE">
+										  <table border="0" cellpadding="3" cellspacing="0">
+											<tr><td><img src="../../common/images/shim.gif" width="1" height="40"></td></tr>
+											<tr><td id="rat-Synteny"><a href="javascript:void(0);" onclick="updateSynteny('rat')" >  Rat Synteny</a> </td></tr>
+											<tr><td id="human-Synteny"><a href="javascript:void(0);" onclick="updateSynteny('human')" > Human Synteny </a></td></tr>
+											<tr><td id="mouse-Synteny"><a href="javascript:void(0);" onclick="updateSynteny('mouse')" > Mouse Synteny </a></td></tr>
+												
+											<tr><td>&nbsp;</td></tr>
+											<tr><td id="large-button">&nbsp;</td></tr>
+											<tr><td><img src="../../common/images/shim.gif" width="108" height="1"></td></tr>
+									  </table> 
+								  </td>
+								</tr>
+						  </table>
+						</td>
+					</tr>
+		        </table><br>
+		        <!-- End GViewer Table -->
+		    </td>
+		  </tr>
+		 
+		  <tr valign="top">
+		    <td>
+		        <!-- Gene box start -->
+		        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+		          <tr>
+		            <td><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF" id="geneInfoTable">
+		                <tr bgcolor="#D6E6EE">
+		                  <td colspan="4"><p><b>Genes Info</b></p></td>
+		                </tr>
+		                <tr bgcolor="#E0E0E0">
+		                  <td id="geneInfoRatHeader" ><strong>Rat</strong></td>
+		                  <td id="geneInfoHumanHeader"><strong>Human</strong></td>
+		                  <td id="geneInfoMouseHeader"><strong>Mouse</strong></td>
+		                  <td width="12">&nbsp;</td>
+		                </tr>
+		              </table>
+
+					  <div style="overflow: auto; width: 100%; height: 136px; border-left: 0px gray solid; border-bottom: 0px gray solid; padding:0px; margin: 0px; background-color:white;">
+						<div id="geneInfo"></div>
+                    </div>
+		              </td>
+		          </tr>
+		        </table>
+		        <!-- Gene box end -->
+		        <img src="../../common/images/shim.gif" width="240" height="1">
+		    </td>
+			
+		    <td><img src="../../common/images/shim.gif" width="8" height="1"></td>
+		    
+			<td>
+		        <!--  QTL box start -->
+		        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+		          <tr>
+		            <td><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF" id="qtlInfoTable">
+		                <tr bgcolor="#D6E6EE">
+		                  <td colspan="4"><p><b>QTLs Info</b></p></td>
+		                </tr>
+		                <tr bgcolor="#E0E0E0">
+		                  <td id="qtlInfoRatHeader"><strong>Rat</strong></td>
+		                  <td id="qtlInfoHumanHeader"><strong>Human</strong></td>
+		                  <td id="qtlInfoMouseHeader"><strong>Mouse</strong></td>
+		                  <td width="12">&nbsp;</td>
+		                </tr>
+		              </table>
+		              <div style="overflow: auto; width: 100%; height: 136px; border-left: 0px gray solid; border-bottom: 0px gray solid; padding:0px; margin: 0px; background-color:white">
+						<div id="qtlInfo"></div>
+                    </div>
+		              </td>
+		          </tr>
+		        </table>
+		        <!-- QTL box end -->
+				<img src="../../common/images/shim.gif" width="240" height="1">
+			</td>
+			
+			<td><img src="../../common/images/shim.gif" width="8" height="1"></td>
+		    
+			<td>
+		        <!-- Strain box start -->
+		        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+		          <tr>
+		            <td><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF" id="strainInfoTable">
+		                <col width="100%">
+		                <tr bgcolor="#D6E6EE">
+		                  <td><p><b>Strains Info</b></p></td>
+		                </tr>
+		                <tr bgcolor="#E0E0E0">
+		                  <td><p><strong>Rat&nbsp;&nbsp;</strong></p></td>
+		                </tr>
+		              </table>
+	                  <div style="overflow: auto; width: 100%; height: 136px; border-left: 0px gray solid; border-bottom: 0px gray solid; padding:0px; margin: 0px; background-color:white;">
+		                        <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+		                          <tr>
+		                            <td width="100%" VALIGN='TOP'><div id="strainInfo"></div></td>
+		                          </tr>
+		                          <tr valign="top">
+		                            <td><div id="no-strain"> </div></td>
+		                          </tr>
+		                        </table>
+		                    </div>
+						</td>
+		          </tr>
+		        </table>
+		        <!-- Strain box end -->
+				<br>
+				<img src="../../common/images/shim.gif" width="240" height="1">
+			</td>
+		  </tr>
+		
+		  <tr valign="top">
+		    <td colspan="5" align="center">
+				<!-- Start Fusion Charts Table -->
+				<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#777777">
+		          <tr>
+		            <td>
+				 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#FFFFFF">
+		          <tr>
+		            <td>
+			    <table width="100%" border="0" cellspacing="0" bgcolor="#FFFFFF">
+					<tr> 
+						<td width="100%" bgcolor="#D6E6EE"><p>&nbsp;<strong>Gene Ontology Annotation Overview</strong><span id="diseasename2"> </span></p></td>
+						<td bgcolor="#D6E6EE"></td>
+					</tr>
+					<tr>
+						<td align="left" valign="top">
+							<table>
+								<tr>
+									<td align="center" valign="top">
+										<div id="cc-pie"> </div>
+										<img src="../../common/images/shim.gif" width="280" height="1">
+										<div id="cc-button"> </div>
+									</td>
+									<td align="center" valign="top">
+										<div id="bp-pie"> </div>
+										<img src="../../common/images/shim.gif" width="280" height="1">
+										<div id="bp-button"> </div>
+									</td>
+									<td align="center" valign="top">
+										<div id="mp-pie"> </div>
+										<img src="../../common/images/shim.gif" width="280" height="1">
+										<div id="mf-button"> </div>
+									</td>
+								</tr>
+							</table> 
+						</td>
+					</tr>
+				</table>  
+				</td>
+				</tr>
+			</table>
+			    </td>
+			  </tr>
+			</table>
+			<!-- End Fusion Charts Table -->
+	    </td>
+	  </tr> 
+	</table> 
+	<br>
+	  <!--  END CNT_DISEASE INCLUDE FILE FOR MAIN CONTENT -->
+      <br>
+	</td>
+
+	<td width="15"><img src='/common/images/shim.gif' width="15" height="1"></td>
+  </tr>
+</table>
+
+
+<!-- footer  -->
+<TABLE width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#E3EEFF">
+  <TR>
+    <TD colspan="3" bgcolor="#174276"><img src='/common/images/shim.gif' width="10" height="1"></TD>
+  </TR>
+  <TR>
+    <TD><img src='/common/images/shim.gif' width="20" height="1"></TD>
+    <TD width="100%">
+       <p class="phome">&nbsp;<br>
+         <a href="http://rgd.mcw.edu">The Rat Genome Database</a>, <a href="http://www.mcw.edu/bioinformatics.htm">Bioinformatics Program, HMGC</a>, 
+		 <a href="http://www.mcw.edu/">Medical College of Wisconsin</a>.<br>
+         &nbsp; </p>
+    </TD>
+    <TD><img src='/common/images/shim.gif' width="30" height="1"></TD>
+  </TR>
+</TABLE>
+<a style="text-decoration:none" href="/rgdCuration/?module=searchEngine&func=showAll"><font color="white">All</font></a>
+
+<script type="text/javascript">
+function getScrollerWidth() { // http://fleegix.org/articles/2006-05-30-getting-the-scrollbar-width-in-pixels
+    var scr = null;
+    var inn = null;
+    var wNoScroll = 0;
+    var wScroll = 0;
+
+    // Outer scrolling div
+    scr = document.createElement('div');
+    scr.style.position = 'absolute';
+    scr.style.top = '-1000px';
+    scr.style.left = '-1000px';
+    scr.style.width = '100px';
+    scr.style.height = '50px';
+    // Start with no scrollbar
+    scr.style.overflow = 'hidden';
+
+    // Inner content div
+    inn = document.createElement('div');
+    inn.style.width = '100%';
+    inn.style.height = '200px';
+
+    // Put the inner div in the scrolling div
+    scr.appendChild(inn);
+    // Append the scrolling div to the doc
+    document.body.appendChild(scr);
+
+    // Width of the inner div sans scrollbar
+    wNoScroll = inn.offsetWidth;
+    // Add the scrollbar
+    scr.style.overflow = 'auto';
+    // Width of the inner div width scrollbar
+    wScroll = inn.offsetWidth;
+
+    // Remove the scrolling div from the doc
+    document.body.removeChild(
+        document.body.lastChild);
+
+    // Pixel width of the scroller
+    return (wNoScroll - wScroll);
+}
+
+function alignColumnsInInfoTables() {
+	// fix geneInfo, qtlInfo and strainInfo table headers
+	var scroller_width = getScrollerWidth();
+   
+	// compute width of geneInfoTable excluding padding and spacing
+	var obj = document.getElementById('geneInfoTable');
+	var widthAvail = obj.offsetWidth - scroller_width - 2*obj.cellSpacing - 2*3*obj.cellPadding;
+	var colWidth = (widthAvail / 3) | 0;
+
+	// fix geneInfoTable headers
+	document.getElementById('geneInfoRatHeader').width = colWidth;
+	document.getElementById('geneInfoHumanHeader').width = colWidth;
+	document.getElementById('geneInfoRatData').width = colWidth;
+	document.getElementById('geneInfoHumanData').width = colWidth;
+
+	// compute width of qtlInfoTable excluding padding and spacing
+	obj = document.getElementById('qtlInfoTable');
+	widthAvail = obj.offsetWidth - scroller_width - 2*obj.cellSpacing - 2*3*obj.cellPadding;
+	ratWidth = (widthAvail / 3) | 0;
+
+	// fix qtlInfoTable headers
+	document.getElementById('qtlInfoRatHeader').width = colWidth;
+	document.getElementById('qtlInfoHumanHeader').width = colWidth;
+	document.getElementById('qtlInfoRatData').width = colWidth;
+	document.getElementById('qtlInfoHumanData').width = colWidth;
+}
+
+var uservoiceOptions = {
+   /* required */
+   key: 'rgd',
+   host: 'rgd.uservoice.com',
+   forum: '33675',
+   showTab: true,
+   /* optional */
+   alignment: 'left',
+   background_color:'#f00',
+   text_color: 'white',
+   hover_color: '#06C',
+   lang: 'en'
+};
+
+function _loadUserVoice() {
+   var s = document.createElement('script');
+   s.setAttribute('type', 'text/javascript');
+   s.setAttribute('src', ("https:" == document.location.protocol ? "https://" : "http://") + "cdn.uservoice.com/javascripts/widgets/tab.js");
+   document.getElementsByTagName('head')[0].appendChild(s);
+   
+   // fix geneInfo, qtlInfo and strainInfo table headers
+   // note: since code uses AJAX to populate these tables, we run our code 1sec after page loads, and then 5 seconds later, just in case...
+   setTimeout("alignColumnsInInfoTables()", 1000);
+   setTimeout("alignColumnsInInfoTables()", 5000);
+}
+_loadSuper = window.onload;
+window.onload = (typeof window.onload != 'function') ? _loadUserVoice : function() { _loadSuper(); _loadUserVoice(); }; 
+</script>
+
+
+</BODY>
+
+
+
+</HTML>

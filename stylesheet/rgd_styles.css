@@ -1,0 +1,179 @@
+
+p, a, td, li, h1, h2, h3, h4, h5, input, select{
+    font-family: arial, sans-serif; }
+
+h2, h3{
+	color: #505050; }
+
+p{
+	font-size: 10.5pt; }
+
+body{
+    background: #F9FCFF; }
+
+a{
+    color: #003366; }
+
+a:hover{
+	color: #CC0000; }
+
+.atitle{
+	font-size: 10pt;
+	font-weight: bold;
+	color: #003333;
+	text-decoration: none }
+
+.asubtitle{
+	font-size: 9.5pt;
+	color: #444444;
+	text-decoration: none }
+
+.alink{
+	font-size: 8.5pt;
+	color: #444444;
+	text-decoration: none }
+
+.phome{
+	font-size: 9.5pt }
+
+	
+.alink2{
+    color: #006699 }
+     
+.blue, .blue a
+ {
+    color: white;
+    font-style: italic;
+    font-size: 8pt
+ }
+      
+.title, .header
+ {
+    color: black;
+    font-size: 24px
+ }
+      
+input, select, option{
+    font-size: 9pt }
+      
+#nav1 td{
+    font-size: 9pt }
+      
+.links p, .tools p, .links a, .tools a{
+    font-size: 9pt;
+    color: #444444;
+    text-decoration: none }
+      
+.submenu{
+    font-size: 9pt }
+      
+.submenu a{
+    text-decoration: none }
+
+.label
+ {
+    font-weight: bold
+ }
+
+.navigation
+ {
+    font-size: 9pt;
+	font-weight: bold; 
+	text-transform: uppercase; 
+	color: #333333; 
+	text-decoration: none
+ }
+
+.searchtitletd
+ {  
+    font-family: Arial, Helvetica, sans-serif; 
+	font-size: 10pt; 
+	font-weight: bold; 
+	text-transform: uppercase; 
+	color: #FFFFFF; 
+	text-decoration: none
+ }
+
+.searchfieldtd
+ {
+    font-family: Arial, Helvetica, sans-serif; 
+	font-size: 10pt
+ }
+
+.bylinetable
+ {
+    background-color: #666666
+ }
+
+.bylinetd
+ {
+    font-family: Arial, Helvetica, sans-serif; 
+	font-size: 9pt; 
+	font-weight: bold; 
+	color: #FFFFFF; 
+	text-decoration: none; 
+	background-color: #000000
+ }
+
+.bylineanchor
+ {
+    font-weight: bold; 
+	color: #FFFF66; 
+	text-decoration: none
+ }
+
+
+.footer{
+	font-size: 9.5pt;
+	color: #333333;
+	text-decoration: none }
+
+.footertable{
+    background-color: #5B93D3 }
+
+.footertd
+ {
+    font-family: Arial, Helvetica, sans-serif; 
+	font-size: 9pt; 
+	font-weight: normal; 
+	color: #FFFFFF; 
+	text-decoration: none
+ }
+
+.footeranchor
+ {
+    color: #FFFF66; 
+	text-decoration: none
+ }
+
+.headeranchor
+ {
+    color: #FFFFFF; 
+	text-decoration: none
+ }
+
+.direction
+ {
+    font-family: Arial, Helvetica, sans-serif; 
+	font-size: 10pt; 
+	font-weight: bold; 
+	color: #004080; 
+	text-decoration: none
+ }
+
+.mybold
+ {
+    font-weight: bold; 
+	color: #004080
+ }
+
+.dotline{
+	border-width: 1px 0px 0px 0px;
+	border-style: dashed; 
+	border-color: #CCCCCC }
+
+td.backgOne{
+    background-color: #F3F3F3 }
+
+td.backgTwo{
+    background-color: #E9F3FF }

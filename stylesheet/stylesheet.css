@@ -1,0 +1,90 @@
+table.simple {
+  border-width: 0px 0px 0px 0px;
+  border-spacing: 0px;
+  border-style: solid solid solid solid;
+  border-color: gray gray gray gray;
+  border-collapse: collapse;
+  background-color: white;
+}
+table.simple th {
+  border-width: 1px 1px 1px 1px;
+  padding: 1px 1px 1px 1px;
+  border-style: solid solid solid solid;
+  border-color: gray gray gray gray;
+  background-color: silver;
+  -moz-border-radius: 0px 0px 0px 0px;
+}
+table.simple td {
+	border-width: 1px 1px 1px 1px;
+  padding: 1px 1px 1px 1px;
+  border-style: solid solid solid solid;
+  border-color: gray gray gray gray;
+  background-color: white;
+  text-align:center;
+  -moz-border-radius: 0px 0px 0px 0px;
+}
+
+.leftpanel {
+	border-right:thin solid #BD1010;
+	padding: 4px;
+}
+.headerpanel {
+  border-bottom:thin solid #BD1010;
+  font-size: large;
+  padding: 6px;
+}
+.menupanel {
+	border-bottom:thin solid #BD1010;
+	padding: 4px;
+}
+.footer {
+	border-top:thin solid #BD1010;
+	padding: 4px;
+}
+.mainpanel {
+	padding: 18px;
+}
+
+pre {
+	font-size:medium;
+}
+body, tr, td {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+
+/* for table generator */
+.heading {
+	background-color: #fc0;
+}
+.odd {
+	background-color: rgb(255, 255, 204);
+}
+.even {
+}
+
+.padleft
+{ 
+	padding-left: 5px
+}
+/*body {
+	font-size: x-small;
+	link-color: #993333;
+	background-color: #FFFFFF;
+}*/
+
+.breadcrumbs {
+background-color:#CCDDFF;
+font-size:80%;
+padding:3px 4px;
+}
+.breadcrumbs a {
+color:#000000;
+}
+.breadcrumbs a:hover {
+color:#000000;
+}
+.breadcrumbs a:visited {
+color:#000000;
+}

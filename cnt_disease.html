@@ -1,0 +1,364 @@
+<script type="text/javascript" src="../GViewer/javascript/JavaScriptFlashGateway.js"></script>
+
+<script type="text/javascript" src="../scripts/init.js"></script>
+<script type="text/javascript" src="../scripts/diseases.js"></script>
+
+<DIV id="page_loading" style="position:absolute; background-color:#F0F0F3; top:200px; left:30px; height:180; width:600;">
+	<center><img src="../../common/images/loading.gif" width="360" height="180"></center>
+</DIV>
+
+<img src="../../common/images/shim.gif" width="1" height="15"><br>
+<table width="100%"  border="0" cellspacing="0" cellpadding="1">
+  <tr valign="top">
+    <td colspan="5" align="left">
+	<!-- Start Select -->
+        <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#777777">
+          <tr>
+            <td><table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#E0F1F4">
+                <form name="drop_down_menu">
+                  <tr align="left" valign="top">
+                    <td>&nbsp;&nbsp;</td>
+                    <td><p><font color="#999999"><em>&nbsp;1.&nbsp;Choose&nbsp;a&nbsp;disease&nbsp;category:</em></font><br>
+                            <select id="categories" onChange="showCategory(event)">
+                              <option value="">Choose One ... </option>
+                            </select>
+                    </td>
+                    <td><img src="../../common/images/shim.gif" width="10" height="16"><br>
+                    	&nbsp;<font color="#003366">></font></td>
+                    <td><p><font color="#999999"><em>&nbsp;2.&nbsp;Choose&nbsp;a&nbsp;disease:</em></font><br>
+                            <select id="topics" onChange="showDetail(event)">
+                              <option value=""> Choose category first </option>
+                            </select>
+                    </td>
+					<td><img src="../../common/images/shim.gif" width="10" height="16"><br>
+                    	&nbsp;<font color="#003366">  </font></td>
+                    <td width="100%"><p>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#999999"><em>OR:</em></font><br>
+                    	&nbsp;&nbsp;&nbsp;<a href='index.shtml'>show all diseases</a></p></td>
+                  </tr>
+                </form>
+            </table></td>
+          </tr>
+        </table>
+        <!-- End Select -->
+    </td>
+  </tr>
+
+  <tr valign="top">
+    <td colspan="5" align="left">	
+        <!-- Start Title Table -->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="3"><img src="../../common/images/shim.gif" width="1" height="15"></td>
+          </tr>
+          <tr bgcolor="#99CCFF">
+            <td><img src="../../common/images/shim.gif" width="1" height="30"></td>
+			<td><strong><em>&nbsp;Neurological&nbsp;Disease:&nbsp;</em></strong></td>
+            <td width="100%">
+				<div><span id="category">Data for all neurological disease below</span><span id="diseasename"></span></div>
+				<!--
+				<div id="category" class="label"></div>
+				<div id="diseasename">Data for all neurological disease below</div>
+				-->
+			</td>
+          </tr>
+          <tr>
+            <td colspan="3"><img src="../../common/images/shim.gif" width="1" height="10"></td>
+          </tr>
+        </table>
+        <!-- End Title Table -->
+    </td>
+  </tr>
+
+  <tr valign="top">
+    <td colspan="5" align="left">
+
+		<!-- End Summary Table -->
+		<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+			<tr bgcolor="#EEEEEE">
+				<td><p>&nbsp;<strong>Summary</strong><br>
+				    <img src="../../common/images/shim.gif" width="160" height="1"></p></td>
+				<td align="right"><p>Rat&nbsp;&nbsp;<br>
+			  <img src="../../common/images/shim.gif" width="60" height="1"></p></td>
+				<td align="right"><p>Human&nbsp;&nbsp;<br>
+			  <img src="../../common/images/shim.gif" width="70" height="1"></p></td>
+				<td align="right"><p>Mouse&nbsp;&nbsp;<br>
+			  <img src="../../common/images/shim.gif" width="70" height="1"></p></td>
+				<td width="100%"><p>&nbsp;<strong>&nbsp;</strong></p></td>
+			</tr>
+			<tr align="right">
+			  <td bgcolor="#FFFFFF"><p>Genes&nbsp;</p></td>
+				<td bgcolor="#FFFFFF"><span id="genes-sum"></span>&nbsp;&nbsp;</td>
+				<td bgcolor="#FFFFFF"><span id="human-genes-sum"></span>&nbsp;&nbsp;</td>
+				<td bgcolor="#FFFFFF"><span id="mouse-genes-sum"></span>&nbsp;&nbsp;</td>
+				<td rowspan="3" bgcolor="#FFFFFF">   </td>
+			</tr>
+			<tr align="right">
+			  <td bgcolor="#FFFFFF"><p>QTLs&nbsp;</p></td>
+				<td bgcolor="#FFFFFF"><span id="qtls-sum"></span>&nbsp;&nbsp;</td>
+				<td bgcolor="#FFFFFF"><span id="human-qtls-sum"></span>&nbsp;&nbsp;</td>
+				<td bgcolor="#FFFFFF"><span id="mouse-qtls-sum"></span>&nbsp;&nbsp;</td>
+			</tr>
+			<tr align="right">
+			  <td bgcolor="#FFFFFF"><p>Strains&nbsp;</p></td>
+				<td bgcolor="#FFFFFF"><span id="strains-sum"></span>&nbsp;&nbsp;</td>
+				<td bgcolor="#FFFFFF"><span id="human-strains-sum"></span>&nbsp;&nbsp;</td>
+				<td bgcolor="#FFFFFF"><span id="mouse-strains-sum"></span>&nbsp;&nbsp;</td>
+			</tr>
+      </table>
+		<br>
+		<!-- End Summary Table -->
+		
+		
+		
+		
+        <!-- Start GViewer Table -->
+        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+			<tr>
+				<td>
+					<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#FFFFFF">
+						<tr>
+							<td valign="top">
+								<table width="100%" border="0" cellpadding="1" cellspacing="0">
+									<tr align="center" valign="top" bgcolor="#D6E6EE">
+									    <td align="left"><p>&nbsp;<strong>Gviewer&nbsp;for</strong>...</p></td>
+								    	<td id="rat-flash"> Rat </td>
+										<td id="human-flash"> Human </td>
+										<td id="mouse-flash"> Mouse </td>
+										<td align="right" bgcolor="#D6E6EE">
+											<table width="500" border="0" cellpadding="0" cellspacing="0"><tr>
+												<td width="420" align="right"><p class="alink">Press&nbsp;<font color="#FF0000">[SHIFT]&nbsp;+&nbsp;Click</font>&nbsp;to&nbsp;view&nbsp;individual&nbsp;reports,&nbsp;or&nbsp;read&nbsp;<a href="javascript:openFlashGuide();" class="alink">Gviewer&nbsp;help</a>&nbsp;&nbsp;</p></td>
+												<td width="80"><span id="closeHelp"> </span></td></tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td align="center" colspan="5">
+											<div id="GViewerGuide" align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:12px"> </div>
+											<div id="gviewer"> </div>
+											<div id="GViewerSpace"> </div>
+										</td>
+									</tr>
+									<tr>
+										<td><img src="../../common/images/shim.gif" width="100" height="1"></td>
+										<td><img src="../../common/images/shim.gif" width="40" height="1"></td>
+										<td><img src="../../common/images/shim.gif" width="55" height="1"></td>
+										<td><img src="../../common/images/shim.gif" width="55" height="1"></td>
+										<td width="100%"><img src="../../common/images/shim.gif" width="580" height="1"></td>
+									</tr>
+							  </table>
+							</td>
+
+							<td align="left" valign="top" bgcolor="#D6E6EE">
+								<table border="0" cellpadding="3" cellspacing="0">
+									<tr><td><img src="../../common/images/shim.gif" width="1" height="40"></td></tr>
+									<tr><td id="rat-Synteny">Rat Synteny</td></tr>
+									<tr><td id="human-Synteny">Human Synteny</td></tr>
+									<tr><td id="mouse-Synteny">Mouse Synteny</td></tr>
+									<tr><td>&nbsp;</td></tr>
+									<tr><td id="large-button">Large View...</td></tr>
+									<tr><td><img src="../../common/images/shim.gif" width="108" height="1"></td></tr>
+							  </table>
+						  </td>
+						</tr>
+				  </table>
+				</td>
+			</tr>
+        </table><br>
+        <!-- End GViewer Table -->
+    </td>
+  </tr>
+ 
+  <tr valign="top">
+    <td>
+        <!-- Gene box start -->
+        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+          <tr>
+            <td><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+                <tr bgcolor="#D6E6EE">
+                  <td colspan="3"><p><b>Genes Info</b></p></td>
+                </tr>
+                <tr bgcolor="#E0E0E0">
+                  <td width="25%"><p><strong>Rat</strong><br>
+                          <img src="../../common/images/shim.gif" width="90" height="1"></p></td>
+                  <td width="25%"><p><strong>Human</strong><br>
+                          <img src="../../common/images/shim.gif" width="90" height="1"></p></td>
+                  <td width="50%"><p><strong>Mouse</strong></p></td>
+                </tr>
+              </table>
+              <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+                  <tr>
+                    <td><div style="overflow: auto; width: 100%; height: 136px; border-left: 0px gray solid; border-bottom: 0px gray solid; padding:0px; margin: 0px">
+                        <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+                          <col width="32%">
+                          <col width="32%">
+                          <col width="36%">
+                          <tr valign="top">
+                            <td colspan="3"><div id="geneInfo"> </div></td>
+                          </tr>
+						  <tr valign="top">
+                            <td colspan="3"><div id="no-gene"> </div></td>
+                          </tr>
+                        </table>
+                    </div></td>
+                  </tr>
+              </table></td>
+          </tr>
+        </table>
+        <!-- Gene box end -->
+        <img src="../../common/images/shim.gif" width="240" height="1">
+    </td>
+	
+    <td><img src="../../common/images/shim.gif" width="8" height="1"></td>
+    
+	<td>
+        <!--  QTL box start -->
+        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+          <tr>
+            <td><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+                <col width="30%">
+                <col width="30%">
+                <col width="40%">
+                <tr bgcolor="#D6E6EE">
+                  <td colspan="3"><p><b>QTLs Info</b></p></td>
+                </tr>
+                <tr bgcolor="#E0E0E0">
+                  <td><p><strong>Rat</strong><br>
+                          <img src="../../common/images/shim.gif" width="90" height="1"></p></td>
+                  <td><p><strong>Human</strong></p></td>
+                  <td><p><font color="#CCCCCC"><strong>Mouse</strong></font></p></td>
+                </tr>
+              </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+                  <tr>
+                    <td><div style="overflow: auto; width: 100%; height: 136px; border-left: 0px gray solid; border-bottom: 0px gray solid; padding:0px; margin: 0px">
+                        <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+                          <col width="32%">
+                          <col width="32%">
+                          <col width="36%">
+                          <tr valign="top">
+                            <td><div id="rat-qtl"> </div></td>
+                            <td><div id="human-qtl"> </div></td>
+                            <td><div id="mouse-qtl"> </div></td>
+                          </tr>
+                          <tr valign="top">
+                            <td colspan="3"><div id="no-qtl"> </div></td>
+                          </tr>
+                        </table>
+                    </div></td>
+                  </tr>
+              </table></td>
+          </tr>
+        </table>
+        <!-- QTL box end -->
+		<img src="../../common/images/shim.gif" width="240" height="1">
+	</td>
+	
+	<td><img src="../../common/images/shim.gif" width="8" height="1"></td>
+    
+	<td>
+        <!-- Strain box start -->
+        <table width="100%" border="0" cellpadding="1" cellspacing="0" bgcolor="#777777">
+          <tr>
+            <td><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+                <col width="30%">
+                <col width="30%">
+                <col width="40%">
+                <tr bgcolor="#D6E6EE">
+                  <td colspan="3"><p><b>Strains Info</b></p></td>
+                </tr>
+                <tr bgcolor="#E0E0E0">
+                  <td><p><strong>Rat&nbsp;&nbsp;</strong></p></td>
+                  <td><p>&nbsp;</p></td>
+                  <td><p>&nbsp;</p></td>
+                </tr>
+              </table>
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+                  <tr>
+                    <td><div style="overflow: auto; width: 100%; height: 136px; border-left: 0px gray solid; border-bottom: 0px gray solid; padding:0px; margin: 0px">
+                        <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+                          <tr>
+                            <td width="100%"><div id="strainInfo"> </div></td>
+                          </tr>
+                          <tr valign="top">
+                            <td><div id="no-strain"> </div></td>
+                          </tr>
+                        </table>
+                    </div></td>
+                  </tr>
+              </table></td>
+          </tr>
+        </table>
+        <!-- Strain box end -->
+		<br>
+		<img src="../../common/images/shim.gif" width="240" height="1">
+	</td>
+  </tr>
+
+  <tr valign="top">
+    <td colspan="5" align="center">
+		<!-- Start Fusion Charts Table -->
+		<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#777777">
+          <tr>
+            <td>
+		<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#FFFFFF">
+          <tr>
+            <td>
+		<table width="100%" border="0" cellspacing="0" bgcolor="#FFFFFF">
+			<tr>
+				<td width="100%" bgcolor="#D6E6EE"><p>&nbsp;<strong>Gene Ontology Annotation Overview</strong><span id="diseasename2"> </span></p></td>
+				<td bgcolor="#D6E6EE"><!--<p><strong>Pathway Annotation Overview </strong></p>--></td>
+			</tr>
+			<tr>
+				<td align="left" valign="top">
+					<table>
+						<tr>
+							<td align="center" valign="top">
+								<div id="cc-pie"> </div>
+								<div id="cc-report"> </div>
+								<img src="../../common/images/shim.gif" width="280" height="1">
+								<div id="cc-button"> </div>
+							</td>
+							<td align="center" valign="top">
+								<div id="bp-pie"> </div>
+								<div id="bp-report"> </div>
+								<img src="../../common/images/shim.gif" width="280" height="1">
+								<div id="bp-button"> </div>
+							</td>
+							<td align="center" valign="top">
+								<div id="mf-pie"> </div>
+								<div id="mf-report"> </div>
+								<img src="../../common/images/shim.gif" width="280" height="1">
+								<div id="mf-button"> </div>
+							</td>
+						</tr>
+					</table>
+				</td>
+
+				<td align="center" valign="top">
+				<!--
+					<table>
+						<tr>
+							<td align="left" valign="top">
+								
+								<font color="#CCCCCC">[This will be replaced by PW]</font>
+								<div id="pw-pie"> </div>
+								<div id="pw-report"> </div>
+								
+							</td>
+						</tr>
+					</table>
+				-->
+			  </td>
+			</tr>
+		</table>
+			  </td>
+			</tr>
+		</table>
+		    </td>
+		  </tr>
+		</table>
+		<!-- End Fusion Charts Table -->
+    </td>
+  </tr>
+</table>
+<br>
