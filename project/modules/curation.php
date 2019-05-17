@@ -1898,7 +1898,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 
 	$finalSql = 'select * from (' . $sql . ') b order by score desc, object_symbol, EVIDENCE, term';
 	$records = fetchRecords($finalSql);
-	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Evidence',  'With Info', hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'), 'Species', 'Modified','Notes','Source');
+	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Evidence',  'With Info', hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'), 'Species', 'Modified','Notes');
   
 	$table->setAttributes('class="simple" width="100%"');
 	foreach ($records as $record) {
@@ -1908,16 +1908,16 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	//		$FULL_ANNOT_KEY
 	switch ($SCORE) {
 		case 4:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80), $DATA_SRC);
+		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 			break;
 		case 3:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="orange">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80), $DATA_SRC);
+		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="orange">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 			break;
 		case 2:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80), $DATA_SRC);
+		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 			break;
 		default:
-		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80), $DATA_SRC);
+		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 	}
 	}
 	$toReturn .= $table->toHtml();
@@ -1932,8 +1932,7 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	' TERM_ACC = \'' . $termAcc . '\'' .
 	' and ANNOTATED_OBJECT_RGD_ID = ' . $objRgdID .
 	' and EVIDENCE = \'' . $evidence . '\'' .
-	' and REF_RGD_ID = ' . $refRGDID .
-	' and DATA_SRC=\'RGD\'';
+	' and REF_RGD_ID = ' . $refRGDID;
 	if (isReallySet($with_info)) {
 		$sql .= ' and WITH_INFO = ' . dbQuoteString($with_info) . ' ';
 	} else {
