@@ -1932,7 +1932,8 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	' TERM_ACC = \'' . $termAcc . '\'' .
 	' and ANNOTATED_OBJECT_RGD_ID = ' . $objRgdID .
 	' and EVIDENCE = \'' . $evidence . '\'' .
-	' and REF_RGD_ID = ' . $refRGDID;
+	' and REF_RGD_ID = ' . $refRGDID .
+	' and DATA_SRC=\'RGD\'';
 	if (isReallySet($with_info)) {
 		$sql .= ' and WITH_INFO = ' . dbQuoteString($with_info) . ' ';
 	} else {
