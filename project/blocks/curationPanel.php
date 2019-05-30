@@ -20,7 +20,7 @@ function curationPanel_contents() {
 
 		$ch = curl_init('https://api.github.com/user');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		$headers[] = 'Authorization: Bearer ' . session('accessToken');
+		$headers[] = 'Authorization: Bearer ' . $_GET('accessToken');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		$response = curl_exec($ch);
 		$userName = json_decode($response).login;
