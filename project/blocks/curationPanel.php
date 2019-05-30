@@ -16,7 +16,7 @@ function curationPanel_contents() {
 
 	if (!userLoggedIn()) {
 		$toReturn .= $pmb->begin_round();
-		$theForm = getLoginForm();
+	/*	$theForm = getLoginForm();
 		$toReturn .= $theForm->formStart();
 		$toReturn .= $theForm->renderLabel('username') . '<br/>';
 		$toReturn .= $theForm->renderField('username') . '<br/>';
@@ -25,6 +25,8 @@ function curationPanel_contents() {
 		$toReturn .= $theForm->formEnd();
 		$toReturn .= makeLink('Lost Username or Password?', 'admin', 'lostPassword');
 		$toReturn .= '<br/>';
+	*/
+	    $toReturn .= '<b>Please check for access on github to rat-genome-database</b>';
 		$toReturn .= $pmb->end_round();
 	}
   
