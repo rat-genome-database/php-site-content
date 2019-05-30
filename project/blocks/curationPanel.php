@@ -15,8 +15,21 @@ function curationPanel_contents() {
 
 
 	if (!userLoggedIn()) {
-		$toReturn .= $pmb->begin_round();
-	/*	$theForm = getLoginForm();
+
+	    $toReturn .= $pmb->begin_round();
+
+		$ch = curl_init('https://api.github.com/user');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		$headers[] = 'Authorization: Bearer ' . session('accessToken');
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		$response = curl_exec($ch);
+		$userName = json_decode($response).login;
+
+		if($userName != null) {
+		setSessionVar('uid', $userName);
+		setCookieVar('userloggedin', '1');
+}else
+	/* $theForm = getLoginForm();
 		$toReturn .= $theForm->formStart();
 		$toReturn .= $theForm->renderLabel('username') . '<br/>';
 		$toReturn .= $theForm->renderField('username') . '<br/>';
@@ -25,9 +38,9 @@ function curationPanel_contents() {
 		$toReturn .= $theForm->formEnd();
 		$toReturn .= makeLink('Lost Username or Password?', 'admin', 'lostPassword');
 		$toReturn .= '<br/>';
-	*/
-	    $toReturn .= '<b>Please check for access on github to rat-genome-database</b>';
-		$toReturn .= $pmb->end_round();
+    */
+	  {  $toReturn .= '<b>Please check for access on github to rat-genome-database</b>';
+		} $toReturn .= $pmb->end_round();
 	}
   
   // Only show this tool when in curation and certain sub-tools set by the Module we're in. 
