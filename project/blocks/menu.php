@@ -5,13 +5,13 @@ function menu_contents() {
   $toReturn = '<div align="right">';
   if (userLoggedIn()) {
     // $pis = getPiArray();
-    $roles = getSecurityRoleArray();
+   // $roles = getSecurityRoleArray();
     $toReturn .= 'UserID: '.getUserID();
-    $toReturn .= ' ('.getUserFullName().')';
+  //  $toReturn .= ' ('.getUserFullName().')';
     // $toReturn .= ' (PI: '.$pis[getSessionVar('pi')].') '; // note: pi is stored in session to avoid a db hit
                                                           // so any change to pi will require a relogin
-    $toReturn .= ' (Sec level: '.getSecurityLevel().') ';
-    $toReturn .= '&nbsp;'.makeLink('Change Password', 'admin', 'changePassword').'&nbsp;'.makeLink('Logout', 'admin', 'logout').'&nbsp;';
+   // $toReturn .= ' (Sec level: '.getSecurityLevel().') ';
+   // $toReturn .= '&nbsp;'.makeLink('Change Password', 'admin', 'changePassword').'&nbsp;'.makeLink('Logout', 'admin', 'logout').'&nbsp;';
   }
   else {
     $toReturn .= 'Not logged in';

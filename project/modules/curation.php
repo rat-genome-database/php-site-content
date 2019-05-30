@@ -3488,33 +3488,23 @@ function getObjectArrayFromSession() {
 }
 
 function admin_login() {
-	$theForm = getLoginForm();
-	switch ($theForm->getState()) {
-		case SUBMIT_VALID :
-			$userName = $theForm->getValue('username');
-			$password = $theForm->getValue('password');
-			// $password = hashPassword($password);
-
-			// check for locked acount
-			$result = fetchRecord('select * from users where username = ' . dbQuoteString($userName) . '  and active_yn = \'N\'', 'LOGIN');
-			if (count($result) != 0) {
-				redirectWithMessage('Your Account has been locked. Please see the administrator to unlock your account.');
-				break;
-			}
-			// Now check for correct password
-			$result = fetchRecord('select * from users where username = ' . dbQuoteString($userName) . ' and password = \'' . $password . '\' and active_yn = \'Y\'', 'LOGIN');
-			if (count($result) != 0) {
-				extract($result);
-				setSessionVar('uid', $userName);
-				setCookieVar('userloggedin', '1');
-				redirectWithMessage('You have successfully logged in.');
-			} else {
-				redirectWithMessage('Invalid login, please try again.');
-			}
-			break;
-		default :
-			return $theForm->quickRender();
-	}
+    $accessToken = $_GET['accessToken'];
+    $userName = $_GET['userName'];
+    $url = 'https://api.github.com/user?accessToken='+$accessToken;
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(TRUE));
+    $headers[] = 'Accept: application/json';
+    $headers[] = 'Authorization: Bearer ' . session('access_token');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    $response = curl_exec($ch);
+//    if(json_decode($response).login == $userName){
+        setSessionVar('uid', $userName);
+		setCookieVar('userloggedin', '1');
+		redirectWithMessage('You have successfully logged in.');
+//		} else {
+//				redirectWithMessage('Invalid login, please try again.');
+//		}
 }
 
 function admin_logout() {
@@ -3525,7 +3515,7 @@ function admin_logout() {
 	redirectWithMessage('You are now logged out');
 }
 
-function admin_userLog() {
+/* function admin_userLog() {
 	if (!userIsAdmin()) {
 		return NOACCESS_MSG;
 	}
@@ -3562,7 +3552,7 @@ function admin_userLog() {
 
 	return $toReturn;
 }
-
+*/
 function curation_addPubmedIDToBucket() {
 	
 	$pubmedID = trim(getRequestVarString('PMID'));

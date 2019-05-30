@@ -7,37 +7,23 @@
  */
 
 function admin_login() {
-	$theForm = getLoginForm();
-	switch ($theForm->getState()) {
-		case SUBMIT_VALID :
-			$userName = $theForm->getValue('username');
-			$password = $theForm->getValue('password');
-			// $password = hashPassword($password);
-
-			// check for locked acount
-			$result = fetchRecord('select * from users where username = ' . dbQuoteString($userName) . '  and active_yn = \'N\'', 'LOGIN');
-			if (count($result) != 0) {
-				redirectWithMessage('Your Acount has been locked. Please see the administrator to unlock your account.');
-				break;
-			}
-			// Now check for correct password
-			$result = fetchRecord('select * from users where username = ' . dbQuoteString($userName) . ' and password = ' . dbQuoteString($password) . ' and active_yn = \'Y\'', 'LOGIN');
-			if (count($result) != 0) {
-				extract($result);
-				setSessionVar('uid', $userName); 
-        setSessionVar('userKey', $USER_KEY); 
-        setSessionVar('userFullName', $FIRST_NAME . " " . $LAST_NAME);
-        setSessionVar('userEmail', $EMAIL);
-        setSessionVar('userGroup', $USER_GROUP);  
-        setSessionVar('userKey', $USER_KEY); 
-				setCookieVar('userloggedin', '1');
-				redirectWithMessage('You have successfully logged in.');
-			} else {
-				redirectWithMessage('Invalid login, please try again.');
-			}
-			break;
-		default :
-			return $theForm->quickRender();
+	 $accessToken = $_GET['accessToken'];
+        $userName = $_GET['userName'];
+        $url = 'https://api.github.com/user?accessToken='+$accessToken;
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(TRUE));
+        $headers[] = 'Accept: application/json';
+        $headers[] = 'Authorization: Bearer ' . session('access_token');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($ch);
+        if(json_decode($response).login == $userName){
+            setSessionVar('uid', $userName);
+    		setCookieVar('userloggedin', '1');
+    		redirectWithMessage('You have successfully logged in.');
+    		} else {
+    				redirectWithMessage('Invalid login, please try again.');
+    		}
 	}
 }
 
@@ -45,7 +31,7 @@ function admin_login() {
 /** 
  * 
  */
-function admin_changePassword() {
+/* function admin_changePassword() {
   if (!userLoggedIn()) {
     return NOTLOGGEDIN_MSG;
   }
@@ -75,7 +61,7 @@ function admin_changePassword() {
   }
   return $toReturn;
 }
-
+*/
 
 /** 
  * Allow managers to reset passwords. 
