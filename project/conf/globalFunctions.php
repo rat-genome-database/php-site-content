@@ -421,7 +421,25 @@ function userLoggedIn()
     return (isset($uidSession));
   } else {
         if(isset($_GET['token'])) {
-            $url = 'https://api.github.com/user';
+
+$url = 'https://api.github.com/user';
+  $user = apiRequest($url);
+            $checkUrl = 'https://api.github.com/orgs/rat-genome-database/members/'.$user-> login;
+  $member = apiRequest($checkUrl);
+  if($member->status == 204) {
+            setSessionVar('uid', $user-> login);
+            setCookieVar('userloggedin', '1');
+            setSessionVar('userGroup', 'admin');
+            setSessionVar('userFullName', $user-> name);
+            return true;
+   } else return false;
+        } else {
+            return false;
+        }
+    }
+}
+
+function apiRequest($url) {
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
             $headers=array();
@@ -433,19 +451,8 @@ function userLoggedIn()
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $response = curl_exec($ch);
             $user = json_decode($response);
-
-            setSessionVar('uid', $user-> login);
-            setCookieVar('userloggedin', '1');
-            setSessionVar('userGroup', 'admin');
-            setSessionVar('userFullName', $user-> name);
-            return true;
-        } else {
-            return false;
-        }
-    }
+            return $user;
 }
-
-
 function displayFlag($flag) {
   return $flag == 1?'Y':'N';
 }
