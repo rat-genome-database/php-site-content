@@ -429,12 +429,11 @@ $url = 'https://api.github.com/user';
 $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 $headers=array();
-    $headers[] = 'Authorization: Token ' . $_GET['token'];
-    CURLOPT_HTTPHEADER = [
-                "Accept: application/vnd.github.v3+json",
-                "Content-Type: text/plain",
-                "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36"
-            ];
+    $headers[0] = "Authorization: Token " . $_GET['token'];
+    $headers[1] = "Accept: application/vnd.github.v3+json";
+    $headers[2] = "Content-Type: text/plain";
+    $headers[3] = "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36"
+
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   $response = curl_exec($ch);
 $user = json_decode($response);
