@@ -422,18 +422,19 @@ function userLoggedIn()
   } else {
         if(isset($_GET['token'])) {
 
-$url = 'https://api.github.com/user';
-  $user = apiRequest($url);
-  $login = $user->login;
+            $url = 'https://api.github.com/user';
+            $user = apiRequest($url);
+            $login = $user->login;
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
-  $member = apiRequest($checkUrl);
+            $member = apiRequest($checkUrl);
 
-            setSessionVar('uid', $member);
-            setCookieVar('userloggedin', '1');
-            setSessionVar('userGroup', 'admin');
-            setSessionVar('userFullName', $user-> name);
-            return true;
-
+            if($member == 204) {
+                setSessionVar('uid', $login);
+                setCookieVar('userloggedin', '1');
+                setSessionVar('userGroup', 'admin');
+                setSessionVar('userFullName', $user-> name);
+                return true;
+            } else return false;
         } else {
             return false;
         }
