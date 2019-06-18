@@ -428,7 +428,7 @@ $url = 'https://api.github.com/user';
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/members/'.$login;
   $member = apiRequest($checkUrl);
 
-            setSessionVar('uid', $checkUrl);
+            setSessionVar('uid', $member);
             setCookieVar('userloggedin', '1');
             setSessionVar('userGroup', 'admin');
             setSessionVar('userFullName', $user-> name);
