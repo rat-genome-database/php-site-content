@@ -452,7 +452,10 @@ function apiRequest($url) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $response = curl_exec($ch);
             $user = json_decode($response);
-            return $user;
+            if(empty($user)) {
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                return $httpCode;
+            } else return $user;
 }
 function displayFlag($flag) {
   return $flag == 1?'Y':'N';
