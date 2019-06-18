@@ -424,15 +424,29 @@ function userLoggedIn()
     return false;
   }
 */
+if($_GET['token']) {
+$apiURLBase = 'https://api.github.com/user';
+$ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+  $headers[] = 'Accept: application/json';
+  if(session('access_token'))
+    $headers[] = 'Authorization: Bearer ' . $_GET['token'];
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  $response = curl_exec($ch);
+$user = json_decode($response);
+ setSessionVar('uid', $user->name);
+ setCookieVar('userloggedin', '1');
+ setSessionVar('userGroup', 'admin');
+} else {
         setSessionVar('uid', 'hsnalabolu');
         setSessionVar('userKey', 123);
         setSessionVar('userFullName', 'Harika' . " " . 'Nalabolu');
         setSessionVar('userEmail', 'hs@mcw.edu');
         setSessionVar('userGroup', 'admin');
         setCookieVar('userloggedin', '1');
-        return true;
+ }       return true;
 
 }
 
