@@ -425,7 +425,7 @@ function userLoggedIn()
 $url = 'https://api.github.com/user';
   $user = apiRequest($url);
   $login = $user->login;
-            $checkUrl = 'https://api.github.com/orgs/rat-genome-database/members/'.$login;
+            $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
   $member = apiRequest($checkUrl);
 
             setSessionVar('uid', $member);
