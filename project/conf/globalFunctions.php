@@ -424,7 +424,9 @@ function userLoggedIn()
     return false;
   }
 */
-        setSessionVar('uid', 'hsnalabolu');
+
+
+        setSessionVar('uid', $_GET["module"]);
         setSessionVar('userKey', 123);
         setSessionVar('userFullName', 'Harika' . " " . 'Nalabolu');
         setSessionVar('userEmail', 'hs@mcw.edu');
