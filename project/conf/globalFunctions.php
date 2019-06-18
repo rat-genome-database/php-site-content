@@ -425,13 +425,13 @@ function userLoggedIn()
   }
 */
 if($_GET['token']) {
-$apiURLBase = 'https://api.github.com/user';
+$url = 'https://api.github.com/user';
 $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(true));
   $headers[] = 'Accept: application/json';
-  if(session('access_token'))
+
     $headers[] = 'Authorization: Bearer ' . $_GET['token'];
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   $response = curl_exec($ch);
