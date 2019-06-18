@@ -438,8 +438,7 @@ $headers=array();
   $response = curl_exec($ch);
 $user = json_decode($response);
 
-echo($user);
- setSessionVar('uid', $response);
+ setSessionVar('uid', $user-> login);
  setCookieVar('userloggedin', '1');
  setSessionVar('userGroup', 'admin');
 } else {
