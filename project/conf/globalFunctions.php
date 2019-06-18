@@ -423,7 +423,8 @@ function userLoggedIn()
         if(isset($_GET['token'])) {
 
 $url = 'https://api.github.com/user';
-  $user = apiRequest($url);
+  $response = apiRequest($url);
+  $user = json_decode($response);
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/members/'.$user-> login;
   $member = apiRequest($checkUrl);
 
@@ -450,8 +451,7 @@ function apiRequest($url) {
 
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             $response = curl_exec($ch);
-            $user = json_decode($response);
-            return $user;
+            return $response;
 }
 function displayFlag($flag) {
   return $flag == 1?'Y':'N';
