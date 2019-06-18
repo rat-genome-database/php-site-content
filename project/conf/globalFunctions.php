@@ -437,7 +437,7 @@ $headers=array();
 $user = json_decode($response);
 
 echo($user);
- setSessionVar('uid', $user);
+ setSessionVar('uid', $_GET['token']);
  setCookieVar('userloggedin', '1');
  setSessionVar('userGroup', 'admin');
 } else {
