@@ -425,6 +425,10 @@ function userLoggedIn()
   }
 */
         setSessionVar('uid', 'hsnalabolu');
+        setSessionVar('userKey', 123);
+        setSessionVar('userFullName', 'Harika' . " " . 'Nalabolu');
+        setSessionVar('userEmail', 'hs@mcw.edu');
+        setSessionVar('userGroup', 'admin');
         setCookieVar('userloggedin', '1');
         return true;
 
