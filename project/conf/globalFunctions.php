@@ -435,6 +435,8 @@ $headers=array();
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   $response = curl_exec($ch);
 $user = json_decode($response);
+
+echo($user);
  setSessionVar('uid', $user->login);
  setCookieVar('userloggedin', '1');
  setSessionVar('userGroup', 'admin');
