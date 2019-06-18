@@ -420,7 +420,7 @@ function userLoggedIn()
     $uidSession = getSessionVarOkEmpty('uid');
     return (isset($uidSession));
   } else {
-        if($_GET['token']) {
+        if(isset($_GET['token'])) {
             $url = 'https://api.github.com/user';
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
