@@ -415,41 +415,34 @@ return false;
 
 function userLoggedIn()
 {
-/*  $loggedInCookie = getCookieVar('userloggedin');
+  $loggedInCookie = getCookieVar('userloggedin');
   if ($loggedInCookie == 1) {
     $uidSession = getSessionVarOkEmpty('uid');
     return (isset($uidSession));
-  }
-  else {
-    return false;
-  }
-*/
-if($_GET['token']) {
-$url = 'https://api.github.com/user';
-$ch = curl_init($url);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-$headers=array();
-    $headers[0] = "Authorization: Token " . $_GET['token'];
-    $headers[1] = "Accept: application/vnd.github.v3+json";
-    $headers[2] = "Content-Type: text/plain";
-    $headers[3] = "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36";
+  } else {
+        if($_GET['token']) {
+            $url = 'https://api.github.com/user';
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            $headers=array();
+            $headers[0] = "Authorization: Token " . $_GET['token'];
+            $headers[1] = "Accept: application/vnd.github.v3+json";
+            $headers[2] = "Content-Type: text/plain";
+            $headers[3] = "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36";
 
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-  $response = curl_exec($ch);
-$user = json_decode($response);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $response = curl_exec($ch);
+            $user = json_decode($response);
 
- setSessionVar('uid', $user-> login);
- setCookieVar('userloggedin', '1');
- setSessionVar('userGroup', 'admin');
-} else {
-        setSessionVar('uid', 'hsnalabolu');
-        setSessionVar('userKey', 123);
-        setSessionVar('userFullName', 'Harika' . " " . 'Nalabolu');
-        setSessionVar('userEmail', 'hs@mcw.edu');
-        setSessionVar('userGroup', 'admin');
-        setCookieVar('userloggedin', '1');
- }       return true;
-
+            setSessionVar('uid', $user-> login);
+            setCookieVar('userloggedin', '1');
+            setSessionVar('userGroup', 'admin');
+            setSessionVar('userFullName', $user-> name);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 
