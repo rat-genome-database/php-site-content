@@ -431,7 +431,7 @@ $ch = curl_init($url);
 $headers=array();
   $headers[] = 'Accept: application/json';
 
-    $headers[] = 'Authorization: Bearer ' . $_GET['token'];
+    $headers[] = 'Authorization: Token ' . $_GET['token'];
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   $response = curl_exec($ch);
 $user = json_decode($response);
