@@ -428,8 +428,7 @@ if($_GET['token']) {
 $url = 'https://api.github.com/user';
 $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(true));
+$headers=array();
   $headers[] = 'Accept: application/json';
 
     $headers[] = 'Authorization: Bearer ' . $_GET['token'];
