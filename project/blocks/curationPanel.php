@@ -15,13 +15,16 @@ function curationPanel_contents() {
 
 
 	if (!userLoggedIn()) {
-		$params = array(
-            'client_id' => 'ee483d03b1806882b4b2',
-            'redirect_uri' => 'https://dev.rgd.mcw.edu/rgdCuration/',
-            'scope' => 'user',
-          );
-          // Redirect the user to Github's authorization page
-          header('Location: ' . 'https://github.com/login/oauth/authorize' . '?' . http_build_query($params));
+		$authorize_url = 'https://github.com/login/oauth/authorize?'.http_build_query([
+                    'client_id' => 'ee483d03b1806882b4b2',
+                    'redirect_uri' => 'https://dev.rgd.mcw.edu/rgdCuration/',
+                    'scope' => 'user',
+                  ]);
+		$toReturn .= $pmb->begin_round();
+		$toReturn .= '<p><a href="'.$authorize_url.'">Log In</a></p>';
+		$toReturn .= '<br/>';
+		$toReturn .= $pmb->end_round();
+
 	}
   
   // Only show this tool when in curation and certain sub-tools set by the Module we're in. 
