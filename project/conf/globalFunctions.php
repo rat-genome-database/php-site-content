@@ -420,8 +420,8 @@ function userLoggedIn()
     $uidSession = getSessionVarOkEmpty('uid');
     return (isset($uidSession));
   }
-  if(isset($_GET['code']) || isset($_GET['token']))  {
-  if(isset($_GET['code'])) {
+//  if(isset($_GET['code']) || isset($_GET['token']))  {
+/*  if(isset($_GET['code'])) {
 
        $ch = curl_init($url);
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -437,10 +437,10 @@ function userLoggedIn()
        $accesstoken = json_decode($response);
        $token = $accesstoken->access_token;
   }
-
+*/
   if(isset($_GET['token'])) {
             $token = $_GET['token'];
-  }
+//  }
             $url = 'https://api.github.com/user';
             $user = apiRequest($url,$token);
             $login = $user->login;
