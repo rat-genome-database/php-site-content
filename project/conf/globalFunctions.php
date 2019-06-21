@@ -422,7 +422,8 @@ function userLoggedIn()
   }
  if(isset($_GET['code'])) {
 
-       $ch = curl_init($url);
+$authorizeURL = 'https://github.com/login/oauth/authorize';
+       $ch = curl_init($authorizeURL);
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
        $headers=array( 'client_id' => 'ee483d03b1806882b4b2',
                 'client_secret' => 'cdb0f0faee2f2f9ea3e552e5997d3d5ea3ffbcb4',
