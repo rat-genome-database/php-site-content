@@ -15,17 +15,13 @@ function curationPanel_contents() {
 
 
 	if (!userLoggedIn()) {
-		$toReturn .= $pmb->begin_round();
-		$theForm = getLoginForm();
-		$toReturn .= $theForm->formStart();
-		$toReturn .= $theForm->renderLabel('username') . '<br/>';
-		$toReturn .= $theForm->renderField('username') . '<br/>';
-		$toReturn .= $theForm->renderLabel('password') . '<br/>';
-		$toReturn .= $theForm->renderField('password') . '<br/><br/>';
-		$toReturn .= $theForm->formEnd();
-		$toReturn .= makeLink('Lost Username or Password?', 'admin', 'lostPassword');
-		$toReturn .= '<br/>';
-		$toReturn .= $pmb->end_round();
+		$params = array(
+            'client_id' => 'ee483d03b1806882b4b2',
+            'redirect_uri' => 'https://dev.rgd.mcw.edu/rgdCuration/',
+            'scope' => 'user',
+          );
+          // Redirect the user to Github's authorization page
+          header('Location: ' . 'https://github.com/login/oauth/authorize' . '?' . http_build_query($params));
 	}
   
   // Only show this tool when in curation and certain sub-tools set by the Module we're in. 

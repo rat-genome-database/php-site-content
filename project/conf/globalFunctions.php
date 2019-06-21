@@ -419,11 +419,28 @@ function userLoggedIn()
   if ($loggedInCookie == 1) {
     $uidSession = getSessionVarOkEmpty('uid');
     return (isset($uidSession));
-  } else {
-        if(isset($_GET['token'])) {
+  } else if(isset($_GET['code']) || isset($_GET['token'])){
+        if(isset($_GET['code'])) {
 
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            $headers=array( 'client_id' => 'ee483d03b1806882b4b2',
+                'client_secret' => 'cdb0f0faee2f2f9ea3e552e5997d3d5ea3ffbcb4',
+                'redirect_uri' => 'https://dev.rgd.mcw.edu/rgdCuration/',
+                'code' => $_GET['code'],
+                'Accept' => 'application/vnd.github.v3+json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36' );
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $response = curl_exec($ch);
+            $accesstoken = json_decode($response);
+            $token = $accesstoken->access_token;
+        }
+        if(isset($_GET['token'])) {
+            $token = $_GET['token'];
+        }
             $url = 'https://api.github.com/user';
-            $user = apiRequest($url);
+            $user = apiRequest($url,$token);
             $login = $user->login;
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
             $member = apiRequest($checkUrl);
@@ -441,11 +458,11 @@ function userLoggedIn()
     }
 }
 
-function apiRequest($url) {
+function apiRequest($url,$token) {
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
             $headers=array();
-            $headers[0] = "Authorization: Token " . $_GET['token'];
+            $headers[0] = "Authorization: Token " . $token;
             $headers[1] = "Accept: application/vnd.github.v3+json";
             $headers[2] = "Content-Type: text/plain";
             $headers[3] = "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36";
