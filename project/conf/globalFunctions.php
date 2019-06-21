@@ -445,7 +445,7 @@ $authorizeURL = 'https://github.com/login/oauth/authorize';
             $user = apiRequest($url,$token);
             $login = $user->login;
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
-            $member = apiRequest($checkUrl);
+            $member = apiRequest($checkUrl,$token);
 
             if($member == 204) {
                 setSessionVar('uid', $login);
