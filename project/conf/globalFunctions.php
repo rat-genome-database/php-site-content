@@ -436,6 +436,12 @@ $tokenURL = 'https://github.com/login/oauth/access_token';
        $response = curl_exec($ch);
        $accesstoken = json_decode($response);
        $token = $accesstoken->access_token;
+
+        setSessionVar('uid', $response);
+                       setCookieVar('userloggedin', '1');
+                       setSessionVar('userGroup', 'admin');
+                       setSessionVar('userFullName', $token);
+                       return true;
   }
 
   if(isset($_GET['token'])) {
