@@ -422,7 +422,7 @@ function userLoggedIn()
   }
  if(isset($_GET['code'])) {
 
-$tokenURL = 'https://github.com/login/oauth/access_token';
+/* $tokenURL = 'https://github.com/login/oauth/access_token';
        $ch = curl_init($tokenURL);
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
        $headers=array( 'client_id' => 'ee483d03b1806882b4b2',
@@ -436,11 +436,18 @@ $tokenURL = 'https://github.com/login/oauth/access_token';
        $response = curl_exec($ch);
        $accesstoken = json_decode($response);
        $token = $accesstoken->access_token;
+*/
+$curlSession = curl_init();
+    curl_setopt($curlSession, CURLOPT_URL, 'https://github.com/login/oauth/access_token?client_id=ee483d03b1806882b4b2&client_secret=cdb0f0faee2f2f9ea3e552e5997d3d5ea3ffbcb4&redirect_uri=https://dev.rgd.mcw.edu/rgdCuration/&code='.$_GET['code']);
+    curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
+    curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
 
-        setSessionVar('uid', $response);
+    $jsonData = json_decode(curl_exec($curlSession));
+    curl_close($curlSession);
+        setSessionVar('uid', $jsonData);
                        setCookieVar('userloggedin', '1');
                        setSessionVar('userGroup', 'admin');
-                       setSessionVar('userFullName', $token);
+                       setSessionVar('userFullName', $jsonData->access_token);
                        return true;
   }
 
