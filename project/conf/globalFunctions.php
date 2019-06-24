@@ -438,7 +438,7 @@ function userLoggedIn()
        $token = $accesstoken->access_token;
 */
 
-$url = 'https://github.com/login/oauth/access_token?client_id=ee483d03b1806882b4b2&client_secret=cdb0f0faee2f2f9ea3e552e5997d3d5ea3ffbcb4&redirect_uri=https://dev.rgd.mcw.edu/rgdCuration/&code='.$_GET['code'];
+$url = 'https://github.com/login/oauth/access_token?client_id=ee483d03b1806882b4b2&client_secret=cdb0f0faee2f2f9ea3e552e5997d3d5ea3ffbcb4&code='.$_GET['code'];
    $jsonData = file_get_contents($url);
 
 
