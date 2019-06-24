@@ -443,7 +443,7 @@ $url = 'https://github.com/login/oauth/access_token?client_id=ee483d03b1806882b4
 
 
 
-        setSessionVar('uid', $url);
+        setSessionVar('uid', $jsonData);
                        setCookieVar('userloggedin', '1');
                        setSessionVar('userGroup', 'admin');
                        setSessionVar('userFullName', $jsonData->access_token);
