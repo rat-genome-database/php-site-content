@@ -18,7 +18,7 @@ function curationPanel_contents() {
 		$authorize_url = 'https://github.com/login/oauth/authorize?'.http_build_query([
                     'client_id' => '7de10c5ae2c3e3825007',
                     'redirect_uri' => 'https://dev.rgd.mcw.edu/rgdweb/curation/login.html',
-                    'scope' => 'user',
+                    'scope' => 'read:user',
                   ]);
 		$toReturn .= $pmb->begin_round();
 		$toReturn .= '<p><a href="'.$authorize_url.'">Log In</a></p>';
