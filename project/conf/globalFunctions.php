@@ -416,10 +416,7 @@ return false;
 function userLoggedIn()
 {
   $loggedInCookie = getCookieVar('userloggedin');
-  if ($loggedInCookie == 1) {
-    $uidSession = getSessionVarOkEmpty('uid');
-    return (isset($uidSession));
-  }
+
 
   if(isset($_GET['token'])) {
             $token = $_GET['token'];
@@ -438,7 +435,11 @@ function userLoggedIn()
                 setSessionVar('userFullName', $user-> name);
                 return true;
             } else return false;
- } else return false;
+ }
+   if ($loggedInCookie == 1) {
+     $uidSession = getSessionVarOkEmpty('uid');
+      return (isset($uidSession));
+    }else return false;
 
 }
 
