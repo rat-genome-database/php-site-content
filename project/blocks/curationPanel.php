@@ -17,7 +17,7 @@ function curationPanel_contents() {
 	if (!userLoggedIn()) {
 		$authorize_url = 'https://github.com/login/oauth/authorize?'.http_build_query([
                     'client_id' => 'dc5513384190f8a788e5',
-                    'redirect_uri' => 'https://rgd.mcw.edu/rgdweb/curation/login.html',
+                    'redirect_uri' => 'https://pipelines.rgd.mcw.edu/rgdweb/curation/login.html',
                     'scope' => 'read:user',
                   ]);
 		$toReturn .= $pmb->begin_round();
