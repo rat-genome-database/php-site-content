@@ -432,6 +432,7 @@ function userLoggedIn()
 
             if($member == 204) {
                 setSessionVar('uid', $login);
+                setCookieVar('token', $token);
                 setCookieVar('userloggedin', '1');
                 setSessionVar('userGroup', 'admin');
                 setSessionVar('userFullName', $user-> name);
