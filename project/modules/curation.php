@@ -1901,7 +1901,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Evidence',  'With Info', hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'), 'Species', 'Modified','Notes');
   
 	$table->setAttributes('class="simple" width="100%"');
-	$token = getSessionVarOkEmpty('uid');
+	$token = getSessionVarOkEmpty('token');
 	foreach ($records as $record) {
 		extract($record);
 		//$table->addRow(makeLink('<img src="icons/page_white_edit.png" border=0 title="Edit" alt="Edit">', 'curation', 'editAnnotation', array (
