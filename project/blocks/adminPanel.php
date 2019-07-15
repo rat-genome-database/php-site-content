@@ -25,18 +25,18 @@
     $toReturn .= "<br/><br/>";
     $toReturn .=  makeLink('Reference Editor', 'reference', 'contents');
     $toReturn .= "<br/><br/>";
-    $toReturn .=  makeLink('Portal Admin', 'portalAdmin', 'processPortal');
-    $toReturn .= "<br/><br/>"; 
-    $toReturn .= makeLink('User Admin', 'admin', 'users');
+//    $toReturn .=  makeLink('Portal Admin', 'portalAdmin', 'processPortal');
+//    $toReturn .= "<br/><br/>";
+//    $toReturn .= makeLink('User Admin', 'admin', 'users');
     $toReturn .= '<br><br/>' . makeLink('Lookup Tables', 'tableMaint', 'home');
     $toReturn .= "<br/><br/>";
     $toReturn .=  makeLink('Reports', 'report', 'home');
     $toReturn .= "<br/><br/>";
     $toReturn .=  makeLink('Obsolete Terms', 'ont', 'obsoleteTerms');
-    $toReturn .= "<br/><br/>";
-    $toReturn .=  makeLink('Diags', 'test', 'dumpSession') ;
-    $toReturn .= "<br/><br/>";
-    $toReturn .= '<a target="_blank" href="history.html">Development History</a>';
+//    $toReturn .= "<br/><br/>";
+//    $toReturn .=  makeLink('Diags', 'test', 'dumpSession') ;
+//    $toReturn .= "<br/><br/>";
+//    $toReturn .= '<a target="_blank" href="history.html">Development History</a>';
     $toReturn .= $pmb->end_round();
   }
   return $toReturn; 
