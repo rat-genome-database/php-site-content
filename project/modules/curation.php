@@ -2153,7 +2153,7 @@ function processAnnotationForm($theform) {
 	$with_info = $theform->getValue('with_info');
 	$notes = $theform->getValue('notes');
 	//  $resultArray = array(); 
-	 dump ( $objectArray)  ;  dump (  $referenceArray) ; dump (  $onttermArray) ;
+	// dump ( $objectArray)  ;  dump (  $referenceArray) ; dump (  $onttermArray) ;
 	$relCnt = 0; // keep tack of each row being added.  
 	$relRejectedCnt = 0; // keep tack of each row being rejected.  
 	
@@ -2236,7 +2236,7 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('relCount', $relCnt);
 	$theRelform->AddHidden('command', 'create');
 	
-	 dump ( $theRelform ) ;
+	// dump ( $theRelform ) ;
 
 	if ($relRejectedCnt > 0) $theform->addFormErrorMessage("Only " . $relCnt . " annotation(s) can be made. " . $relRejectedCnt . " annotation(s) have been rejected because of the reasons shown above.");
 	return $theRelform;
