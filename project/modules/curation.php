@@ -2096,7 +2096,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		$numCreated++;
 	}
 
-	 dump ( $resultArray ) ;
+	// dump ( $resultArray ) ;
 	return $numCreated;
 
 }
