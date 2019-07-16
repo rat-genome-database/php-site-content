@@ -2081,7 +2081,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	"SYSDATE, SYSDATE, 'DO',".
 	dbQuoteString($qualifier) . ")";
 
-	// dump ( "SQL " . $sql ) ; 
+	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
 	$full_annot_key = 0;
 	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key)) {
@@ -2096,7 +2096,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		$numCreated++;
 	}
 
-	// dump ( $resultArray ) ; 
+	// dump ( $resultArray ) ;
 	return $numCreated;
 
 }
@@ -2153,7 +2153,7 @@ function processAnnotationForm($theform) {
 	$with_info = $theform->getValue('with_info');
 	$notes = $theform->getValue('notes');
 	//  $resultArray = array(); 
-	// dump ( $objectArray)  ;//  dump (  $referenceArray) ; dump (  $onttermArray) ; 
+	// dump ( $objectArray)  ;  dump (  $referenceArray) ; dump (  $onttermArray) ;
 	$relCnt = 0; // keep tack of each row being added.  
 	$relRejectedCnt = 0; // keep tack of each row being rejected.  
 	
