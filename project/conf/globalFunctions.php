@@ -319,7 +319,7 @@ function getUserID() {
     return getSessionVar('uid');
   }
   else {
-    return '';
+    return 'harika';
   }
 
 }
@@ -330,7 +330,7 @@ function getUserFullName() {
     return getSessionVar('userFullName');
   }
   else {
-    return '';
+    return 'harika';
   }
 
 }
@@ -339,69 +339,58 @@ function getUserFullName() {
  * Check security level for access to a function. 
  */
 function checkSecurityLevel($levelRequested) {
- /* if (userLoggedIn()) {
+  if (userLoggedIn()) {
     $securityLevel = fetchField('select user_group from users where username = '.dbQuoteString( getSessionVar('uid')), 'LOGIN');
-    if ( $securityLevel == 'admin' ) { 
+    if ( $securityLevel == 'admin' ) {
       // Admin can do anything
       return true;
     } elseif ($securityLevel == 'manager' ) {
-      // manager leve can do manager / pi / user  stuff. 
+      // manager leve can do manager / pi / user  stuff.
 			if ( $levelRequested == 'manager' || $levelRequested == 'pi' || $levelRequested == 'user' ) {
-        return true; 
+        return true;
       }
 		} elseif ($securityLevel == 'pi') {
        // pi level can do / pi / user  stuff.
 			if (  $levelRequested == 'pi' || $levelRequested == 'user' ) {
-        return true; 
+        return true;
       }
 		}
     // else security level must match
     return ($levelRequested == $securityLevel);
   }
   else {
-    return false;
+    return true;
   }
- */
-
-  return true;
 }
 
 function getSecurityLevel() {
- /* if (userLoggedIn()) {
+  if (userLoggedIn()) {
     $securityLevel = fetchField('select user_group from users where username = '.dbQuoteString( getSessionVar('uid')), 'LOGIN');
-    return $securityLevel;
+    return "admin";
   }
-*/
-
-return 'admin';
-
 }
 
 // top level of security, these folks can add users,
 // change their security level, reset passwords
 function userIsCurator() {
-//  return checkSecurityLevel("user");
-return false;
+  return checkSecurityLevel("user");
 }
 
 // top level of security, these folks can add users,
 // change their security level, reset passwords
 function userIsAdmin() {
-//  return checkSecurityLevel("admin");
-return true;
+  return checkSecurityLevel("admin");
 }
 
 // Return true in the user logged in is an admin or PI
 function userIsPIorAdmin() {
-//  return checkSecurityLevel("manager")|| checkSecurityLevel("pi") || checkSecurityLevel("admin") ;
-return true;
+  return checkSecurityLevel("manager")|| checkSecurityLevel("pi") || checkSecurityLevel("admin") ;
 }
 
-// next level under admin, these folks can modify 
+// next level under admin, these folks can modify
 // conditions and experiments and lookup codes
 function userIsPI() {
-//  return checkSecurityLevel("pi");
-return false;
+  return checkSecurityLevel("pi");
 }
 
 // next level under pi, these folks can do basic data
@@ -409,57 +398,22 @@ return false;
 // under the subject records, but cannot update experiments
 // or conditions or lookup codes
 function userIsDataEntry() {
-//  return checkSecurityLevel("user") || userIsPI();
-return false;
+  return checkSecurityLevel("user") || userIsPI();
 }
 
 function userLoggedIn()
 {
   $loggedInCookie = getCookieVar('userloggedin');
-
-
-  if(isset($_GET['token'])) {
-            $token = $_GET['token'];
-
-            $url = 'https://api.github.com/user';
-            $user = apiRequest($url,$token);
-            $login = $user->login;
-            $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
-            $member = apiRequest($checkUrl,$token);
-
-            if($member == 204) {
-                setSessionVar('uid', $login);
-                setSessionVar('token', $token);
-                setCookieVar('userloggedin', '1');
-                setSessionVar('userGroup', 'admin');
-                setSessionVar('userFullName', $user-> name);
-                return true;
-            } else return false;
- }
-   if ($loggedInCookie == 1) {
-     $uidSession = getSessionVarOkEmpty('uid');
-      return (isset($uidSession));
-    }else return false;
-
+  if ($loggedInCookie == 1) {
+    $uidSession = getSessionVarOkEmpty('uid');
+    return (isset($uidSession));
+  }
+  else {
+    return true;
+  }
 }
 
-function apiRequest($url,$token) {
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            $headers=array();
-            $headers[0] = "Authorization: Token " . $token;
-            $headers[1] = "Accept: application/vnd.github.v3+json";
-            $headers[2] = "Content-Type: text/plain";
-            $headers[3] = "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36";
 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            $response = curl_exec($ch);
-            $user = json_decode($response);
-            if(empty($user)) {
-                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                return $httpCode;
-            } else return $user;
-}
 function displayFlag($flag) {
   return $flag == 1?'Y':'N';
 }
@@ -561,7 +515,7 @@ function getKnowFromArray() {
 }
 
 /**
- * Returns a match array for searchs as shown in this code : 
+ * Returns a match array for searchs as shown in this code :
  *  <select name="match_type">
  *   <option value="equals" selected>Equals</option>
  *   <option value="contains">Contains</option>
@@ -569,7 +523,7 @@ function getKnowFromArray() {
  *   <option value="ends">Ends with</option>
  *  </select>
  */
-function getSearchMatchType() { 
+function getSearchMatchType() {
   return array (
     'equals' => 'Equals',
     'contains' => 'Contains',
@@ -577,16 +531,16 @@ function getSearchMatchType() {
     'ends' => 'Ends with' );
 }
 
-/** 
+/**
  * Escape a string to be used in the OverLib
- * 
+ *
  */
 function escapeOverLib($string ) {
-  $returnStr = str_replace('"', '', $string ); // fliter out double quotes 
+  $returnStr = str_replace('"', '', $string ); // fliter out double quotes
   $returnStr = str_replace('\'', '\\\'', $returnStr );
 
-  return $returnStr ; 
-} 
+  return $returnStr ;
+}
 
 
 /**
@@ -595,21 +549,21 @@ function escapeOverLib($string ) {
           <option value="symbols">Current Symbols</option>
           <option value="symbols_names">Current Symbols/Names</option>
           <option value="active_retired">Current and Withdrawn</option>
-          <option value="all_with_aliases" selected>Current &amp; withdrawn &amp; 
+          <option value="all_with_aliases" selected>Current &amp; withdrawn &amp;
           Aliases</option>
         </select>
  */
- function getGeneSearchFields() { 
-  return array ( 
+ function getGeneSearchFields() {
+  return array (
   'symbols' => 'Current Symbols',
   'symbols_name' => 'Current Symbols/Names',
   'active_retired' => 'Current and Withdrawn',
-  'all_with aliases' => 'Current &amp; withdrawn &amp; Aliases' ) ; 
+  'all_with aliases' => 'Current &amp; withdrawn &amp; Aliases' ) ;
  }
- 
 
-        
-        
+
+
+
 function getYears() {
   $arrayOfYears = array();
   $currentDate = getDate();
@@ -692,7 +646,7 @@ function getHandednessArray() {
   '3' => 'NP',
   '4' => 'PR',
   '5' => 'AR');
-  
+
 }
 
 function getLobeArray() {
@@ -700,7 +654,7 @@ function getLobeArray() {
   '1' => 'None',
   '2' => 'Part',
   '3' => 'All');
-  
+
 }
 
 function getDominantHandArray() {
@@ -774,7 +728,7 @@ function getConditionArrayByExperiment($experimentId) {
   else {
     $conditions = fetchField('select conditions from experiment where experiment_id ='.$experimentId);
     if (strlen($conditions) > 2) {
-      $conditionIdArray = explode('|', substr($conditions, 1, -1)); 
+      $conditionIdArray = explode('|', substr($conditions, 1, -1));
       foreach($conditionIdArray as $conditionId) {
         $theArray[$conditionId] = fetchField('select condcode from condition where condition_id = '.$conditionId);
       }
@@ -838,17 +792,17 @@ function getResponseArray() {
   }
 }
 
-function getActiveArray() { 
-  return array( 'Y' => "Active", 'N' => "Inactive" ) ; 
+function getActiveArray() {
+  return array( 'Y' => "Active", 'N' => "Inactive" ) ;
 }
 
-/** 
- * Return the next value for a particular $rowname from $table 
+/**
+ * Return the next value for a particular $rowname from $table
  */
 function getNextDBKey (  $table,  $dbconnection = NULL ) {
-  // $keyArray = fetchRecord( "select max(". $rowName . ") +1 as value from " . $table, $dbconnection ) ; 
-  $keyArray = fetchRecord ( "select " . $table . "_seq.nextval as value from dual", $dbconnection ) ; 
-  return $keyArray['VALUE']; 
+  // $keyArray = fetchRecord( "select max(". $rowName . ") +1 as value from " . $table, $dbconnection ) ;
+  $keyArray = fetchRecord ( "select " . $table . "_seq.nextval as value from dual", $dbconnection ) ;
+  return $keyArray['VALUE'];
 }
 
 
@@ -860,7 +814,7 @@ function getNextDBKey (  $table,  $dbconnection = NULL ) {
 
 function createRandomPassword($size = 7) {
 
-    if ( $size < 2 ) { $size = 7; } 
+    if ( $size < 2 ) { $size = 7; }
     $chars = "abcdefghijkmnopqrstuvwxyz023456789";
     srand((double)microtime()*1000000);
     $i = 0;
@@ -885,14 +839,14 @@ function getSecurityRoleArray() {
   else {
     // $theArray = fetchArrayForSelectField('select code, descr from cd_roles order by descr');
     $theArray = fetchRecords('select unique ( user_group )  from users order by user_group', 'LOGIN');
-    foreach ( $theArray as $key => $role) { 
-     //  dump ($role['USER_GROUP'] ) ; 
-      $returnArray[$role['USER_GROUP']] = $role['USER_GROUP']; 
-    } 
-    // dump ( $returnArray); 
+    foreach ( $theArray as $key => $role) {
+     //  dump ($role['USER_GROUP'] ) ;
+      $returnArray[$role['USER_GROUP']] = $role['USER_GROUP'];
+    }
+    // dump ( $returnArray);
     return $returnArray;
   }
-  
+
 }
 
 function getScanTypeArray() {
@@ -1391,7 +1345,7 @@ function getCountryArray()
 
 
 /**
- * Create an HTML link to colored indicator image based on status of object 
+ * Create an HTML link to colored indicator image based on status of object
  */
 function makeObjectStatusLink($status) {
   switch ($status) {
@@ -1424,12 +1378,12 @@ function makeTermStatusLink($status) {
   }
 }
 
-/** 
- * Return the species name given the species Key 
- * 
+/**
+ * Return the species name given the species Key
+ *
  */
 function getSpeciesName( $speciesTypeKey ) {
-   
+
   switch ($speciesTypeKey) {
     case '1' :
       return 'Human';
@@ -1452,7 +1406,7 @@ function getSpeciesNameAndAll( $speciesTypeKey,$includefor=false,$includespace=t
    $space='';
    if ($includespace)
    {
-       $space=' '; 
+       $space=' ';
    }
    if ($includefor)
    {
@@ -1482,12 +1436,12 @@ function getSpeciesNameAndAll( $speciesTypeKey,$includefor=false,$includespace=t
  * Returns array of species ready for drop Down List
  */
 function getSpeciesArrayForDropDown() {
-   
-  return ( array ( 1 => 'Human', 2=> 'Mouse', 3=> 'Rat', 4=> 'Chinchilla' ) ); 
+
+  return ( array ( 1 => 'Human', 2=> 'Mouse', 3=> 'Rat', 4=> 'Chinchilla' ) );
 }
 function getSpeciesArrayForDropDownAndAll() {
-   
-  return ( array ( 1 => 'Human', 2=> 'Mouse', 3=> 'Rat', 4=> 'Chinchilla', '1,2,3'=>'All' ) ); 
+
+  return ( array ( 1 => 'Human', 2=> 'Mouse', 3=> 'Rat', 4=> 'Chinchilla', '1,2,3'=>'All' ) );
 }
 
 
@@ -1518,10 +1472,10 @@ function makeSpeciesLink($speciesTypeKey) {
 }
 
 /**
- * Return an array of the object results with the key being the database column names 
- * 
+ * Return an array of the object results with the key being the database column names
+ *
  */
-function getObjectInfoByRGID($rgdID) { 
+function getObjectInfoByRGID($rgdID) {
   $returnArray = array ();
   $sql = 'select o.OBJECT_NAME from rgd_ids r, rgd_objects o where r.rgd_id = ' . $rgdID . ' and r.object_key = o.object_key';
   $resultType = fetchRecord($sql);
@@ -1588,14 +1542,14 @@ function getObjectInfoByRGID($rgdID) {
   return $returnArray;
 }
 /**
- * Returns an HMTL link back to the wiki for Help on a topic and subtopic . 
+ * Returns an HMTL link back to the wiki for Help on a topic and subtopic .
  */
 function createHelpLinkCW( $topic, $subtopic = null) {
   $wikiURL = "http://dowler.hmgc.mcw.edu/wiki/index.php/Curation_Software/CurationWeb/";
-  $str =  "<a href='" . $wikiURL . $topic ; 
-  if ( $subtopic != null ) { 
-    $str .=  "/" .$subtopic ; 
-  } 
+  $str =  "<a href='" . $wikiURL . $topic ;
+  if ( $subtopic != null ) {
+    $str .=  "/" .$subtopic ;
+  }
   $str .= "' title='Help for " . $topic . ' / ' . $subtopic . "'><img src='icons/help.png' border=0></a>";
   return $str;
 }
@@ -1770,7 +1724,7 @@ function setGraphDefaults()
         return date('m/d/Y',gettimeofday(true)-( 86400 * 30 ));
     }
  }
- 
+
 /**
  * Returns one year ago plus one day
  * Useful for defaulting coolDate
@@ -1873,7 +1827,7 @@ function getLastRun($date,$dump=false)
             where
             e.rpt_process_type_id=6 --GOAnnotationRat
             and e.created_date between to_date('01-01-2005','MM-DD-YYYY') and to_date('";
-            
+
             $sql.=date('m-d-Y',$date);
             $sql.="', 'MM-DD-YYYY')
             ";
@@ -1896,10 +1850,10 @@ function getSpellingSuggestions($term) {
   if (is_numeric($term)) {
     return $suggestions;
   }
-  
+
   // must do htmlspecialchars on the search term
   // since espell.fcgi does a stupid thing and echoes the exact search term back to us
-  // in their response... so if < or > is in the search term, the resulting 
+  // in their response... so if < or > is in the search term, the resulting
   // xml response from them will not be valid xml and thus not parse.
   $correctThis = urlencode(htmlspecialchars($term));
   $correction = fetchUrlIntoXml("https://www.ncbi.nlm.nih.gov/entrez/eutils/espell.fcgi?db=pubmed&term=$correctThis");
@@ -1908,7 +1862,7 @@ function getSpellingSuggestions($term) {
   }
   // later also do a google search for suggestion and return the unique results (ie don't return both if the
   // suggestion is the same from each service.
-  return $suggestions;  
+  return $suggestions;
 }
 
 /**
