@@ -319,7 +319,7 @@ function getUserID() {
     return getSessionVar('uid');
   }
   else {
-    return 'harika';
+    return '';
   }
 
 }
@@ -330,13 +330,13 @@ function getUserFullName() {
     return getSessionVar('userFullName');
   }
   else {
-    return 'harika';
+    return '';
   }
 
 }
 
 /**
- * Check security level for access to a function. 
+ * Check security level for access to a function.
  */
 function checkSecurityLevel($levelRequested) {
   if (userLoggedIn()) {
@@ -359,14 +359,14 @@ function checkSecurityLevel($levelRequested) {
     return ($levelRequested == $securityLevel);
   }
   else {
-    return true;
+    return false;
   }
 }
 
 function getSecurityLevel() {
   if (userLoggedIn()) {
     $securityLevel = fetchField('select user_group from users where username = '.dbQuoteString( getSessionVar('uid')), 'LOGIN');
-    return "admin";
+    return $securityLevel;
   }
 }
 
@@ -409,7 +409,7 @@ function userLoggedIn()
     return (isset($uidSession));
   }
   else {
-    return true;
+    return false;
   }
 }
 
