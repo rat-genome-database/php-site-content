@@ -1446,6 +1446,18 @@ function getSpeciesName( $speciesTypeKey ) {
     case '4' :
       return 'Chinchilla';
       break;
+    case '6' :
+      return "Dog";
+      break;
+    case '9' :
+      return "Pig";
+      break;
+    case '5' :
+      return "Bonobo";
+      break;
+    case '7' :
+      return "Squirrel";
+      break;
     default :
       return "Undefined Species";
   }
@@ -1473,6 +1485,18 @@ function getSpeciesNameAndAll( $speciesTypeKey,$includefor=false,$includespace=t
       break;
     case '4' :
       return $toReturn.'Chinchilla'.$space;
+      break;
+    case '6' :
+      return $toReturn.'Dog'.$space;;
+      break;
+    case '9' :
+      return $toReturn.'Pig'.$space;;
+      break;
+    case '5' :
+      return $toReturn.'Bonobo'.$space;;
+      break;
+    case '7' :
+      return $toReturn.'Squirrel'.$space;;
       break;
     case '1,2,3':
       return '';
