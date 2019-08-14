@@ -1515,17 +1515,21 @@ function makeSpeciesLink($speciesTypeKey) {
     case 'Chinchilla' :
       return '<img src="images/logo-chinchilla.jpg" alt="Chinchilla" title="Chinchilla">';
       break;
+    case '6' :
     case 'Dog' :
-      return 'Dog';
+      return "Dog";
       break;
+    case '9' :
     case 'Pig' :
-      return 'Pig';
+      return "Pig";
       break;
+    case '5' :
     case 'Bonobo' :
-      return 'Bonobo';
+      return "Bonobo";
       break;
+    case '7' :
     case 'Squirrel' :
-      return 'Squirrel';
+      return "Squirrel";
       break;
     default :
       return "Undefined Species";
