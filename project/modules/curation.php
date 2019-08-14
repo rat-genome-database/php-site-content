@@ -1129,7 +1129,7 @@ function curation_selectTerms() {
     <script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script>';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
                                              //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
-                                             "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO)",
+                                             "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                              "bf": "term_len_l^10",
                                              "v.template": "termmatch",
@@ -1152,7 +1152,8 @@ function curation_selectTerms() {
 			.'<a href="/rgdCuration/?objectName=Diseases+(DOID%3A4)&hiddenXYZ123=&module=curation&func=selectTerms">RDO</a> '
 			.'<a href="/rgdCuration/?objectName=rat+strain+(RS%3A0000457)&hiddenXYZ123=&module=curation&func=selectTerms">RS</a> '
 			.'<a href="/rgdCuration/?objectName=Trait+(VT%3A0000001)&hiddenXYZ123=&module=curation&func=selectTerms">VT</a> '
-			.'<a href="/rgdCuration/?objectName=experimental+condition+(XCO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">XCO</a> ';
+			.'<a href="/rgdCuration/?objectName=experimental+condition+(XCO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">XCO</a> '
+			.'<a href="/rgdCuration/?objectName=chebi+ontology+(CHEBI%3A0)&hiddenXYZ123=&module=curation&func=selectTerms">CHEBI</a> ';
 	
 	switch ($theForm->getState()) {
 		case INITIAL_GET :
