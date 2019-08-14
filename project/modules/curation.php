@@ -106,6 +106,31 @@ function curation_searchObjects() {
 				$toReturn = $theForm->quickRender();
 				$toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (3));
 			}
+			elseif ($objectType == '4') { //gene search
+                setPageTitle("Chinchilla Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (4));
+            }
+            elseif ($objectType == '9') { //gene search
+                setPageTitle("Pig Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (9));
+            }
+            elseif ($objectType == '7') { //gene search
+                setPageTitle("Squirrel Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (7));
+            }
+            elseif ($objectType == '16') { //gene search
+                setPageTitle("Dog Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (6));
+            }
+            elseif ($objectType == '8') { //gene search
+                setPageTitle("Bonobo Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (5));
+            }
 			elseif ($objectType == '3') { //SSLP search
 				setPageTitle("SSLP's Found");
 				$toReturn = $theForm->quickRender();
@@ -961,6 +986,11 @@ function getObjectArray() {
 function getObjectArraySearch() {
 	return array (
 		'1' => 'Rat Gene',
+		'4' => 'Chinchilla Gene',
+		'9' => 'Pig Gene',
+		'16' => 'Dog Gene',
+		'8' => 'Bonobo Gene',
+        '7' => 'Squirrel',
 		'14' => 'Rat Gene & Orthologs',
 		'13' => 'Human or Mouse Gene',
 		'15' => 'Chinchilla & Orthologs',
