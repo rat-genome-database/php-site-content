@@ -1021,7 +1021,7 @@ function getOntQualifierArray($objArray) {
 	}
 	$objKeys = implode(',', array_unique($objectKeys, SORT_NUMERIC));
 	
-	$sql = 'SELECT DISTINCT ont_qualifier_name FROM ontology_qualifier WHERE object_key IN('.$objKeys.') ORDER BY ont_qualifier_name';
+	$sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE object_key IN('.$objKeys.') ORDER BY ont_qualifier_id';
 	$returnArray = array ();
 	$results = fetchRecords($sql);
 	if (count($results) > 0) {
