@@ -429,11 +429,10 @@ function userLoggedIn()
             $member = apiRequest($checkUrl,$token);
             $result = fetchRecord("select user_key from users where username = '$login'");
             if($member == 204) {
-                
+                setSessionVar('uid', $login);
                 if (count($result) != 0) {
                 	extract($result);
                     setSessionVar('userKey', $USER_KEY);
-					setSessionVar('uid', $USER_KEY);
                 }
 				
                 setSessionVar('userEmail', $user-> email);
