@@ -427,10 +427,13 @@ function userLoggedIn()
             $login = $user->login;
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
             $member = apiRequest($checkUrl,$token);
-
+            $record = fetchRecord("select user_key from users where username = $login");
             if($member == 204) {
                 setSessionVar('uid', $login);
-                setSessionVar('userKey', $user-> id);
+                if (count($result) != 0) {
+                	extract($result);
+                    setSessionVar('userKey', $user_key);
+                }
                 setSessionVar('userEmail', $user-> email);
                 setSessionVar('token', $token);
                 setCookieVar('userloggedin', '1');
