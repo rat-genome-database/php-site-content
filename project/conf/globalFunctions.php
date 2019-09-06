@@ -432,7 +432,7 @@ function userLoggedIn()
                 setSessionVar('uid', $login);
                 if (count($result) != 0) {
                 	extract($result);
-                    setSessionVar('userKey', $user_key);
+                    setSessionVar('userKey', $USER_KEY);
                 }
                 setSessionVar('userEmail', $user-> email);
                 setSessionVar('token', $token);
