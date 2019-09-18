@@ -498,6 +498,9 @@ function doSearchForTermsByName($searchTerm, $ontology) {
 		case 'xco' :
 			$sql .= " AND v.ont_id='XCO'";
 			break;
+		case 'chebi' :
+			$sql .= " AND v.ont_id='CHEBI'";
+            break;
 		default :
 			// Don't add anything for Any saerch of "all"
 	}
@@ -1046,6 +1049,7 @@ function getEvidenceCodeArray() {
 		"IMP" => "IMP",
 		"IPI" => "IPI",
 		"ISO" => "ISO",
+		"EXP" => "EXP",
 		"ND" => "ND",
 	);
 	return $returnArray;
@@ -1087,6 +1091,7 @@ function getOntArray() {
 		'cmo' => 'Clinical Measurement Ontology',
 		'mmo' => 'Measurement Method Ontology',
 		'xco' => 'Experimental Condition Ontology',
+		'chebi' => 'Chebi Ontology',
 	);
 }
 
@@ -1645,7 +1650,7 @@ function curation_linkAnnotation() {
 			$toString .= $resultAnnotationForm->formStart();
 			
 			// $toString .= dump ( $resultArray ) ;
-			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T').'] Term', 'Qualifier', 'Evidence', 'With Info', 'Species', 'Select');
+			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Evidence', 'With Info', 'Species', 'Select');
 			$table->setAttributes('class="simple" width="100%"');
 			// foreach ( $resultArray as $objkey => $rowValue ) {
 			//   extract($rowValue) ; 
@@ -2215,6 +2220,7 @@ function processAnnotationForm($theform) {
 					case 'IDA':
 					case 'TAS':
 					case 'IGI':
+					case 'EXP':
 						$evidence = 'ISO';
 						$cur_with_info = getIsoWithInfo($objkey, $formObjectArray); 
 				}
@@ -2224,7 +2230,7 @@ function processAnnotationForm($theform) {
 		foreach ($referenceArray as $refkey => $refvalue) {
 			foreach ($onttermArray as $ontkey => $ontvalue) {
 				if ($autoAnn && substr($ontvalue, 0, 2) != 'DO'
-						&& substr($ontvalue, 0, 2) != 'PW') break;
+						&& substr($ontvalue, 0, 2) != 'PW' && substr($ontvalue, 0, 2) != 'CHEBI') break;
 				// restrict IGI orthologous ISO to disease terms
 				if ($autoAnn && $primeEvidence === 'IGI' && $evidence === 'ISO' && substr($ontvalue, 0, 2) != 'DO' ) break;
 

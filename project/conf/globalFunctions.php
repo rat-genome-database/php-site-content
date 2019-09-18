@@ -427,14 +427,13 @@ function userLoggedIn()
             $login = $user->login;
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
             $member = apiRequest($checkUrl,$token);
-            $result = fetchRecord("select user_key from users where username = '$login'");
+            $record = fetchRecord("select user_key from users where username = '$login'");
             if($member == 204) {
                 setSessionVar('uid', $login);
                 if (count($result) != 0) {
                 	extract($result);
                     setSessionVar('userKey', $USER_KEY);
                 }
-				
                 setSessionVar('userEmail', $user-> email);
                 setSessionVar('token', $token);
                 setCookieVar('userloggedin', '1');
@@ -1835,7 +1834,7 @@ function setGraphDefaults()
  }
  function getAnnotationArrayForDropDown()
 {
-    return array('G%'=>'GO','D%'=>'DO','PW%'=>'PW','MP%'=>'MP');
+    return array('G%'=>'GO','D%'=>'DO','PW%'=>'PW','MP%'=>'MP','CH%'=>'CHEBI');
 }
 function getXDBArrayForDropDown()
 {
