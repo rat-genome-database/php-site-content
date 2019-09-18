@@ -106,6 +106,31 @@ function curation_searchObjects() {
 				$toReturn = $theForm->quickRender();
 				$toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (3));
 			}
+			elseif ($objectType == '4') { //gene search
+                setPageTitle("Chinchilla Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (4));
+            }
+            elseif ($objectType == '9') { //gene search
+                setPageTitle("Pig Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (9));
+            }
+            elseif ($objectType == '7') { //gene search
+                setPageTitle("Squirrel Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (7));
+            }
+            elseif ($objectType == '16') { //gene search
+                setPageTitle("Dog Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (6));
+            }
+            elseif ($objectType == '8') { //gene search
+                setPageTitle("Bonobo Genes Found");
+                $toReturn = $theForm->quickRender();
+                $toReturn .= doSearchforGenesByName($objectName, $urlSearchArray, $matchType, array (5));
+            }
 			elseif ($objectType == '3') { //SSLP search
 				setPageTitle("SSLP's Found");
 				$toReturn = $theForm->quickRender();
@@ -473,6 +498,9 @@ function doSearchForTermsByName($searchTerm, $ontology) {
 		case 'xco' :
 			$sql .= " AND v.ont_id='XCO'";
 			break;
+		case 'chebi' :
+			$sql .= " AND v.ont_id='CHEBI'";
+            break;
 		default :
 			// Don't add anything for Any saerch of "all"
 	}
@@ -961,6 +989,11 @@ function getObjectArray() {
 function getObjectArraySearch() {
 	return array (
 		'1' => 'Rat Gene',
+		'4' => 'Chinchilla Gene',
+		'9' => 'Pig Gene',
+		'16' => 'Dog Gene',
+		'8' => 'Bonobo Gene',
+        '7' => 'Squirrel',
 		'14' => 'Rat Gene & Orthologs',
 		'13' => 'Human or Mouse Gene',
 		'15' => 'Chinchilla & Orthologs',
@@ -991,7 +1024,7 @@ function getOntQualifierArray($objArray) {
 	}
 	$objKeys = implode(',', array_unique($objectKeys, SORT_NUMERIC));
 	
-	$sql = 'SELECT DISTINCT ont_qualifier_name FROM ontology_qualifier WHERE object_key IN('.$objKeys.') ORDER BY ont_qualifier_name';
+	$sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE object_key IN('.$objKeys.') ORDER BY ont_qualifier_id';
 	$returnArray = array ();
 	$results = fetchRecords($sql);
 	if (count($results) > 0) {
@@ -1016,6 +1049,7 @@ function getEvidenceCodeArray() {
 		"IMP" => "IMP",
 		"IPI" => "IPI",
 		"ISO" => "ISO",
+		"EXP" => "EXP",
 		"ND" => "ND",
 	);
 	return $returnArray;
@@ -1057,6 +1091,7 @@ function getOntArray() {
 		'cmo' => 'Clinical Measurement Ontology',
 		'mmo' => 'Measurement Method Ontology',
 		'xco' => 'Experimental Condition Ontology',
+		'chebi' => 'Chebi Ontology',
 	);
 }
 
@@ -1099,7 +1134,7 @@ function curation_selectTerms() {
     <script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script>';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
                                              //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
-                                             "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO)",
+                                             "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                              "bf": "term_len_l^10",
                                              "v.template": "termmatch",
@@ -1122,7 +1157,8 @@ function curation_selectTerms() {
 			.'<a href="/rgdCuration/?objectName=Diseases+(DOID%3A4)&hiddenXYZ123=&module=curation&func=selectTerms">RDO</a> '
 			.'<a href="/rgdCuration/?objectName=rat+strain+(RS%3A0000457)&hiddenXYZ123=&module=curation&func=selectTerms">RS</a> '
 			.'<a href="/rgdCuration/?objectName=Trait+(VT%3A0000001)&hiddenXYZ123=&module=curation&func=selectTerms">VT</a> '
-			.'<a href="/rgdCuration/?objectName=experimental+condition+(XCO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">XCO</a> ';
+			.'<a href="/rgdCuration/?objectName=experimental+condition+(XCO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">XCO</a> '
+			.'<a href="/rgdCuration/?objectName=chebi+ontology+(CHEBI%3A0)&hiddenXYZ123=&module=curation&func=selectTerms">CHEBI</a> ';
 	
 	switch ($theForm->getState()) {
 		case INITIAL_GET :
@@ -1614,7 +1650,7 @@ function curation_linkAnnotation() {
 			$toString .= $resultAnnotationForm->formStart();
 			
 			// $toString .= dump ( $resultArray ) ;
-			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T').'] Term', 'Qualifier', 'Evidence', 'With Info', 'Species', 'Select');
+			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Evidence', 'With Info', 'Species', 'Select');
 			$table->setAttributes('class="simple" width="100%"');
 			// foreach ( $resultArray as $objkey => $rowValue ) {
 			//   extract($rowValue) ; 
@@ -1833,7 +1869,8 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	if (!userLoggedIn()) {
 		return NOACCESS_MSG;
 	}
-	// $userKey = getSessionVar('userKey') ; 
+	// $userKey = getSessionVar('userKey') ;
+	$token = getSessionVar('token');
 	$toReturn = '';
 	$toReturn .= '<p><h3>Annotations that already exist for Object(s) you\'ve selected:</h3></p>';
 	if (sizeof($objectRGDIDArray) == 0) {
@@ -1908,16 +1945,16 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	//		$FULL_ANNOT_KEY
 	switch ($SCORE) {
 		case 4:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 			break;
 		case 3:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="orange">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="orange">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 			break;
 		case 2:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 			break;
 		default:
-		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 	}
 	}
 	$toReturn .= $table->toHtml();
@@ -2183,6 +2220,7 @@ function processAnnotationForm($theform) {
 					case 'IDA':
 					case 'TAS':
 					case 'IGI':
+					case 'EXP':
 						$evidence = 'ISO';
 						$cur_with_info = getIsoWithInfo($objkey, $formObjectArray); 
 				}
@@ -2192,7 +2230,7 @@ function processAnnotationForm($theform) {
 		foreach ($referenceArray as $refkey => $refvalue) {
 			foreach ($onttermArray as $ontkey => $ontvalue) {
 				if ($autoAnn && substr($ontvalue, 0, 2) != 'DO'
-						&& substr($ontvalue, 0, 2) != 'PW') break;
+						&& substr($ontvalue, 0, 2) != 'PW' && substr($ontvalue, 0, 5) != 'CHEBI') break;
 				// restrict IGI orthologous ISO to disease terms
 				if ($autoAnn && $primeEvidence === 'IGI' && $evidence === 'ISO' && substr($ontvalue, 0, 2) != 'DO' ) break;
 

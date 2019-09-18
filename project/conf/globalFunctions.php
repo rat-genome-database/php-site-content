@@ -427,10 +427,13 @@ function userLoggedIn()
             $login = $user->login;
             $checkUrl = 'https://api.github.com/orgs/rat-genome-database/public_members/'.$login;
             $member = apiRequest($checkUrl,$token);
-
+            $result = fetchRecord("select user_key from users where username = '$login'");
             if($member == 204) {
                 setSessionVar('uid', $login);
-                setSessionVar('userKey', $user-> id);
+                if (count($result) != 0) {
+                	extract($result);
+                    setSessionVar('userKey', $USER_KEY);
+                }
                 setSessionVar('userEmail', $user-> email);
                 setSessionVar('token', $token);
                 setCookieVar('userloggedin', '1');
@@ -1446,6 +1449,18 @@ function getSpeciesName( $speciesTypeKey ) {
     case '4' :
       return 'Chinchilla';
       break;
+    case '6' :
+      return "Dog";
+      break;
+    case '9' :
+      return "Pig";
+      break;
+    case '5' :
+      return "Bonobo";
+      break;
+    case '7' :
+      return "Squirrel";
+      break;
     default :
       return "Undefined Species";
   }
@@ -1473,6 +1488,18 @@ function getSpeciesNameAndAll( $speciesTypeKey,$includefor=false,$includespace=t
       break;
     case '4' :
       return $toReturn.'Chinchilla'.$space;
+      break;
+    case '6' :
+      return $toReturn.'Dog'.$space;;
+      break;
+    case '9' :
+      return $toReturn.'Pig'.$space;;
+      break;
+    case '5' :
+      return $toReturn.'Bonobo'.$space;;
+      break;
+    case '7' :
+      return $toReturn.'Squirrel'.$space;;
       break;
     case '1,2,3':
       return '';
@@ -1514,6 +1541,22 @@ function makeSpeciesLink($speciesTypeKey) {
     case '4' :
     case 'Chinchilla' :
       return '<img src="images/logo-chinchilla.jpg" alt="Chinchilla" title="Chinchilla">';
+      break;
+    case '6' :
+    case 'Dog' :
+      return "Dog";
+      break;
+    case '9' :
+    case 'Pig' :
+      return "Pig";
+      break;
+    case '5' :
+    case 'Bonobo' :
+      return "Bonobo";
+      break;
+    case '7' :
+    case 'Squirrel' :
+      return "Squirrel";
       break;
     default :
       return "Undefined Species";
@@ -1791,7 +1834,7 @@ function setGraphDefaults()
  }
  function getAnnotationArrayForDropDown()
 {
-    return array('G%'=>'GO','D%'=>'DO','PW%'=>'PW','MP%'=>'MP');
+    return array('G%'=>'GO','D%'=>'DO','PW%'=>'PW','MP%'=>'MP','CH%'=>'CHEBI');
 }
 function getXDBArrayForDropDown()
 {
