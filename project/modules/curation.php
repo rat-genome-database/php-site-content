@@ -2230,7 +2230,7 @@ function processAnnotationForm($theform) {
 		foreach ($referenceArray as $refkey => $refvalue) {
 			foreach ($onttermArray as $ontkey => $ontvalue) {
 				if ($autoAnn && substr($ontvalue, 0, 2) != 'DO'
-						&& substr($ontvalue, 0, 2) != 'PW' && substr($ontvalue, 0, 2) != 'CHEBI') break;
+						&& substr($ontvalue, 0, 2) != 'PW' && substr($ontvalue, 0, 5) != 'CHEBI') break;
 				// restrict IGI orthologous ISO to disease terms
 				if ($autoAnn && $primeEvidence === 'IGI' && $evidence === 'ISO' && substr($ontvalue, 0, 2) != 'DO' ) break;
 
