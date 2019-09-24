@@ -1901,6 +1901,8 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		}
 		$refIds .= $refId;
 	}
+
+	$comboSql = '';
 	// generate the SQL to return all annotations for the objects that the user has in their bucket
 	// except CHEBI and ClinVar pipeline annotations
 	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
@@ -1908,12 +1910,27 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	$sql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 	$sql .= ' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
 //	$sql .= '  order by object_symbol, EVIDENCE, term ';
+
+    if($refIds != '' && $termAcc != '') {
+        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
+        $comboSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
+        $comboSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
+        $comboSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+        $comboSql .= ' and a.ref_rgd_id in (' . $refIds . ') and a.term_acc in (' . $termAccs . ')';
+        $sql .= ' and a.ref_rgd_id not in (' . $refIds . ') and a.term_acc not in (' . $termAccs . ');
+        $sql = $comboSql . ' union ' . $sql;
+
+    }
 	if ($refIds != '') {
 		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
 		$refSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$refSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$refSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
 		$refSql .= ' and a.ref_rgd_id in (' . $refIds . ')';
+		if ($comboSql != '') {
+		    $refSql .= ' and a.term_acc not in (' . $termAccs . ')';
+		}
+		$sql .= ' and a.ref_rgd_id not in (' . $refIds . ')';
 		$sql = $refSql . ' union ' . $sql;
 	} 
 	if ($termAcc != '') {
@@ -1922,6 +1939,10 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
 		$termSql .= ' and a.term_acc in (' . $termAccs . ')';
+		if ($comboSql != '') {
+            $termSql .= ' and a.ref_rgd_id not in (' . $refIds . ')';
+        }
+		$sql .= ' and a.term_acc not in (' . $termAccs . ')';
 		$sql = $termSql. ' union ' . $sql;
 		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes,	 r.species_type_key from full_annot a, rgd_ids r ';
 		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
@@ -1944,6 +1965,9 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	//		"fullAnnotKey",
 	//		$FULL_ANNOT_KEY
 	switch ($SCORE) {
+		case 5:
+    		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+    		break;
 		case 4:
 		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
 			break;
