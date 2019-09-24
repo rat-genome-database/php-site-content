@@ -1931,6 +1931,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
 		$termSql .= ' and a.term_acc in (select distinct od.CHILD_TERM_ACC from ONT_DAG od connect by prior od.CHILD_TERM_ACC = od.PARENT_TERM_ACC start with od.PARENT_TERM_ACC in (' . $termAccs . '))';
 		$termSql .= ' and a.term_acc not in (' . $termAccs . ')';
+		$sql .= ' and a.term_acc not in (select distinct od.CHILD_TERM_ACC from ONT_DAG od connect by prior od.CHILD_TERM_ACC = od.PARENT_TERM_ACC start with od.PARENT_TERM_ACC in (' . $termAccs . '))';
 		$sql = $termSql. ' union ' . $sql;
 	} 
 	//dump ( $sql ) ;
