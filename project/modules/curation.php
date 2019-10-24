@@ -1754,7 +1754,7 @@ function checkWithInfoCode($theForm) {
  */
 function checkWithoutInfoCode($theForm) {
 	$with_info = $theForm->getValue('with_info');
-	$object_Type = $theForm->getValue('object_Type');
+	$object_Type = $theForm->getValue('objectsFrom');
 	$evidence = $theForm->getValue('evidence');
 	switch ($evidence) {
 		case "ISO" :
