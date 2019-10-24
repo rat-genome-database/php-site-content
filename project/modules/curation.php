@@ -1767,15 +1767,17 @@ function checkWithoutInfoCode($theForm) {
         case "IMP" :
             if (isReallySet($with_info) ) {
              if($object_Type == '5') {
+             $theForm->addFormErrorMessage('object Type ' . $object_Type);
                 return true;
              } else {
-                $theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
+             $theForm->addFormErrorMessage('object Type ' . $object_Type);
+             //   $theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
              	return false;
              }
             } else {
                 return true;
             }
-            break;    
+            break;
 		default:
 			if (isReallySet($with_info)) {
 				$theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
