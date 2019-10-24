@@ -1754,6 +1754,13 @@ function checkWithInfoCode($theForm) {
  */
 function checkWithoutInfoCode($theForm) {
 	$with_info = $theForm->getValue('with_info');
+	$object_Array = getObjectArrayFromSession();;
+	$checkStrain = 0;
+	foreach ($object_Array as $objkey => $objvalue) {
+	        if( strpos($objvalue, ' Strain: ') !== false ) {
+            			$checkStrain = 5;
+            }
+    }
 	$evidence = $theForm->getValue('evidence');
 	switch ($evidence) {
 		case "ISO" :
@@ -1762,6 +1769,19 @@ function checkWithoutInfoCode($theForm) {
 		case "IC" :
 			return true;
 			break;
+        case "IAGP" :
+        case "IMP" :
+            if (isReallySet($with_info) ) {
+             if($checkStrain == '5') {
+                return true;
+             } else {
+             $theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
+             	return false;
+             }
+            } else {
+                return true;
+            }
+            break;
 		default:
 			if (isReallySet($with_info)) {
 				$theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
