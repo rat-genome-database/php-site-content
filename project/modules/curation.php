@@ -1757,6 +1757,7 @@ function checkWithoutInfoCode($theForm) {
 	$object_Array = $theForm->getValue('objectsFrom');
 	$checkStrain = 0;
 	foreach ($object_Array as $objkey => $objvalue) {
+	$theForm->addFormErrorMessage('object Type ' . $objvalue);
 	        if( strpos($objvalue, ' Strain: ') !== false ) {
             			$checkStrain = 5;
             }
