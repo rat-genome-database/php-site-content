@@ -1757,7 +1757,6 @@ function checkWithoutInfoCode($theForm) {
 	$object_Array = getObjectArrayFromSession();;
 	$checkStrain = 0;
 	foreach ($object_Array as $objkey => $objvalue) {
-	$theForm->addFormErrorMessage('object Type ' . $objvalue);
 	        if( strpos($objvalue, ' Strain: ') !== false ) {
             			$checkStrain = 5;
             }
@@ -1774,11 +1773,9 @@ function checkWithoutInfoCode($theForm) {
         case "IMP" :
             if (isReallySet($with_info) ) {
              if($checkStrain == '5') {
-             $theForm->addFormErrorMessage('object Type ' . $checkStrain);
                 return true;
              } else {
-             $theForm->addFormErrorMessage('object Type ' . $checkStrain);
-             //   $theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
+             $theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
              	return false;
              }
             } else {
