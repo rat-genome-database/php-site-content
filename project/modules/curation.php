@@ -1754,7 +1754,7 @@ function checkWithInfoCode($theForm) {
  */
 function checkWithoutInfoCode($theForm) {
 	$with_info = $theForm->getValue('with_info');
-	$object_Array = $theForm->getValue('objectsFrom');
+	$object_Array = getObjectArrayFromSession();;
 	$checkStrain = 0;
 	foreach ($object_Array as $objkey => $objvalue) {
 	$theForm->addFormErrorMessage('object Type ' . $objvalue);
