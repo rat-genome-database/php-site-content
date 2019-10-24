@@ -1754,6 +1754,7 @@ function checkWithInfoCode($theForm) {
  */
 function checkWithoutInfoCode($theForm) {
 	$with_info = $theForm->getValue('with_info');
+	$object_Type = $theForm->getValue('object_Type');
 	$evidence = $theForm->getValue('evidence');
 	switch ($evidence) {
 		case "ISO" :
@@ -1762,6 +1763,19 @@ function checkWithoutInfoCode($theForm) {
 		case "IC" :
 			return true;
 			break;
+        case "IAGP" :
+        case "IMP" :
+            if (isReallySet($with_info) ) {
+             if($object_Type == '5') {
+                return true;
+             } else {
+                $theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
+             	return false;
+             }
+            } else {
+                return true;
+            }
+            break;    
 		default:
 			if (isReallySet($with_info)) {
 				$theForm->addFormErrorMessage('The \'With Info\' field should be empty for this Evidence Code: ' . $evidence);
