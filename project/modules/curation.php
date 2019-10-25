@@ -1923,14 +1923,14 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	}
 	// generate the SQL to return all annotations for the objects that the user has in their bucket
 	// except CHEBI and ClinVar pipeline annotations
-	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
+	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_clob(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
 	$sql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 	$sql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 	$sql .= ' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
 //	$sql .= '  order by object_symbol, EVIDENCE, term ';
 
 	if($refIds != '' && $termAcc != '') {
-        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
+        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_clob(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
         $comboSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
         $comboSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
         $comboSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -1939,7 +1939,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
         $sql = $comboSql . ' union ' . $sql;
     }
 	if ($refIds != '') {
-		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
+		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_clob(a.notes) as notes, r.species_type_key from full_annot a, rgd_ids r ';
 		$refSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$refSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$refSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -1952,7 +1952,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$sql = $refSql . ' union ' . $sql;
 	} 
 	if ($termAcc != '') {
-		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes,	 r.species_type_key from full_annot a, rgd_ids r ';
+		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_clob(a.notes) as notes,	 r.species_type_key from full_annot a, rgd_ids r ';
 		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -1963,7 +1963,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		    $sql .= ' and a.term_acc not in (' . $termAccs . ')';
 		}
 		$sql = $termSql. ' union ' . $sql;
-		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_char(a.notes) as notes,	 r.species_type_key from full_annot a, rgd_ids r ';
+		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.RELATIVE_TO, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, to_clob(a.notes) as notes,	 r.species_type_key from full_annot a, rgd_ids r ';
 		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
