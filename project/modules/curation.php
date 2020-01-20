@@ -1026,13 +1026,13 @@ function getOntQualifierArray($objArray) {
 	$ontologies = '';
 
 	foreach ($ontArray as $rgdId => $ontText) {
-    		if( strpos($ontText, '[P]') !== false ) {
+    		if( strpos($ontText, '[P]') !== false  || strpos($ontText, '[F]') !== false || strpos($ontText, '[C]') !== false) {
             			$ontologies .= "'" . 'GO' . "'";
             }else if( strpos($ontText, '[E]') !== false ) {
              			$ontologies .= "'" . 'CHEBI' . "'";
             } else if( strpos($ontText, '[D]') !== false ) {
              			$ontologies .= "'" . 'RDO' . "'";
-            } else if( strpos($ontText, '[N]') !== false ) {
+            } else if( strpos($ontText, '[N]') !== false || strpos($ontText, '[H]') !== false) {
              			$ontologies .= "'" . 'MP' . "'";
             }
     }
