@@ -1022,9 +1022,23 @@ function getOntQualifierArray($objArray) {
 			$objectKeys[] = 3;
 		}
 	}
+	$ontArray = getOntTermsArrayFromSession ();
+	$ontologies = array ();
+	foreach ($ontArray as $rgdId => $ontText) {
+    		if( strpos($ontText, ' GO ') !== false ) {
+            			$ontologies[] = 'GO';
+            }else if( strpos($ontText, ' CHEBI : ') !== false ) {
+             			$ontologies[] = 'CHEBI';
+            } else if( strpos($ontText, ' DO: ') !== false ) {
+             			$ontologies[] = 'RDO';
+            } else if( strpos($ontText, ' MP ') !== false ) {
+             			$ontologies[] = MP;
+            }
+    }
+
 	$objKeys = implode(',', array_unique($objectKeys, SORT_NUMERIC));
-	
-	$sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE object_key IN('.$objKeys.') ORDER BY ont_qualifier_id';
+	$ontIds = implode(',', array_unique($ontologies, SORT_NATURAL));
+	$sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE object_key IN('.$objKeys.') AND ont_id IN ('.$ontIds.') ORDER BY ont_qualifier_id';
 	$returnArray = array ();
 	$results = fetchRecords($sql);
 	if (count($results) > 0) {
