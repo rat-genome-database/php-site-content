@@ -1025,13 +1025,13 @@ function getOntQualifierArray($objArray) {
 	$ontArray = getOntTermsArrayFromSession ();
 	$ontologies = array ();
 	foreach ($ontArray as $rgdId => $ontText) {
-    		if( strpos($ontText, ' GO ') !== false ) {
+    		if( strpos($ontText, '[P]') !== false ) {
             			$ontologies[] = 'GO';
-            }else if( strpos($ontText, ' CHEBI : ') !== false ) {
+            }else if( strpos($ontText, '[E]') !== false ) {
              			$ontologies[] = 'CHEBI';
-            } else if( strpos($ontText, ' DO: ') !== false ) {
+            } else if( strpos($ontText, '[D]') !== false ) {
              			$ontologies[] = 'RDO';
-            } else if( strpos($ontText, ' MP ') !== false ) {
+            } else if( strpos($ontText, '[N]') !== false ) {
              			$ontologies[] = MP;
             }
     }
