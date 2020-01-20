@@ -1024,8 +1024,12 @@ function getOntQualifierArray($objArray) {
 	}
 	$ontArray = getOntTermsArrayFromSession ();
 	$ontologies = '';
+    $first = 0;
 
 	foreach ($ontArray as $rgdId => $ontText) {
+    		if ($first++ != 0) {
+            			$ontologies .= ",";
+            }
     		if( strpos($ontText, '[P]') !== false  || strpos($ontText, '[F]') !== false || strpos($ontText, '[C]') !== false) {
             			$ontologies .= "'" . 'GO' . "'";
             }else if( strpos($ontText, '[E]') !== false ) {
