@@ -1038,6 +1038,8 @@ function getOntQualifierArray($objArray) {
              			$ontologies .= "'" . 'RDO' . "'";
             } else if( strpos($ontText, '[N]') !== false || strpos($ontText, '[H]') !== false) {
              			$ontologies .= "'" . 'MP' . "'";
+            }else if( strpos($ontText, '[W]') !== false ) {
+                          			$ontologies .= "'" . 'PW' . "'";
             }
     }
 
