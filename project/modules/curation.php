@@ -1045,7 +1045,7 @@ function getOntQualifierArray($objArray) {
 
 	$objKeys = implode(',', array_unique($objectKeys, SORT_NUMERIC));
     if(empty($ontArray) && empty($objArray)){
-        $sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE ORDER BY ont_qualifier_id';
+        $sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier ORDER BY ont_qualifier_id';
 	}else {
 	    $sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE object_key IN('.$objKeys.') AND ont_id IN ('.$ontologies.') ORDER BY ont_qualifier_id';
 	}
