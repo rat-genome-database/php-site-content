@@ -1022,9 +1022,33 @@ function getOntQualifierArray($objArray) {
 			$objectKeys[] = 3;
 		}
 	}
+	$ontArray = getOntTermsArrayFromSession ();
+	$ontologies = '';
+    $first = 0;
+
+	foreach ($ontArray as $rgdId => $ontText) {
+    		if ($first++ != 0) {
+            			$ontologies .= ",";
+            }
+    		if( strpos($ontText, '[P]') !== false  || strpos($ontText, '[F]') !== false || strpos($ontText, '[C]') !== false) {
+            			$ontologies .= "'" . 'GO' . "'";
+            }else if( strpos($ontText, '[E]') !== false ) {
+             			$ontologies .= "'" . 'CHEBI' . "'";
+            } else if( strpos($ontText, '[D]') !== false ) {
+             			$ontologies .= "'" . 'RDO' . "'";
+            } else if( strpos($ontText, '[N]') !== false || strpos($ontText, '[H]') !== false) {
+             			$ontologies .= "'" . 'MP' . "'";
+            }else if( strpos($ontText, '[W]') !== false ) {
+                          			$ontologies .= "'" . 'PW' . "'";
+            }
+    }
+
 	$objKeys = implode(',', array_unique($objectKeys, SORT_NUMERIC));
-	
-	$sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE object_key IN('.$objKeys.') ORDER BY ont_qualifier_id';
+    if(empty($ontArray) && empty($objArray)){
+        $sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier ORDER BY ont_qualifier_id';
+	}else {
+	    $sql = 'SELECT DISTINCT ont_qualifier_name,ont_qualifier_id FROM ontology_qualifier WHERE object_key IN('.$objKeys.') AND ont_id IN ('.$ontologies.') ORDER BY ont_qualifier_id';
+	}
 	$returnArray = array ();
 	$results = fetchRecords($sql);
 	if (count($results) > 0) {
