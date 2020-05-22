@@ -49,7 +49,7 @@ function makeRgdQueryLink($searchTerm) {
 }
   
 function makeRgdQueryURL($searchTerm) {
-  return '/rgdweb/search/search.html?term='.$searchTerm;
+  return '/rgdweb/elasticResults.html?term='.$searchTerm;
 }
 
 function makeReferenceURL($refRGDID) {
