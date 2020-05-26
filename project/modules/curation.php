@@ -1074,6 +1074,11 @@ function getEvidenceCodeArray() {
 		"IPI" => "IPI",
 		"ISO" => "ISO",
 		"EXP" => "EXP",
+		"HDA" => "HDA",
+		"HEP" => "HEP",
+		"HGI" => "HGI",
+		"HMP" => "HMP",
+		"HTP" => "HTP",
 		"ND" => "ND",
 	);
 	return $returnArray;
