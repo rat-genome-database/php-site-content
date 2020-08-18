@@ -1177,7 +1177,7 @@ function curation_selectTerms() {
                                          $("#objectName").result(function(data, value){console.log("value "+ value);});
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
-	$closeReturn = ' Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
+	$closeReturn = '</script> Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
 			.'<a href="/rgdCuration/?objectName=cellular_component+%28GO%3A0005575%29&hiddenXYZ123=&module=curation&func=selectTerms">CC</a> ' 
 			.'<a href="/rgdCuration/?objectName=clinical+measurement+(CMO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">CMO</a> '
 			.'<a href="/rgdCuration/?objectName=molecular_function+(GO%3A0003674)&hiddenXYZ123=&module=curation&func=selectTerms">MF</a> '
