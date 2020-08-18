@@ -369,6 +369,7 @@ $.Autocompleter = function(input, options) {
 					rows: options.max 
 				}, extraParams),
 				success: function(data) {
+					console.log(data);
 					var parsed = options.parse && options.parse(data) || parse(data);
 					cache.add(term, parsed);
 					success(term, parsed);
@@ -795,4 +796,4 @@ $.Autocompleter.Selection = function(field, start, end) {
 	field.focus();
 };
 
-})(jQuery);
+});
