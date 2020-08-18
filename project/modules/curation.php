@@ -1160,10 +1160,9 @@ function curation_selectTerms() {
 	$toReturn = '    <script src="/rgdweb/js/jquery/jquery-1.12.4.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery_combo_box.js"></script>
-    <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="js/jquery.autocomplete.curation.js"></script>
     <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
-	$toReturn .= '<script type="text/javascript">$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
+	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
                                              //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
@@ -1177,7 +1176,7 @@ function curation_selectTerms() {
                                          $("#objectName").result(function(data, value){console.log("value "+ value);});
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
-	$closeReturn = '</script> Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
+	$closeReturn = '});</script> Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
 			.'<a href="/rgdCuration/?objectName=cellular_component+%28GO%3A0005575%29&hiddenXYZ123=&module=curation&func=selectTerms">CC</a> ' 
 			.'<a href="/rgdCuration/?objectName=clinical+measurement+(CMO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">CMO</a> '
 			.'<a href="/rgdCuration/?objectName=molecular_function+(GO%3A0003674)&hiddenXYZ123=&module=curation&func=selectTerms">MF</a> '
