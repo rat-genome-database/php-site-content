@@ -1160,7 +1160,7 @@ function curation_selectTerms() {
 	$toReturn = '    <script src="/rgdweb/js/jquery/jquery-1.12.4.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery_combo_box.js"></script>
-    <script src="/rgdweb/js/jquery/jquery-migrate-1.2.0.js"></script>
+    <!--script src="/rgdweb/js/jquery/jquery-migrate-1.2.0.js"></script-->
     <script type="text/javascript"  src="js/jquery.autocomplete.curation.js"></script>';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete({
 	         source:function(request, response){
