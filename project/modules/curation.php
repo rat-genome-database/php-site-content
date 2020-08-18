@@ -1174,7 +1174,7 @@ function curation_selectTerms() {
                                            scrollHeight: 240,
                                            max: 40
                                          });
-                                         console.log("DATA:"+ $("#objectName").result());
+                                         $("#objectName").result(function(data, value){console.log(value);});
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
 	$closeReturn = '});</script> Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
