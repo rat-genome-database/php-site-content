@@ -1177,14 +1177,15 @@ function curation_selectTerms() {
                             },
                             scrollHeight: 240,
                             max: 40,
-                            sucess:function (data) {
-                                console.log(data);
+
                             }
                         })
                     }
-
+                    select:function(data, value){
+                    $("#form").submit();
+                    }
                                         });
-                     $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
+                     $("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
 	$closeReturn = '});</script> Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
 			.'<a href="/rgdCuration/?objectName=cellular_component+%28GO%3A0005575%29&hiddenXYZ123=&module=curation&func=selectTerms">CC</a> ' 
