@@ -793,4 +793,4 @@ $.Autocompleter.Selection = function(field, start, end) {
 	field.focus();
 };
 
-});
+})(jQuery);
