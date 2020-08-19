@@ -1159,11 +1159,10 @@ function curation_selectTerms() {
 	
 	$toReturn = '<link rel="stylesheet" href="/QueryBuilder/js/jquery-ui-1.12.1/jquery-ui.css" type="text/css" media="all" />
                     <script type="text/javascript" src="/QueryBuilder/js/jquery-1.12.4.min.js"></script>
-                    <link rel="stylesheet" type="text/css" href="/QueryBuilder/js/main.css"/>
                     <link rel="stylesheet" href="/QueryBuilder/css/jquery.autocomplete.css" type="text/css" />
                     <script type="text/javascript" src="/QueryBuilder/js/jquery-ui-1.12.1/jquery-ui.js"></script>
-                    <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
-    <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
+                    <script src="/rgdweb/js/jquery/jquery-migrate-1.2.0.js"></script>
+    <script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script>';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
                                              //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
