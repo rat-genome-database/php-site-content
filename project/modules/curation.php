@@ -1178,11 +1178,9 @@ function curation_selectTerms() {
                             scrollHeight: 240,
                             max: 40,
                             success:function(data){
+                            console.log(data);
                                 response(data);
-                            },
-                             select:function(data, value){
-                                                $("#form").submit();
-                                                }
+                            }
 
                         })
                     }
