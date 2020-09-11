@@ -14,9 +14,7 @@ $(function () {
                 },
                 scrollHeight: 240,
                 max: 40,
-                sucess:function (data) {
-                    console.log(data);
-                }
+
             })
         }
 
