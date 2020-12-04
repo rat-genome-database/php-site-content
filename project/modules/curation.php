@@ -1165,7 +1165,7 @@ function curation_selectTerms() {
 
     <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
-                                             "qf": "term_en^5 term_str^5 term^5 synonym_en  synonym_str synonym def idl_s",
+                                             "qf": "term^5 synonym",
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                              "bf": "term_len_l^10",
@@ -1173,8 +1173,7 @@ function curation_selectTerms() {
                                              "cacheLength": 0
                                            },
                                            scrollHeight: 240,
-                                           max: 100,
-                                          "termSeparator": " OR "
+                                           max: 100
                                          });
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
