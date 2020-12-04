@@ -1157,7 +1157,7 @@ function curation_selectTerms() {
 		if ($acc_id) preg_match("/[A-Z]+/", $acc_id[0], $ont_id);
 	}
 	
-	$toReturn = '    <script src="/rgdweb/js/jquery/jquery-1.12.4.min.js"></script>
+	$toReturn = ' <script src="/rgdweb/js/jquery/jquery-1.12.4.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery_combo_box.js"></script>
     <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-1.2.0.js"></script>
