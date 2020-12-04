@@ -1169,7 +1169,7 @@ function curation_selectTerms() {
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                              "bf": "term_len_l^10",
-                                             "v.template": "termmatch",
+                                             "v.template": "termidselect",
                                              "cacheLength": 0
                                            },
                                            scrollHeight: 240,
