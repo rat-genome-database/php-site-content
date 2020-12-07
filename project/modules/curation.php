@@ -1156,23 +1156,24 @@ function curation_selectTerms() {
 		preg_match("/[A-Z]+:[0-9]+/", $objectNameSelected, $acc_id);
 		if ($acc_id) preg_match("/[A-Z]+/", $acc_id[0], $ont_id);
 	}
-
-    $toReturn = '    <script src="/rgdweb/js/jquery/jquery-1.12.4.min.js"></script>
+	
+	$toReturn = '    <script src="/rgdweb/js/jquery/jquery-1.12.4.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery_combo_box.js"></script>
     <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-1.2.0.js"></script>
     <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
+
     <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
                                              //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
-                                             "bf": "term_len_l^10",
+                                              "bf": "term_len_l^.02",
                                              "v.template": "termmatch",
                                              "cacheLength": 0
                                            },
                                            scrollHeight: 240,
-                                           max: 40
+                                           max: 100
                                          });
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
