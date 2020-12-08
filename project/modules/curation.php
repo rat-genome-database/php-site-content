@@ -1169,11 +1169,13 @@ function curation_selectTerms() {
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                               "bf": "term_len_l^.02",
-                                             "v.template": "termmatch",
+                                             "v.template": "termidselect",
                                              "cacheLength": 0
                                            },
                                            scrollHeight: 240,
-                                           max: 100
+                                           max: 100,
+                                           "termSeparator": " OR "
+
                                          });
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
