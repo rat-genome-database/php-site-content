@@ -1173,7 +1173,8 @@ function curation_selectTerms() {
                                              "cacheLength": 0
                                            },
                                            scrollHeight: 240,
-                                           max: 100
+                                           max: 100,
+                                           "termSeparator": " OR "
                                          });
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
