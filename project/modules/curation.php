@@ -1803,6 +1803,7 @@ function checkWithoutInfoCode($theForm) {
 			break;
         case "IAGP" :
         case "IMP" :
+        case "IDA" :
             if (isReallySet($with_info) ) {
              if($checkStrain == '5') {
                 return true;
