@@ -1879,6 +1879,7 @@ function checkSpecialAnnotation($theForm, $rgdId, $ontvalue, $refRgdId) {
  */
 function checkOntologyAnnotations($theForm, $oTermAspect, $species, $objType, $evidence) {
 	static $allowedEvidenceCodes = array('IAGP','IGI','IMP');
+	static $allowedMPEvidenceCodes = array('IAGP','IGI','IMP','IDA');
 	
 	switch($oTermAspect) {
 		case 'N': // 'MP' terms
@@ -1886,7 +1887,7 @@ function checkOntologyAnnotations($theForm, $oTermAspect, $species, $objType, $e
 				$theForm->addFormErrorMessage('MP terms can only be used for rat objects!');
 				return false;
 			}
-			else if( !in_array($evidence, $allowedEvidenceCodes) ) {
+			else if( !in_array($evidence, $allowedMPEvidenceCodes) ) {
 				$theForm->addFormErrorMessage('MP terms can only be used with the following evidence codes: '.join(', ', $allowedEvidenceCodes));
 				return false;
 			}
