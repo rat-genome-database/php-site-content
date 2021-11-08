@@ -1165,7 +1165,6 @@ function curation_selectTerms() {
 
     <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
-                                             //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                               "bf": "term_len_l^.02",
@@ -1173,7 +1172,7 @@ function curation_selectTerms() {
                                              "cacheLength": 0
                                            },
                                            scrollHeight: 240,
-                                           max: 100
+                                           max: 40
                                          });
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
@@ -1879,6 +1878,7 @@ function checkSpecialAnnotation($theForm, $rgdId, $ontvalue, $refRgdId) {
  */
 function checkOntologyAnnotations($theForm, $oTermAspect, $species, $objType, $evidence) {
 	static $allowedEvidenceCodes = array('IAGP','IGI','IMP');
+	static $allowedMPEvidenceCodes = array('IAGP','IGI','IMP','IDA');
 	
 	switch($oTermAspect) {
 		case 'N': // 'MP' terms
@@ -1886,7 +1886,7 @@ function checkOntologyAnnotations($theForm, $oTermAspect, $species, $objType, $e
 				$theForm->addFormErrorMessage('MP terms can only be used for rat objects!');
 				return false;
 			}
-			else if( !in_array($evidence, $allowedEvidenceCodes) ) {
+			else if( !in_array($evidence, $allowedMPEvidenceCodes) ) {
 				$theForm->addFormErrorMessage('MP terms can only be used with the following evidence codes: '.join(', ', $allowedEvidenceCodes));
 				return false;
 			}
