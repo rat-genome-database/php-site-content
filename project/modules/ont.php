@@ -221,7 +221,7 @@ function ont_annotations() {
   $term = $termAcc; 
   $items = fetchRecords("SELECT * FROM full_annot a, references r WHERE a.ref_rgd_id=r.rgd_id(+) AND term_acc = ".dbQuoteString($termAcc)
   .' AND created_by NOT IN('.$PIPELINE_USER_IDS.')'); // exclude non-manual annotations
-  $table = newTable('ADD TO BUCKET', 'ANNOTATED OBJECT / OBJ NAME', 'REFERENCE / TITLE (TYPE)', 'EVIDENCE', 'WITH INFO', 'ASPECT', 'NOTES', 'QUALIFIER', 'TERM');
+  $table = newTable('EDIT','ADD TO BUCKET', 'ANNOTATED OBJECT / OBJ NAME', 'REFERENCE / TITLE (TYPE)', 'EVIDENCE', 'WITH INFO', 'ASPECT', 'NOTES', 'QUALIFIER', 'TERM');
   $table->setAttributes("class=simple");
 
   $annotBuckets = getBucketItems('annotBuckets');
@@ -250,7 +250,9 @@ function ont_annotations() {
     if (isset($inBucket)) {
       $bucketLinks = makeLink("Remove from $inBucket", 'ont', 'removeAnnotFromBucket', 'name='.$annotBucket.'&FULL_ANNOT_KEY='.$FULL_ANNOT_KEY.'&TERM_ACC='.$termAcc).' ';
     }
-    $table->addRow($bucketLinks, makeRgdQueryLink($ANNOTATED_OBJECT_RGD_ID).' '. makeRgdQueryLink($OBJECT_SYMBOL).' / '.$OBJECT_NAME, makeRgdQueryLink($REF_RGD_ID).' '. $TITLE.' ('.$REFERENCE_TYPE.')', $EVIDENCE, makeRgdQueryLink($WITH_INFO), $ASPECT, $NOTES, $QUALIFIER, $TERM);
+    $editLink = "<a href='/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $ANNOTATED_OBJECT_RGD_ID . "'>Edit</a>";
+
+    $table->addRow($editLink, $bucketLinks, makeRgdQueryLink($ANNOTATED_OBJECT_RGD_ID).' '. makeRgdQueryLink($OBJECT_SYMBOL).' / '.$OBJECT_NAME, makeRgdQueryLink($REF_RGD_ID).' '. $TITLE.' ('.$REFERENCE_TYPE.')', $EVIDENCE, makeRgdQueryLink($WITH_INFO), $ASPECT, $NOTES, $QUALIFIER, $TERM);
     $term = $TERM;
   }
   setPageTitle("Orphaned annotations for obsolete term: $term");
