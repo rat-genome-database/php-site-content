@@ -1925,6 +1925,8 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	// $userKey = getSessionVar('userKey') ;
 	$token = getSessionVar('token');
 	$toReturn = '';
+
+	$toReturn .= "<p/>&nbsp;<p/>" . makeLink('Show / Delete My Annotations ', 'curationMaint', 'showMyAnnotation') . "\n";
 	$toReturn .= '<p><h3>Annotations that already exist for Object(s) you\'ve selected:</h3></p>';
 	if (sizeof($objectRGDIDArray) == 0) {
 		return '';
