@@ -250,7 +250,7 @@ function ont_annotations() {
     if (isset($inBucket)) {
       $bucketLinks = makeLink("Remove from $inBucket", 'ont', 'removeAnnotFromBucket', 'name='.$annotBucket.'&FULL_ANNOT_KEY='.$FULL_ANNOT_KEY.'&TERM_ACC='.$termAcc).' ';
     }
-    $editLink = "<a href='/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $ANNOTATED_OBJECT_RGD_ID . "'>Edit</a>";
+    $editLink = "<a href='/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY . "'>Edit</a>";
 
     $table->addRow($editLink, $bucketLinks, makeRgdQueryLink($ANNOTATED_OBJECT_RGD_ID).' '. makeRgdQueryLink($OBJECT_SYMBOL).' / '.$OBJECT_NAME, makeRgdQueryLink($REF_RGD_ID).' '. $TITLE.' ('.$REFERENCE_TYPE.')', $EVIDENCE, makeRgdQueryLink($WITH_INFO), $ASPECT, $NOTES, $QUALIFIER, $TERM);
     $term = $TERM;
