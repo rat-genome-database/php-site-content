@@ -1165,7 +1165,6 @@ function curation_selectTerms() {
 
     <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
-                                          //   "qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1 anc^1",
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                               "bf": "term_len_l^.02",
@@ -1926,6 +1925,8 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	// $userKey = getSessionVar('userKey') ;
 	$token = getSessionVar('token');
 	$toReturn = '';
+
+	$toReturn .= "<p/>&nbsp;<p/>" . makeLink('Show / Delete My Annotations ', 'curationMaint', 'showMyAnnotation') . "\n";
 	$toReturn .= '<p><h3>Annotations that already exist for Object(s) you\'ve selected:</h3></p>';
 	if (sizeof($objectRGDIDArray) == 0) {
 		return '';
