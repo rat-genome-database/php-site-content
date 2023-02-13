@@ -2845,7 +2845,7 @@ function curation_createAnnotationRelationship() {
 	$path=$_SERVER['QUERY_STRING'];
  	$new_path = str_replace("&func=createAnnotationRelationship&", "&func=linkAnnotation&", $path);
     
-    //redirectWithMessage($returnMessage, "?" . $new_path);
+    redirectWithMessage($returnMessage, "?" . $new_path);
 }
 
 function relationshipCreateGtoG($geneFromObject, $geneToObject, & $returnMessage) {
