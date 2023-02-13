@@ -1165,7 +1165,6 @@ function curation_selectTerms() {
 
     <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
-                                             //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                               "bf": "term_len_l^.02",
@@ -1173,7 +1172,7 @@ function curation_selectTerms() {
                                              "cacheLength": 0
                                            },
                                            scrollHeight: 240,
-                                           max: 100
+                                           max: 40
                                          });
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
@@ -1655,7 +1654,7 @@ function curation_linkAnnotation() {
 
 			$passedQC = checkAnnotationQC($theform);
 
-			// Now generate the ResultAnnotationForm from those selected annotations. This form will 
+			// Now generate the ResultAnnotationForm from those selected annotations. This form will
 			// show the annotation permutations to be created and allow the user to unselect various 
 			// rows not to be created. 
 
@@ -1672,10 +1671,10 @@ function curation_linkAnnotation() {
 		        $theform->setDefault('command', 'generate' ) ; 
 				$toString .= getScrollStr("#message");
 
+ 			} else {
 
-			} else { 
 
-			////////////////////////////////////////////////////////
+ 			////////////////////////////////////////////////////////
 			// Associations to be created table generated next
 			//
 			$relCount = $resultAnnotationForm->getValue('relCount');
@@ -1693,7 +1692,7 @@ function curation_linkAnnotation() {
 			// }
     
 			if ($passedQC) {
-				// If QC check passed display table of annoations to be inserted into database. 
+				// If QC check passed display table of annoations to be inserted into database.
 			      if ( $commandstr == 'generate'){
 					if (empty($theform->formErrorMessages)) {
 						$toString .= getScrollStr("#result");
@@ -1740,7 +1739,7 @@ function getScrollStr($position, $offset = 0) {
  * Do all QC checks for the Annotation form return true if it passes else false
  */
 function checkAnnotationQC(& $theForm) {
-	// First check for 
+	// First check for
 	$qc = checkWithInfoCode($theForm);
 	if ($qc) {
 		$qc = checkWithoutInfoCode($theForm);
@@ -1926,6 +1925,8 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	// $userKey = getSessionVar('userKey') ;
 	$token = getSessionVar('token');
 	$toReturn = '';
+
+	$toReturn .= "<p/>&nbsp;<p/>" . makeLink('Show / Delete My Annotations ', 'curationMaint', 'showMyAnnotation') . "\n";
 	$toReturn .= '<p><h3>Annotations that already exist for Object(s) you\'ve selected:</h3></p>';
 	if (sizeof($objectRGDIDArray) == 0) {
 		return '';
@@ -2042,11 +2043,12 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
  * Returns true if constraints will be ok , else returns false. 
  */
 function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key) {
+
 	$sql = "select FULL_ANNOT_KEY,NOTES from full_annot " .
 	'where ' .
 	' TERM_ACC = \'' . $termAcc . '\'' .
 	' and ANNOTATED_OBJECT_RGD_ID = ' . $objRgdID .
-	' and EVIDENCE = \'' . $evidence . '\'' .
+	'  and DATA_SRC=\'RGD\' and EVIDENCE = \'' . $evidence . '\'' .
 	' and REF_RGD_ID = ' . $refRGDID;
 	if (isReallySet($with_info)) {
 		$sql .= ' and WITH_INFO = ' . dbQuoteString($with_info) . ' ';
@@ -2059,7 +2061,7 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 		$sql .= ' and QUALIFIER is NULL ';
 	}
 
-	//dump ($sql ) ; 
+	dump ($sql ) ;
 	// There is a constraint that the following foelds don't already exist. 
 	//            @TERM_ACC 
 	//            @ANNOTATED_OBJECT_RGD_ID
@@ -2156,7 +2158,14 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		$not4curation = 1;
 		return $numCreated;
 	}
-	
+
+    if ($with_info=='') {
+        $with_info=null;
+        $with_info_str='null';
+    }else {
+        $with_info_str=dbQuoteString($with_info);
+    }
+
 	$sql = 'INSERT INTO full_annot ('.
 		'full_annot_key, '.
 		'term, '.
@@ -2186,7 +2195,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	dbQuoteString($objectSymbol).','.
 	$refRGDID . ','.
 	dbQuoteString($evidence) . ','.
-	dbQuoteString($with_info) . ','.
+	$with_info_str . ','.
 	dbQuoteString($aspect) . ','.
 	dbQuoteString($objectName) . ','.
 	dbQuoteString($notes) . ','.
@@ -2200,6 +2209,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	// Check for constraint 
 	$full_annot_key = 0;
 	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key)) {
+
 		// This record already exists -- upgrade notes in already existing annotations
 		if( $full_annot_key>0 && isReallySet($notes) && strlen($notes)>0 ) {
 			transferNotesToAnnotations($full_annot_key, $notes);
@@ -2208,6 +2218,33 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		$numAlreadyExisting++;
 	} else {
 		$rowsUpdated = executeUpdate($sql);
+
+        //if nothing updated the src check to see if source is different than RGD and update.
+        	//            @TERM_ACC
+        	//            @ANNOTATED_OBJECT_RGD_ID
+        	//            @REF_RGD_ID
+        	//            @EVIDENCE
+        	//            @WITH_INFO
+        	//            @QUALIFIER
+
+        if ($rowsUpdated==0) {
+            $sql='update full_annot set data_src=\'RGD\' where term_acc= ' . dbQuoteString($termAcc) .
+                ' and ANNOTATED_OBJECT_RGD_ID=' . $coreObjectRGDID  .
+                  ' and REF_RGD_ID=' . $refRGDID .
+                   ' and EVIDENCE=' . dbQuoteString($evidence);
+
+                   if ($with_info === null) {
+                        $sql = $sql . ' and WITH_INFO is null ';
+                    }else {
+                        $sql = $sql . ' and WITH_INFO=' . dbQuoteString($with_info);
+                    }
+                    $sql = $sql . ' and QUALIFIER= ' . dbQuoteString($qualifier);
+
+            dump($sql);
+            $rowsUpdated = executeUpdate($sql);
+        }
+
+
 		$numCreated++;
 	}
 
@@ -2808,7 +2845,7 @@ function curation_createAnnotationRelationship() {
 	$path=$_SERVER['QUERY_STRING'];
  	$new_path = str_replace("&func=createAnnotationRelationship&", "&func=linkAnnotation&", $path);
     
-    redirectWithMessage($returnMessage, "?" . $new_path);
+    //redirectWithMessage($returnMessage, "?" . $new_path);
 }
 
 function relationshipCreateGtoG($geneFromObject, $geneToObject, & $returnMessage) {
