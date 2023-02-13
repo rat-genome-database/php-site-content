@@ -1747,6 +1747,7 @@ function checkAnnotationQC(& $theForm) {
 //			$qc = checkECwithOntTerms($theForm);
 		}
 	}
+
 	// remove any spaces in with_info field
 	$with_info = $theForm->getValue('with_info');
 	$new_with_info = str_replace(' ', '', $with_info);
@@ -1832,7 +1833,17 @@ function checkWithoutInfoCode($theForm) {
  * Returns: true if the passed the rules, else false. 
  */
 function checkECwithOntTermsPerAnnotation($theForm, $evidence, $ontvalue, $aspect, $termDesc) {
+
 	switch ($evidence) {
+        case 'IEP' :
+			switch ($aspect) {
+				case 'F' :
+					$theForm->addFormErrorMessage('Evidence code \''.$evidence.'\' can\'t be combined with term: \''.$termDesc.'\'');
+					return false;
+				case 'C' :
+					$theForm->addFormErrorMessage('Evidence code \''.$evidence.'\' can\'t be combined with term: \''.$termDesc.'\'');
+					return false;
+			}
 		case 'TAS' :
 			switch ($aspect) {
 				case 'D' :
@@ -1850,6 +1861,10 @@ function checkECwithOntTermsPerAnnotation($theForm, $evidence, $ontvalue, $aspec
 			return false;
 		}
 	}
+
+
+
+
 	return true;
 }
 
@@ -2292,6 +2307,7 @@ function processReference($theform) {
  */
 function processAnnotationForm($theform) {
 
+    print ('in process annotation form');
 	$theRelform = newForm("Create Selected Annotations in DataBase", 'GET', 'curation', 'createAnnotationRelationship');
 	
 	$allObjectsArray = getObjectArrayFromSession();
