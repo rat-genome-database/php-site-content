@@ -1844,6 +1844,7 @@ function checkECwithOntTermsPerAnnotation($theForm, $evidence, $ontvalue, $aspec
 					$theForm->addFormErrorMessage('Evidence code \''.$evidence.'\' can\'t be combined with term: \''.$termDesc.'\'');
 					return false;
 			}
+			break;
 		case 'TAS' :
 			switch ($aspect) {
 				case 'D' :
@@ -1897,8 +1898,8 @@ function checkOntologyAnnotations($theForm, $oTermAspect, $species, $objType, $e
 	
 	switch($oTermAspect) {
 		case 'N': // 'MP' terms
-			if( $species != 3 ) {
-				$theForm->addFormErrorMessage('MP terms can only be used for rat objects!');
+			if( $species == 1 || $species == 2 ) {
+				$theForm->addFormErrorMessage('MP terms cannot be used for Mouse or Human ');
 				return false;
 			}
 			else if( !in_array($evidence, $allowedMPEvidenceCodes) ) {
