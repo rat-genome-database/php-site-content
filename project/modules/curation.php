@@ -1844,6 +1844,7 @@ function checkECwithOntTermsPerAnnotation($theForm, $evidence, $ontvalue, $aspec
 					$theForm->addFormErrorMessage('Evidence code \''.$evidence.'\' can\'t be combined with term: \''.$termDesc.'\'');
 					return false;
 			}
+			break;
 		case 'TAS' :
 			switch ($aspect) {
 				case 'D' :
