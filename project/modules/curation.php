@@ -1163,8 +1163,8 @@ function curation_selectTerms() {
     <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-1.2.0.js"></script>
     <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
 
-    <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
-	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("https://ontomate.rgd.mcw.edu/OntoSolr/select", {extraParams:{
+    <!--script type="text/javascript"  src="/solr/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
+	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/solr/OntoSolr/select", {extraParams:{
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                               "bf": "term_len_l^.02",
@@ -1210,7 +1210,7 @@ function curation_selectTerms() {
 			$toReturn .= '<script type="text/javascript">function accSelected(event){oid=event.originalEvent.data.split("|")[0];term=event.originalEvent.data.split("|")[1];location.href="/rgdCuration/?module=curation&func=addTermToBucket&searchTerm="+term+" ("+oid+")&termAcc="+oid;}; </script>';
 	
 			$toReturn .= $theForm->quickRender();
-			$toReturn .= ' <div id="mydiv"><a href="https://ontomate.rgd.mcw.edu/OntoSolr/collection1/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
+			$toReturn .= ' <div id="mydiv"><a href="/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
    </iframe></div>';
 
 			return $toReturn;
