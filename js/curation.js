@@ -2,7 +2,7 @@ $(function () {
     $("#objectName").autocomplete({
         source:function(request, response){
             $.ajax({
-                url:"https://ontomate.rgd.mcw.edu/OntoSolr/select",
+                url:"https://dev.rgd.mcw.edu/solr/OntoSolr/select",
                 data:{
                     "q":request.term,
                     //"qf": "term_en^5 term_str^3 term^3 synonym_en^4.5  synonym_str^2 synonym^2 def^1 idl_s^1",
