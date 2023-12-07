@@ -1304,7 +1304,7 @@ function curation_selectReferences() {
 			};
 			rs += "userId=' .getUserID(). '&userFullName='. getUserFullName() .'";
 			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
-			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration/?" + rs;
+			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
 			console.log("RS:" +rs);
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
@@ -3209,7 +3209,7 @@ function getReferenceOntoPubLink($refArray) {
 	$toReturn .= ' 
 			var rs = "' . $qs . '";
 			rs += "&curHost=' .$_SERVER['HTTP_HOST'] .'";
-			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration/?" + rs;
+			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
 
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
