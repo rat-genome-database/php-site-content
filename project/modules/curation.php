@@ -937,7 +937,7 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 		    from strains s,
 		    rgd_ids r
 		    where 
-		    s.rgd_id = r.rgd_id';
+		    s.rgd_id = r.rgd_id and object_status=\'ACTIVE\'';
 	// take care of searching for RGDID directly here
 	if (is_numeric($rgd_id_to_searchfor)) {
 		$sql .= ' and ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
