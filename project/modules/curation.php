@@ -936,7 +936,7 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 	$sql = 'select s.strain_symbol, s.full_name, s.strain ,s.substrain,  s.rgd_id, r.object_status   
 		    from strains s,
 		    rgd_ids r,
-		    alliases a
+		    aliases a
 		    where 
 		    s.rgd_id = r.rgd_id and object_status=\'ACTIVE\' and s.rgd_id=a.rgd_id';
 	// take care of searching for RGDID directly here
