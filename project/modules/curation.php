@@ -937,7 +937,7 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 		    from strains s,
 		    rgd_ids r
 		    where 
-		    s.rgd_id = r.rgd_id';
+		    s.rgd_id = r.rgd_id and object_status=\'ACTIVE\'';
 	// take care of searching for RGDID directly here
 	if (is_numeric($rgd_id_to_searchfor)) {
 		$sql .= ' and ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
@@ -1027,22 +1027,20 @@ function getOntQualifierArray($objArray) {
     $first = 0;
 
 	foreach ($ontArray as $rgdId => $ontText) {
-    	if ($first++ != 0) {
-        	$ontologies .= ",";
-        }
-    	if( strpos($ontText, '[P]') !== false  || strpos($ontText, '[F]') !== false || strpos($ontText, '[C]') !== false) {
-            $ontologies .= "'" . 'GO' . "'";
-        }else if( strpos($ontText, '[E]') !== false ) {
-            $ontologies .= "'" . 'CHEBI' . "'";
-        } else if( strpos($ontText, '[D]') !== false ) {
-            $ontologies .= "'" . 'RDO' . "'";
-        } else if( strpos($ontText, '[N]') !== false || strpos($ontText, '[H]') !== false) {
-            $ontologies .= "'" . 'MP' . "'";
-        }else if( strpos($ontText, '[W]') !== false ) {
-            $ontologies .= "'" . 'PW' . "'";
-        }else if( strpos($ontText, '[V]') !== false ) {
-            $ontologies .= "'" . 'VT' . "'";
-        }
+    		if ($first++ != 0) {
+            			$ontologies .= ",";
+            }
+    		if( strpos($ontText, '[P]') !== false  || strpos($ontText, '[F]') !== false || strpos($ontText, '[C]') !== false) {
+            			$ontologies .= "'" . 'GO' . "'";
+            }else if( strpos($ontText, '[E]') !== false ) {
+             			$ontologies .= "'" . 'CHEBI' . "'";
+            } else if( strpos($ontText, '[D]') !== false ) {
+             			$ontologies .= "'" . 'RDO' . "'";
+            } else if( strpos($ontText, '[N]') !== false || strpos($ontText, '[H]') !== false) {
+             			$ontologies .= "'" . 'MP' . "'";
+            }else if( strpos($ontText, '[W]') !== false ) {
+                          			$ontologies .= "'" . 'PW' . "'";
+            }
     }
 
 	$objKeys = implode(',', array_unique($objectKeys, SORT_NUMERIC));
@@ -1165,8 +1163,8 @@ function curation_selectTerms() {
     <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-1.2.0.js"></script>
     <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
 
-    <!--script type="text/javascript"  src="/solr/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
-	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/solr/OntoSolr/select", {extraParams:{
+    <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
+	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                               "bf": "term_len_l^.02",
@@ -1212,7 +1210,7 @@ function curation_selectTerms() {
 			$toReturn .= '<script type="text/javascript">function accSelected(event){oid=event.originalEvent.data.split("|")[0];term=event.originalEvent.data.split("|")[1];location.href="/rgdCuration/?module=curation&func=addTermToBucket&searchTerm="+term+" ("+oid+")&termAcc="+oid;}; </script>';
 	
 			$toReturn .= $theForm->quickRender();
-			$toReturn .= ' <div id="mydiv"><a href="/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
+			$toReturn .= ' <div id="mydiv"><a href="https://ontomate.rgd.mcw.edu/OntoSolr/collection1/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
    </iframe></div>';
 
 			return $toReturn;
@@ -1846,7 +1844,6 @@ function checkECwithOntTermsPerAnnotation($theForm, $evidence, $ontvalue, $aspec
 					$theForm->addFormErrorMessage('Evidence code \''.$evidence.'\' can\'t be combined with term: \''.$termDesc.'\'');
 					return false;
 			}
-			break;
 		case 'TAS' :
 			switch ($aspect) {
 				case 'D' :
