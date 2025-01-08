@@ -2357,6 +2357,11 @@ function processAnnotationForm($theform) {
 					case 'TAS':
 					case 'IGI':
 					case 'EXP':
+					case 'HTP':
+					case 'HEP':
+					case 'HMP':
+					case 'HDA':
+					case 'HGI':
 						$evidence = 'ISO';
 						$cur_with_info = getIsoWithInfo($objkey, $formObjectArray); 
 				}
