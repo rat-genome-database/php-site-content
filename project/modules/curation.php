@@ -556,9 +556,9 @@ function curation_addTermToBucket() {
 		}
 		
 		$sqlNot4Curation = "select COUNT(0) CNT from ont_synonyms where synonym_name='Not4Curation' and term_acc='$termAcc'";
-		$results = fetchRecords($sqlNot4Curation);
-		$cnt = $results[0]['CNT'];
-		if ( $cnt > 0 ) {
+		$results2 = fetchRecords($sqlNot4Curation);
+		$cntx = $results2[0]['CNT'];
+		if ( $cntx > 0 ) {
 			redirectWithMessage('Term ' . $termAcc . ' is Not4Curation!', makeUrl('curation', 'selectTerms', $urlArray));
 			return;
 		}
