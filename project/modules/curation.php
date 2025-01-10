@@ -548,7 +548,7 @@ function curation_addTermToBucket() {
 	
 	
 	if (count($results) == 1) {
-
+/*
 		$term_is_obsolete = $results[0]['IS_OBSOLETE'];
 		if( $term_is_obsolete > 0 ) {
 			redirectWithMessage('Term ' . $termAcc . ' is OBSOLETE!', makeUrl('curation', 'selectTerms', $urlArray));
@@ -562,7 +562,7 @@ function curation_addTermToBucket() {
 			redirectWithMessage('Term ' . $termAcc . ' is Not4Curation!', makeUrl('curation', 'selectTerms', $urlArray));
 			return;
 		}
-		
+	*/	
 		// extract($results[0]);
 		$termArray = $results[0];
 		$termArray['aliasesHtml'] = $termSynonymHtml;
