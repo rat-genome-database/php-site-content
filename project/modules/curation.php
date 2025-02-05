@@ -947,12 +947,9 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 	$objectName = cleanUpAndHandleMatching($objectName, $matchType);
 	$numericSearchString = '';
 
-	$sql = 'select s.strain_symbol, s.full_name, s.strain ,s.substrain,  s.rgd_id, r.object_status   
-		    from strains s,
-		    rgd_ids r,
-		    aliases a
-		    where 
-		    s.rgd_id = r.rgd_id and object_status=\'ACTIVE\' and s.rgd_id=a.rgd_id';
+	$sql = 'SELECT s.strain_symbol, s.full_name, s.strain ,s.substrain,  s.rgd_id, r.object_status
+		    FROM strains s, rgd_ids r, aliases a
+		    WHERE s.rgd_id = r.rgd_id AND object_status=\'ACTIVE\' AND s.rgd_id=a.rgd_id(+)';
 	// take care of searching for RGDID directly here
 	if (is_numeric($rgd_id_to_searchfor)) {
 		$sql .= ' and ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
