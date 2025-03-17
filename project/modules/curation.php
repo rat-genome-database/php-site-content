@@ -947,7 +947,7 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 	$objectName = cleanUpAndHandleMatching($objectName, $matchType);
 	$numericSearchString = '';
 
-	$sql = 'SELECT s.strain_symbol, s.full_name, s.strain ,s.substrain,  s.rgd_id, r.object_status
+	$sql = 'SELECT DISTINCT s.strain_symbol, s.full_name, s.strain ,s.substrain,  s.rgd_id, r.object_status
 		    FROM strains s
 			JOIN rgd_ids r ON s.rgd_id=r.rgd_id
 			LEFT JOIN aliases a ON s.rgd_id=a.rgd_id
