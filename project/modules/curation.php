@@ -947,9 +947,11 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 	$objectName = cleanUpAndHandleMatching($objectName, $matchType);
 	$numericSearchString = '';
 
-	$sql = 'SELECT s.strain_symbol, s.full_name, s.strain ,s.substrain,  s.rgd_id, r.object_status
-		    FROM strains s, rgd_ids r, aliases a
-		    WHERE s.rgd_id = r.rgd_id AND object_status=\'ACTIVE\' AND s.rgd_id=a.rgd_id(+)';
+	$sql = 'SELECT DISTINCT s.strain_symbol, s.full_name, s.strain ,s.substrain,  s.rgd_id, r.object_status
+		    FROM strains s
+			JOIN rgd_ids r ON s.rgd_id=r.rgd_id
+			LEFT JOIN aliases a ON s.rgd_id=a.rgd_id
+		    WHERE object_status=\'ACTIVE\'';
 	// take care of searching for RGDID directly here
 	if (is_numeric($rgd_id_to_searchfor)) {
 		$sql .= ' and ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
@@ -957,7 +959,8 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 		$sql .= ' and ';
 	}
 	$sql .= ' ( upper ( s.full_name)  like \'' . strtoupper($objectName) . '\' or 
-		    upper ( s.strain_symbol ) like \'' . strtoupper($objectName) . '\' )';
+		    upper ( s.strain_symbol ) like \'' . strtoupper($objectName) . '\' or
+		    upper ( a.alias_value ) like \'' . strtoupper($objectName) . '\' )';
 
 	$sql .= ' order by s.strain_symbol';
 
