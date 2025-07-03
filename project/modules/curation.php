@@ -1177,7 +1177,7 @@ function curation_selectTerms() {
 	$toReturn = '    <script src="/rgdweb/js/jquery/jquery-3.7.1.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery_combo_box.js"></script>
-    <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="/rgdweb/OntoSolr/jquery.autocomplete.css"></script>
 
     <!--script type="text/javascript"  src="/solr/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/solr/OntoSolr/select", {extraParams:{
