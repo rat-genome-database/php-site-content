@@ -1177,10 +1177,11 @@ function curation_selectTerms() {
 	$toReturn = '    <script src="/rgdweb/js/jquery/jquery-3.7.1.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery_combo_box.js"></script>
-    <script type="text/javascript" src="/rgdweb/OntoSolr/jquery.autocomplete.css"></script>
+    <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-3.5.0.js"></script>
+    <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
 
-    <!--script type="text/javascript"  src="/solr/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
-	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/solr/OntoSolr/select", {extraParams:{
+    <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
+	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/OntoSolr/select", {extraParams:{
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
                                               "bf": "term_len_l^.02",
@@ -1193,7 +1194,7 @@ function curation_selectTerms() {
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
 	$closeReturn = '});</script> Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
-			.'<a href="/rgdCuration/?objectName=cellular_component+%28GO%3A0005575%29&hiddenXYZ123=&module=curation&func=selectTerms">CC</a> ' 
+			.'<a href="/rgdCuration/?objectName=cellular_component+%28GO%3A0005575%29&hiddenXYZ123=&module=curation&func=selectTerms">CC</a> '
 			.'<a href="/rgdCuration/?objectName=clinical+measurement+(CMO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">CMO</a> '
 			.'<a href="/rgdCuration/?objectName=molecular_function+(GO%3A0003674)&hiddenXYZ123=&module=curation&func=selectTerms">MF</a> '
 			.'<a href="/rgdCuration/?objectName=measurement+method+(MMO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">MMO</a> '
@@ -1206,7 +1207,7 @@ function curation_selectTerms() {
 			.'<a href="/rgdCuration/?objectName=Trait+(VT%3A0000001)&hiddenXYZ123=&module=curation&func=selectTerms">VT</a> '
 			.'<a href="/rgdCuration/?objectName=experimental+condition+(XCO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">XCO</a> '
 			.'<a href="/rgdCuration/?objectName=chebi+ontology+(CHEBI%3A0)&hiddenXYZ123=&module=curation&func=selectTerms">CHEBI</a> ';
-	
+
 	switch ($theForm->getState()) {
 		case INITIAL_GET :
 			$toReturn .= $closeReturn;
@@ -1216,17 +1217,17 @@ function curation_selectTerms() {
 			break;
 		case SUBMIT_VALID :
 			// redirectWithMessage('Process Term search');
-	
+
 			// $theAddForm = newForm('Add Terms', 'GET', 'curation',  'addTermsToBucket');
 			// Now we're on the search results page , add the additional fields to be filled in.
-	
+
 			if ($acc_id) $toReturn .= '$("#frame").attr("src", "/rgdweb/ontology/view.html?mode=iframe&ont='.$ont_id[0].'&sel_acc_id=selected_term&acc_id='.$acc_id[0].'");';
 			$toReturn .= '$(window).on("message", accSelected);';
 			$toReturn .= $closeReturn;
 			$toReturn .= '<script type="text/javascript">function accSelected(event){oid=event.originalEvent.data.split("|")[0];term=event.originalEvent.data.split("|")[1];location.href="/rgdCuration/?module=curation&func=addTermToBucket&searchTerm="+term+" ("+oid+")&termAcc="+oid;}; </script>';
-	
+
 			$toReturn .= $theForm->quickRender();
-			$toReturn .= ' <div id="mydiv"><a href="/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
+			$toReturn .= ' <div id="mydiv"><a href="https://ontomate.rgd.mcw.edu/OntoSolr/collection1/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
    </iframe></div>';
 
 			return $toReturn;
