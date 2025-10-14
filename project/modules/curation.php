@@ -1057,7 +1057,11 @@ function getOntQualifierArray($objArray) {
             $ontologies .= "'" . 'PW' . "'";
         }else if( strpos($ontText, '[V]') !== false ) {
             $ontologies .= "'" . 'VT' . "'";
-        }
+        }else if( strpos($ontText, '[L]') !== false ) {
+            $ontologies .= "'" . 'CMO' . "'";
+        }else if( strpos($ontText, '[M]') !== false ) {
+            $ontologies .= "'" . 'MMO' . "'";
+		}
     }
 
 	$objKeys = implode(',', array_unique($objectKeys, SORT_NUMERIC));
