@@ -1061,6 +1061,8 @@ function getOntQualifierArray($objArray) {
             $ontologies .= "'" . 'CMO' . "'";
         }else if( strpos($ontText, '[M]') !== false ) {
             $ontologies .= "'" . 'MMO' . "'";
+        }else if( strpos($ontText, '[X]') !== false ) {
+            $ontologies .= "'" . 'XCO' . "'";
 		}
     }
 
