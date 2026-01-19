@@ -1183,10 +1183,10 @@ function curation_selectTerms() {
 	$toReturn = '    <script src="/rgdweb/js/jquery/jquery-3.7.1.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="/rgdweb/js/jquery/jquery_combo_box.js"></script>
-    <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-3.5.0.js"></script>
+    <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-3.5.0.min.js"></script>
     <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>
 
-    <!--script type="text/javascript"  src="/solr/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
+    <!--script type="text/javascript"  src="https://ontomate.rgd.mcw.edu/OntoSolr/admin/file?file=/velocity/jquery.autocomplete.curation.js&contentType=text/javascript"></script-->';
 	$toReturn .= '<script type="text/javascript">$(document).ready(function(){$("#objectName").autocomplete("/solr/OntoSolr/select", {extraParams:{
                                              "fq": "cat:(BP CC MF MP HP NBO PW RDO RS VT CMO MMO XCO CHEBI)",
                                              "wt": "velocity",
@@ -1200,7 +1200,7 @@ function curation_selectTerms() {
                      $("#objectName").result(function(data, value){$("#form").submit();});$("input[name=submitBtn]").hide();
 			         $("#objectName").focus();';
 	$closeReturn = '});</script> Ontologies: <a href="/rgdCuration/?module=curation&func=selectTerms&objectName=biological_process+(GO%3A0008150)&ontology=&hiddenXYZ123=">BP</a> '
-			.'<a href="/rgdCuration/?objectName=cellular_component+%28GO%3A0005575%29&hiddenXYZ123=&module=curation&func=selectTerms">CC</a> ' 
+			.'<a href="/rgdCuration/?objectName=cellular_component+%28GO%3A0005575%29&hiddenXYZ123=&module=curation&func=selectTerms">CC</a> '
 			.'<a href="/rgdCuration/?objectName=clinical+measurement+(CMO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">CMO</a> '
 			.'<a href="/rgdCuration/?objectName=molecular_function+(GO%3A0003674)&hiddenXYZ123=&module=curation&func=selectTerms">MF</a> '
 			.'<a href="/rgdCuration/?objectName=measurement+method+(MMO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">MMO</a> '
@@ -1213,7 +1213,7 @@ function curation_selectTerms() {
 			.'<a href="/rgdCuration/?objectName=Trait+(VT%3A0000001)&hiddenXYZ123=&module=curation&func=selectTerms">VT</a> '
 			.'<a href="/rgdCuration/?objectName=experimental+condition+(XCO%3A0000000)&hiddenXYZ123=&module=curation&func=selectTerms">XCO</a> '
 			.'<a href="/rgdCuration/?objectName=chebi+ontology+(CHEBI%3A0)&hiddenXYZ123=&module=curation&func=selectTerms">CHEBI</a> ';
-	
+
 	switch ($theForm->getState()) {
 		case INITIAL_GET :
 			$toReturn .= $closeReturn;
@@ -1223,17 +1223,17 @@ function curation_selectTerms() {
 			break;
 		case SUBMIT_VALID :
 			// redirectWithMessage('Process Term search');
-	
+
 			// $theAddForm = newForm('Add Terms', 'GET', 'curation',  'addTermsToBucket');
 			// Now we're on the search results page , add the additional fields to be filled in.
-	
+
 			if ($acc_id) $toReturn .= '$("#frame").attr("src", "/rgdweb/ontology/view.html?mode=iframe&ont='.$ont_id[0].'&sel_acc_id=selected_term&acc_id='.$acc_id[0].'");';
 			$toReturn .= '$(window).on("message", accSelected);';
 			$toReturn .= $closeReturn;
 			$toReturn .= '<script type="text/javascript">function accSelected(event){oid=event.originalEvent.data.split("|")[0];term=event.originalEvent.data.split("|")[1];location.href="/rgdCuration/?module=curation&func=addTermToBucket&searchTerm="+term+" ("+oid+")&termAcc="+oid;}; </script>';
-	
+
 			$toReturn .= $theForm->quickRender();
-			$toReturn .= ' <div id="mydiv"><a href="/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
+			$toReturn .= ' <div id="mydiv"><a href="https://ontomate.rgd.mcw.edu/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
    </iframe></div>';
 
 			return $toReturn;
@@ -1327,7 +1327,7 @@ function curation_selectReferences() {
 			};
 			rs += "userId=' .getUserID(). '&userFullName='. getUserFullName() .'";
 			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
-			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
+			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
 			console.log("RS:" +rs);
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
@@ -1651,6 +1651,12 @@ function curation_linkAnnotation() {
 	$theform->addHidden('command', 'generate');
 
 	$theform->addTextArea('notes', 'Notes', 10, 40, 1024, false);
+	$theform->addText('associated_with', 'Associated With', 20, 4000, false);
+	$theform->addText('molecular_entity', 'Molecular Entity', 20, 4000, false);
+	$theform->addText('alteration', 'Alteration', 20, 4000, false);
+	$theform->addText('alteration_location', 'Alteration Location', 20, 4000, false);
+	$theform->addText('variant_nomenclature', 'Variant Nomenclature', 20, 4000, false);
+	$theform->addText('qualifier2', 'Qualifier 2', 20, 4000, false);
 	// set up objectRGDIDS to be passed into getAnnotationsHTMLTableByGenes() method later. 
 	$objectRGDIDS = array ();
 	foreach ($objectArray as $objkey => $objvalue) {
@@ -1997,14 +2003,14 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	}
 	// generate the SQL to return all annotations for the objects that the user has in their bucket
 	// except CHEBI and ClinVar pipeline annotations
-	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
+	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
 	$sql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 	$sql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 	$sql .= ' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
 //	$sql .= '  order by object_symbol, EVIDENCE, term ';
 
 	if($refIds != '' && $termAcc != '') {
-        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
+        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
         $comboSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
         $comboSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
         $comboSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -2013,7 +2019,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
         $sql = $comboSql . ' union ' . $sql;
     }
 	if ($refIds != '') {
-		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
+		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
 		$refSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$refSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$refSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -2026,7 +2032,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$sql = $refSql . ' union ' . $sql;
 	} 
 	if ($termAcc != '') {
-		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
+		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
 		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -2037,7 +2043,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		    $sql .= ' and a.term_acc not in (' . $termAccs . ')';
 		}
 		$sql = $termSql. ' union ' . $sql;
-		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
+		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
 		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -2167,7 +2173,7 @@ function createReftoObject($refDBKey, $objRgdID, & $returnMessage) {
  * Variable $transferredNotes will get number of annotations that had their notes transferred
  * Returns the number of assocations created. 
  */
-function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, &$transferredNotes, &$not4curation) {
+function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, &$transferredNotes, &$not4curation, $associated_with='', $molecular_entity='', $alteration='', $alteration_location='', $variant_nomenclature='', $qualifier2='') {
 	// Core Object information 
 	// echo " $evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID  " ; 
 	$objArray = getObjectInfoByRGID($coreObjectRGDID);
@@ -2224,13 +2230,19 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		"CREATED_DATE," .
 		'last_modified_date,' .
 		'curation_flag,' .
-		'qualifier'.
+		'qualifier,' .
+		'associated_with,' .
+		'molecular_entity,' .
+		'alteration,' .
+		'alteration_location,' .
+		'variant_nomenclature,' .
+		'qualifier2'.
 	') VALUES ( '.
 	"FULL_ANNOT_SEQ.NEXTVAL," .
 	dbQuoteString($termName) . "," . // from ONT_TERMS.TERM
 	$coreObjectRGDID . ", " . // Object RGD ID
 	$objectTypeKey . "," . //RGD_OBJECT_KEY
-	"'RGD'," . // Hardcoded ? 
+	"'RGD'," . // Hardcoded ?
 	dbQuoteString($objectSymbol).','.
 	$refRGDID . ','.
 	dbQuoteString($evidence) . ','.
@@ -2242,7 +2254,13 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	$useridKey . ','.
 	$useridKey . ','.
 	"SYSDATE, SYSDATE, 'DO',".
-	dbQuoteString($qualifier) . ")";
+	dbQuoteString($qualifier) . ",".
+	dbQuoteString($associated_with) . ",".
+	dbQuoteString($molecular_entity) . ",".
+	dbQuoteString($alteration) . ",".
+	dbQuoteString($alteration_location) . ",".
+	dbQuoteString($variant_nomenclature) . ",".
+	dbQuoteString($qualifier2) . ")";
 
 	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
@@ -2339,11 +2357,17 @@ function processAnnotationForm($theform) {
 	$referenceArray = $theform->getValue('references');
 	$onttermArray = $theform->getValue('ontterms');
 	$ontTermsSessionArray = getOntTermsArrayFromSession();
-	// Other fields to be added to the form once, they do not vary per row 
+	// Other fields to be added to the form once, they do not vary per row
 	$qualifier = $theform->getValue('qualifier');
 	$primeEvidence = $theform->getValue('evidence');
 	$with_info = $theform->getValue('with_info');
 	$notes = $theform->getValue('notes');
+	$associated_with = $theform->getValue('associated_with');
+	$molecular_entity = $theform->getValue('molecular_entity');
+	$alteration = $theform->getValue('alteration');
+	$alteration_location = $theform->getValue('alteration_location');
+	$variant_nomenclature = $theform->getValue('variant_nomenclature');
+	$qualifier2 = $theform->getValue('qualifier2');
 	//  $resultArray = array(); 
 	// dump ( $objectArray)  ;  dump (  $referenceArray) ; dump (  $onttermArray) ;
 	$relCnt = 0; // keep tack of each row being added.  
@@ -2431,6 +2455,12 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('evidence', $theform->getValue('evidence'));
 	$theRelform->addReadOnlyLabel('qualifierL', $theform->getValue('qualifier'));
 	$theRelform->AddHidden('qualifier', $theform->getValue('qualifier'));
+	$theRelform->AddHidden('associated_with', $theform->getValue('associated_with'));
+	$theRelform->AddHidden('molecular_entity', $theform->getValue('molecular_entity'));
+	$theRelform->AddHidden('alteration', $theform->getValue('alteration'));
+	$theRelform->AddHidden('alteration_location', $theform->getValue('alteration_location'));
+	$theRelform->AddHidden('variant_nomenclature', $theform->getValue('variant_nomenclature'));
+	$theRelform->AddHidden('qualifier2', $theform->getValue('qualifier2'));
 	$theRelform->AddHidden('relCount', $relCnt);
 	$theRelform->AddHidden('command', 'create');
 	
@@ -2845,6 +2875,12 @@ function curation_createAnnotationRelationship() {
 
 	$qualifier = getRequestVarString('qualifier');
 	$notes = getRequestVarString('notes');
+	$associated_with = getRequestVarString('associated_with');
+	$molecular_entity = getRequestVarString('molecular_entity');
+	$alteration = getRequestVarString('alteration');
+	$alteration_location = getRequestVarString('alteration_location');
+	$variant_nomenclature = getRequestVarString('variant_nomenclature');
+	$qualifier2 = getRequestVarString('qualifier2');
 
 	$returnMessage = '';
 	for ($i = 0; $i < $relCnt; $i++) {
@@ -2858,7 +2894,7 @@ function curation_createAnnotationRelationship() {
 		if ($selected == 'on') {
 			$transferredNotes = 0;
 			$not4curation = 0;
-			$numCreated += createAnnotations($evidence, $ontKeyRGDID, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, $transferredNotes, $not4curation);
+			$numCreated += createAnnotations($evidence, $ontKeyRGDID, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, $transferredNotes, $not4curation, $associated_with, $molecular_entity, $alteration, $alteration_location, $variant_nomenclature, $qualifier2);
 			if( $transferredNotes>0 ) {
 				$numTransferredNotes += $transferredNotes;
 			}
@@ -3157,6 +3193,9 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<a name=\'result\'>&nbsp;</a>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
 	$toString .= '</td></tr></table>';
+	$toString .= '<table width=100%><tr><td align=left>';
+	$toString .= $theform->renderLabeledFieldsInColumns(2, 'associated_with', 'molecular_entity', 'alteration', 'alteration_location', 'variant_nomenclature', 'qualifier2');
+	$toString .= '</td></tr></table>';
 	$toString .= $theform->formEnd();
 
 	return $toString;
@@ -3237,7 +3276,7 @@ function getReferenceOntoPubLink($refArray) {
 	$toReturn .= ' 
 			var rs = "' . $qs . '";
 			rs += "&curHost=' .$_SERVER['HTTP_HOST'] .'";
-			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
+			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;		
 
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
