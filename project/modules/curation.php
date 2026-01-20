@@ -685,7 +685,13 @@ function doSearchforGenesByName($objectName, $urlSearchArray, $matchType, $speci
 
 		$urlSearchArray['RGD_ID'] = $RGD_ID;
 		// create a named anchor for every gene RGDID -- Sep'11 MT
-		$table->addRow($RGD_ID."<a name='$RGD_ID'></a>", $GENE_SYMBOL, $FULL_NAME, makeSpeciesLink($SPECIES_TYPE_KEY), getAliasesInHtml($RGD_ID, 'gene'), makeObjectStatusLink($OBJECT_STATUS), makeLink('<img src="icons/basket_put.png" border=0 alt="Add">', 'curation', 'addGeneToBucket', $urlSearchArray));
+		$table->addRow($RGD_ID."<a name='$RGD_ID'></a>",
+			$GENE_SYMBOL,
+			$FULL_NAME,
+			makeSpeciesLink($SPECIES_TYPE_KEY),
+			getAliasesInHtml($RGD_ID, 'gene'),
+			makeObjectStatusLink($OBJECT_STATUS),
+			makeLink('<img src="icons/basket_put.png" border=0 alt="Add">', 'curation', 'addGeneToBucket', $urlSearchArray));
 	}
 
 	if ($genecount == $maxresults) {
@@ -1646,17 +1652,21 @@ function curation_linkAnnotation() {
 	$theform->addMultipleCheckBox('references', '', $referenceArray, true);
 
 	$theform->addSelect('qualifier', 'Qualifier', $ontQualifierCodeArray, false);
+	$theform->addSelect('qualifier2', 'Qualifier 2', $ontQualifierCodeArray, false);
 	$theform->addSelect('evidence', 'Evidence Code', $evidenceCodesArray, true);
 	$theform->addText('with_info', 'With Info. ', 20, 200, false);
 	$theform->addHidden('command', 'generate');
 
+	$theform->addText('annotation_extension', 'Annotation Extension', 20, 100, false);
+	$theform->addText('gene_product_form_id', 'Gene Product Form ID', 20, 100, false);
+
 	$theform->addTextArea('notes', 'Notes', 10, 40, 1024, false);
-	$theform->addText('associated_with', 'Associated With', 20, 4000, false);
-	$theform->addText('molecular_entity', 'Molecular Entity', 20, 4000, false);
-	$theform->addText('alteration', 'Alteration', 20, 4000, false);
-	$theform->addText('alteration_location', 'Alteration Location', 20, 4000, false);
-	$theform->addText('variant_nomenclature', 'Variant Nomenclature', 20, 4000, false);
-	$theform->addText('qualifier2', 'Qualifier 2', 20, 4000, false);
+	$theform->addText('associated_with', 'Associated With', 20, 100, false);
+	$theform->addText('alteration', 'Alteration', 20, 100, false);
+	$theform->addText('alteration_location', 'Alteration Location', 20, 100, false);
+	$theform->addText('molecular_entity', 'Molecular Entity', 20, 100, false);
+	$theform->addText('variant_nomenclature', 'Variant Nomenclature', 20, 100, false);
+	
 	// set up objectRGDIDS to be passed into getAnnotationsHTMLTableByGenes() method later. 
 	$objectRGDIDS = array ();
 	foreach ($objectArray as $objkey => $objvalue) {
@@ -1716,7 +1726,14 @@ function curation_linkAnnotation() {
 			//   extract($rowValue) ; 
 			// $table->addRow( $objectname, 'RGD:' . $refvalue, $ontDesc, $qualifier, $evidence, $with_info);
 			for ($i = 0; $i < $relCount; $i++) {
-				$table->addRow($resultAnnotationForm->renderLabeledFields('objectnameL' . $i), 'RGD:' . $resultAnnotationForm->renderLabeledFields('refvalueL' . $i), $resultAnnotationForm->renderLabeledFields('ontDesc' . $i), $resultAnnotationForm->renderLabeledFields('qualifierL'), $resultAnnotationForm->renderLabeledFields('evidenceL' . $i), $resultAnnotationForm->renderLabeledFields('with_infoL' . $i), makeSpeciesLink($resultAnnotationForm->getValue('species' . $i)), $resultAnnotationForm->renderLabeledFields('select' . $i));
+				$table->addRow($resultAnnotationForm->renderLabeledFields('objectnameL' . $i),
+					'RGD:' . $resultAnnotationForm->renderLabeledFields('refvalueL' . $i),
+					$resultAnnotationForm->renderLabeledFields('ontDesc' . $i),
+					$resultAnnotationForm->renderLabeledFields('qualifierL'),
+					$resultAnnotationForm->renderLabeledFields('evidenceL' . $i),
+					$resultAnnotationForm->renderLabeledFields('with_infoL' . $i),
+					makeSpeciesLink($resultAnnotationForm->getValue('species' . $i)),
+					$resultAnnotationForm->renderLabeledFields('select' . $i));
 			}
 			// }
     
@@ -2003,26 +2020,25 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	}
 	// generate the SQL to return all annotations for the objects that the user has in their bucket
 	// except CHEBI and ClinVar pipeline annotations
-	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
-	$sql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-	$sql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-	$sql .= ' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+	$sqq = 'a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, '
+		  .'a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, '
+		  .'a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2, a.annotation_extension, a.gene_product_form_id '
+		  .'from full_annot a, rgd_ids r '
+	      .'WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND '
+	      .'  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds
+		  .' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+
+	$sql = 'select 1 as score, '.$sqq;
 //	$sql .= '  order by object_symbol, EVIDENCE, term ';
 
 	if($refIds != '' && $termAcc != '') {
-        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
-        $comboSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-        $comboSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-        $comboSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+        $comboSql = 'select 5 as score, '.$sqq;
         $comboSql .= ' and a.ref_rgd_id in (' . $refIds . ') and a.term_acc in (' . $termAccs . ')';
         $sql .= ' and a.ref_rgd_id not in (' . $refIds . ') and a.term_acc not in (' . $termAccs . ')';
         $sql = $comboSql . ' union ' . $sql;
     }
 	if ($refIds != '') {
-		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
-		$refSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-		$refSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-		$refSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+		$refSql = 'select 2 as score, '.$sqq;
 		$refSql .= ' and a.ref_rgd_id in (' . $refIds . ')';
 		if ($termAcc != '') {
 		    $refSql .= ' and a.term_acc not in (' . $termAccs . ')';
@@ -2032,10 +2048,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$sql = $refSql . ' union ' . $sql;
 	} 
 	if ($termAcc != '') {
-		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
-		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+		$termSql = 'select 4 as score, '.$sqq;;
 		$termSql .= ' and a.term_acc in (' . $termAccs . ')';
 		if ($refIds != '') {
             $termSql .= ' and a.ref_rgd_id not in (' . $refIds . ')';
@@ -2043,10 +2056,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		    $sql .= ' and a.term_acc not in (' . $termAccs . ')';
 		}
 		$sql = $termSql. ' union ' . $sql;
-		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2 from full_annot a, rgd_ids r ';
-		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+		$termSql = 'select 3 as score, '.$sqq;
 		$termSql .= ' and a.term_acc in (select distinct od.CHILD_TERM_ACC from ONT_DAG od connect by prior od.CHILD_TERM_ACC = od.PARENT_TERM_ACC start with od.PARENT_TERM_ACC in (' . $termAccs . '))';
 		$termSql .= ' and a.term_acc not in (' . $termAccs . ')';
 		$sql .= ' and a.term_acc not in (select distinct od.CHILD_TERM_ACC from ONT_DAG od connect by prior od.CHILD_TERM_ACC = od.PARENT_TERM_ACC start with od.PARENT_TERM_ACC in (' . $termAccs . '))';
@@ -2056,29 +2066,64 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 
 	$finalSql = 'select * from (' . $sql . ') b order by score desc, object_symbol, EVIDENCE, term';
 	$records = fetchRecords($finalSql);
-	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Evidence',  'With Info', hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'), 'Species', 'Modified','Notes');
+	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Associated With', 
+		hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'),
+		'Species', 'Modified','Notes');
   
 	$table->setAttributes('class="simple" width="100%"');
 	foreach ($records as $record) {
 		extract($record);
-		//$table->addRow(makeLink('<img src="icons/page_white_edit.png" border=0 title="Edit" alt="Edit">', 'curation', 'editAnnotation', array (
-	//		"fullAnnotKey",
-	//		$FULL_ANNOT_KEY
+
+		$editLink = makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token);
+		$colWithInfo = str_replace("|", "| ", $WITH_INFO ?? '');
+		$colAssociatedWith = str_replace("|", "| ", $ASSOCIATED_WITH ?? '');
+		//$colNotes = substr(str_replace('|','| ',$NOTES ?? ''), 0, 80);
+		$colNotes = str_replace('|','| ',$NOTES ?? '');
 	switch ($SCORE) {
 		case 5:
-    		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+    		$table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)),
+				'<font color="red">'.$TERM.'</font>',
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
     		break;
 		case 4:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
+				'<font color="red">'.$TERM.'</font>',
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		case 3:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="orange">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
+				'<font color="orange">'.$TERM.'</font>',
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		case 2:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)),
+				$TERM,
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		default:
-		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+			$table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
+				$TERM,
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 	}
 	}
 	$toReturn .= $table->toHtml();
@@ -2173,7 +2218,9 @@ function createReftoObject($refDBKey, $objRgdID, & $returnMessage) {
  * Variable $transferredNotes will get number of annotations that had their notes transferred
  * Returns the number of assocations created. 
  */
-function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, &$transferredNotes, &$not4curation, $associated_with='', $molecular_entity='', $alteration='', $alteration_location='', $variant_nomenclature='', $qualifier2='') {
+function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, &$transferredNotes, &$not4curation, $associated_with='',
+	$molecular_entity='', $alteration='', $alteration_location='', $variant_nomenclature='', $qualifier2='', $annotation_extension='', $gene_product_form_id='') {
+		
 	// Core Object information 
 	// echo " $evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID  " ; 
 	$objArray = getObjectInfoByRGID($coreObjectRGDID);
@@ -2231,12 +2278,14 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		'last_modified_date,' .
 		'curation_flag,' .
 		'qualifier,' .
+		'qualifier2,'.
 		'associated_with,' .
 		'molecular_entity,' .
 		'alteration,' .
 		'alteration_location,' .
 		'variant_nomenclature,' .
-		'qualifier2'.
+		'annotation_extension,' .
+		'gene_product_form_id' .
 	') VALUES ( '.
 	"FULL_ANNOT_SEQ.NEXTVAL," .
 	dbQuoteString($termName) . "," . // from ONT_TERMS.TERM
@@ -2255,12 +2304,14 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	$useridKey . ','.
 	"SYSDATE, SYSDATE, 'DO',".
 	dbQuoteString($qualifier) . ",".
+	dbQuoteString($qualifier2) . ",";
 	dbQuoteString($associated_with) . ",".
 	dbQuoteString($molecular_entity) . ",".
 	dbQuoteString($alteration) . ",".
 	dbQuoteString($alteration_location) . ",".
 	dbQuoteString($variant_nomenclature) . ",".
-	dbQuoteString($qualifier2) . ")";
+	dbQuoteString($annotation_extension) . ",";
+	dbQuoteString($gene_product_form_id) . ")";
 
 	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
@@ -2368,6 +2419,8 @@ function processAnnotationForm($theform) {
 	$alteration_location = $theform->getValue('alteration_location');
 	$variant_nomenclature = $theform->getValue('variant_nomenclature');
 	$qualifier2 = $theform->getValue('qualifier2');
+	$annotation_extension = $theform->getValue('annotation_extension');
+	$gene_product_form_id = $theform->getValue('gene_product_form_id');
 	//  $resultArray = array(); 
 	// dump ( $objectArray)  ;  dump (  $referenceArray) ; dump (  $onttermArray) ;
 	$relCnt = 0; // keep tack of each row being added.  
@@ -2461,6 +2514,8 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('alteration_location', $theform->getValue('alteration_location'));
 	$theRelform->AddHidden('variant_nomenclature', $theform->getValue('variant_nomenclature'));
 	$theRelform->AddHidden('qualifier2', $theform->getValue('qualifier2'));
+	$theRelform->AddHidden('annotation_extension', $theform->getValue('annotation_extension'));
+	$theRelform->AddHidden('gene_product_form_id', $theform->getValue('gene_product_form_id'));
 	$theRelform->AddHidden('relCount', $relCnt);
 	$theRelform->AddHidden('command', 'create');
 	
@@ -2881,6 +2936,8 @@ function curation_createAnnotationRelationship() {
 	$alteration_location = getRequestVarString('alteration_location');
 	$variant_nomenclature = getRequestVarString('variant_nomenclature');
 	$qualifier2 = getRequestVarString('qualifier2');
+	$annotation_extension = getRequestVarString('annotation_extension');
+	$gene_product_form_id = getRequestVarString('gene_product_form_id');
 
 	$returnMessage = '';
 	for ($i = 0; $i < $relCnt; $i++) {
@@ -2894,7 +2951,8 @@ function curation_createAnnotationRelationship() {
 		if ($selected == 'on') {
 			$transferredNotes = 0;
 			$not4curation = 0;
-			$numCreated += createAnnotations($evidence, $ontKeyRGDID, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, $transferredNotes, $not4curation, $associated_with, $molecular_entity, $alteration, $alteration_location, $variant_nomenclature, $qualifier2);
+			$numCreated += createAnnotations($evidence, $ontKeyRGDID, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, $transferredNotes, $not4curation,
+				$associated_with, $molecular_entity, $alteration, $alteration_location, $variant_nomenclature, $qualifier2, $annotation_extension, $gene_product_form_id);
 			if( $transferredNotes>0 ) {
 				$numTransferredNotes += $transferredNotes;
 			}
@@ -3186,16 +3244,18 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'references');
 //    if ($refArray != null)	$toString .= getReferenceOntoPubLink($refArray);
 	$toString .= $theform->endGroup();
-	$toString .= '<table width=100%><tr><td align=left width=40%>';
 
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'evidence', 'with_info', 'aspect');
-	$toString .= '</td><td width=60% align=left valign=bottom>';
-	$toString .= '<a name=\'result\'>&nbsp;</a>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
-	$toString .= '</td></tr></table>';
 	$toString .= '<table width=100%><tr><td align=left>';
-	$toString .= $theform->renderLabeledFieldsInColumns(2, 'associated_with', 'molecular_entity', 'alteration', 'alteration_location', 'variant_nomenclature', 'qualifier2');
-	$toString .= '</td></tr></table>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info', 'associated_with', 'alteration', 'molecular_entity');
+	$toString .= '</td><td align=left valign=bottom>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'annotation_extension', 'gene_product_form_id', 'alteration_location', 'variant_nomenclature');
+	$toString .= '</td><td align=left valign=bottom>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
+	$toString .= '</td></tr>';
+
+	$toString .= '<a name=\'result\'>&nbsp;</a>';
+	$toString .= '</table>';
+
 	$toString .= $theform->formEnd();
 
 	return $toString;
