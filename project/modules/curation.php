@@ -1271,7 +1271,8 @@ function curation_selectReferences() {
 	$theform->addText('condition', 'Additional Condition:', 120, 200, false);
 	
 	$toReturn .=  generateSearchOntoPubForm($theform);
-	
+	$toReturn .= '<input type="button" onClick="verifyOld()" value="Search in Old OntoMate">';
+
 	$toReturn .= '<p><p>';
 	
 	$toReturn .= '<p><center>-- OR --</center><p>';
@@ -1344,9 +1345,46 @@ function curation_selectReferences() {
 					';
 	$toReturn .= 'return false; ' . "\n";
 	$toReturn .= '} ' . "\n";
+	$toReturn .= 'function verifyOld() { ' . "\n";
+	$toReturn .= '
+			var form = document.forms["searchForm"];
+			var rs = "core=old&";
+			var objIdx = 0;
+			var termIdx = 0;
+			for (var i = 0; i < form.elements.length; i++) {
+				var element = form.elements[i];
+			    if (element.checked) {
+					if (element.name == "objectsFrom[]") {
+						rs += "qRgdIds[" + objIdx + "].rgdId=" + element.value + "&";
+			            objIdx ++;
+			        } else if (element.name == "looseMatch") {
+						rs += "qLooseMatch=true&";
+			        } else {
+						rs += "qOntoIds[" + termIdx + "].ontoId=" + element.value + "&";
+			            termIdx ++;
+					}
+			    } else if (element.name == "condition") {
+			            rs += "qCond=" + element.value + "&";
+				} else if (element.name == "geneCondition") {
+			            rs += "qGeneCond=" + element.value + "&";
+				}
+			};
+			rs += "userId=' .getUserID(). '&userFullName='. getUserFullName() .'";
+			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
+			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
+			console.log("RS:" +rs);
+		    if (wHandle != null && !wHandle.closed) {
+				wHandle.location.href=rs;
+			} else {
+				wHandle = window.open(rs, "_blank", "status = 1,height=750,width=1000,resizable=1,scrollbars=1,dependent=1,toolbar=1,location=1");
+			};
+			wHandle.focus();
+					';
+	$toReturn .= 'return false; ' . "\n";
+	$toReturn .= '} ' . "\n";
 	$toReturn .= '</script>' . "\n";
-	
-	
+
+
 	$keywords = trim(getRequestVarString('keywords'));
 	$author = trim(getRequestVarString('author'));
 	$year = trim(getRequestVarString('year'));
