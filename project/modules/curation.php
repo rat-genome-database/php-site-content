@@ -1351,7 +1351,7 @@ function curation_selectReferences() {
 	$toReturn .= 'function verifyOld() { ' . "\n";
 	$toReturn .= '
 			var form = document.forms["searchForm"];
-			var rs = "core=old&";
+			var rs = "qSource=old&";
 			var objIdx = 0;
 			var termIdx = 0;
 			for (var i = 0; i < form.elements.length; i++) {
