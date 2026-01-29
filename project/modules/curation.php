@@ -1271,6 +1271,8 @@ function curation_selectReferences() {
 	$theform->addText('condition', 'Additional Condition:', 120, 200, false);
 	
 	$toReturn .=  generateSearchOntoPubForm($theform);
+	$toReturn .= '<input type="button" onClick="verify()" value="Search in OntoMate">';
+	$toReturn .= '&nbsp;&nbsp;';
 	$toReturn .= '<input type="button" onClick="verifyOld()" value="Search in Old OntoMate">';
 
 	$toReturn .= '<p><p>';
@@ -3327,8 +3329,8 @@ function generateSearchOntoPubForm($theform) {
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'condition');
 	$toString .= $theform->endGroup();
 	$toString .= "<p>\n";
-	$toString .= $theform->formEnd();
-	
+	$toString .= '</form>';
+
 	return $toString;
 }
 
