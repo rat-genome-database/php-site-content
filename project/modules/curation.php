@@ -1239,7 +1239,7 @@ function curation_selectTerms() {
 			$toReturn .= '<script type="text/javascript">function accSelected(event){oid=event.originalEvent.data.split("|")[0];term=event.originalEvent.data.split("|")[1];location.href="/rgdCuration/?module=curation&func=addTermToBucket&searchTerm="+term+" ("+oid+")&termAcc="+oid;}; </script>';
 
 			$toReturn .= $theForm->quickRender();
-			$toReturn .= ' <div id="mydiv"><a href="https://ontomate.rgd.mcw.edu/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
+			$toReturn .= ' <div id="mydiv"><a href="https://dev.rgd.mcw.edu/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
    </iframe></div>';
 
 			return $toReturn;
@@ -1337,7 +1337,7 @@ function curation_selectReferences() {
 			};
 			rs += "userId=' .getUserID(). '&userFullName='. getUserFullName() .'";
 			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
-			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
+			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
 			console.log("RS:" +rs);
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
@@ -1374,7 +1374,7 @@ function curation_selectReferences() {
 			};
 			rs += "userId=' .getUserID(). '&userFullName='. getUserFullName() .'";
 			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
-			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
+			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
 			console.log("RS:" +rs);
 		    if (wHandle2 != null && !wHandle2.closed) {
 				wHandle2.location.href=rs;
@@ -3377,7 +3377,7 @@ function getReferenceOntoPubLink($refArray) {
 	$toReturn .= ' 
 			var rs = "' . $qs . '";
 			rs += "&curHost=' .$_SERVER['HTTP_HOST'] .'";
-			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;		
+			rs = "https://dev.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;		
 
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
