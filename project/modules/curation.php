@@ -1308,6 +1308,7 @@ function curation_selectReferences() {
 	$toReturn .= "<p><p>";
 	$toReturn .= '<script type="text/javascript"> ' . "\n";
 	$toReturn .= "var wHandle = null;" . "\n";
+	$toReturn .= "var wHandle2 = null;" . "\n";
 	$toReturn .= 'function verify() { ' . "\n";
 	$toReturn .= ' 
 			var form = document.forms["searchForm"];
@@ -1373,12 +1374,12 @@ function curation_selectReferences() {
 			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
 			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
 			console.log("RS:" +rs);
-		    if (wHandle != null && !wHandle.closed) {
-				wHandle.location.href=rs;
+		    if (wHandle2 != null && !wHandle2.closed) {
+				wHandle2.location.href=rs;
 			} else {
-				wHandle = window.open(rs, "_blank", "status = 1,height=750,width=1000,resizable=1,scrollbars=1,dependent=1,toolbar=1,location=1");
+				wHandle2 = window.open(rs, "_blank", "status = 1,height=750,width=1000,resizable=1,scrollbars=1,dependent=1,toolbar=1,location=1");
 			};
-			wHandle.focus();
+			wHandle2.focus();
 					';
 	$toReturn .= 'return false; ' . "\n";
 	$toReturn .= '} ' . "\n";
