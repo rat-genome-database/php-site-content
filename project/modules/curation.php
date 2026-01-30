@@ -1113,6 +1113,191 @@ function getEvidenceCodeArray() {
 	return $returnArray;
 }
 
+/**
+ * Returns an array of molecular entity options for dropdown
+ */
+function getMolecularEntityArray() {
+	return array (
+		"" => "",
+		"DNA" => "DNA",
+		"mRNA" => "mRNA",
+		"miRNA" => "miRNA",
+		"protein" => "protein",
+	);
+}
+
+/**
+ * Returns an array of alteration options for DNA molecular entity
+ */
+function getAlterationArrayDNA() {
+	return array (
+		"" => "",
+		"altered methylation" => "altered methylation",
+		"amplification" => "amplification",
+		"CNV(s)" => "CNV(s)",
+		"deletion(s)" => "deletion(s)",
+		"duplication(s)" => "duplication(s)",
+		"frameshift mutation(s)" => "frameshift mutation(s)",
+		"gene fusion(s)" => "gene fusion(s)",
+		"gene instability" => "gene instability",
+		"haploinsufficiency" => "haploinsufficiency",
+		"haplotype(s)" => "haplotype(s)",
+		"hypermethylation" => "hypermethylation",
+		"hypomethylation" => "hypomethylation",
+		"inversion" => "inversion",
+		"insertion(s)" => "insertion(s)",
+		"insertion/deletion" => "insertion/deletion",
+		"loss of heterozygosity" => "loss of heterozygosity",
+		"ltr(s)" => "ltr(s)",
+		"microsatellite instability" => "microsatellite instability",
+		"missense mutation(s)" => "missense mutation(s)",
+		"mutation(s)" => "mutation(s)",
+		"nonsense mutation(s)" => "nonsense mutation(s)",
+		"point mutation(s)" => "point mutation(s)",
+		"polymorphism(s)" => "polymorphism(s)",
+		"protein-truncating variant(s)" => "protein-truncating variant(s)",
+		"PTV(s)" => "PTV(s)",
+		"repeat(s)" => "repeat(s)",
+		"silent mutation" => "silent mutation",
+		"SNP(s)" => "SNP(s)",
+		"SNV(s)" => "SNV(s)",
+		"splice-site mutation(s)" => "splice-site mutation(s)",
+		"SSLP(s)" => "SSLP(s)",
+		"substitution(s)" => "substitution(s)",
+		"transition(s)" => "transition(s)",
+		"translocation(s)" => "translocation(s)",
+		"transversion(s)" => "transversion(s)",
+		"VNTR" => "VNTR",
+	);
+}
+
+/**
+ * Returns an array of alteration options for mRNA molecular entity
+ */
+function getAlterationArrayMRNA() {
+	return array (
+		"" => "",
+		"allelic imbalance" => "allelic imbalance",
+		"alternative form" => "alternative form",
+		"altered expression" => "altered expression",
+		"decreased editing" => "decreased editing",
+		"decreased expression" => "decreased expression",
+		"decreased stability" => "decreased stability",
+		"increased editing" => "increased editing",
+		"increased expression" => "increased expression",
+		"increased stability" => "increased stability",
+		"editing error(s)" => "editing error(s)",
+		"splice variant(s)" => "splice variant(s)",
+		"splicing error(s)" => "splicing error(s)",
+	);
+}
+
+/**
+ * Returns an array of alteration options for miRNA molecular entity
+ */
+function getAlterationArrayMiRNA() {
+	return array (
+		"" => "",
+		"altered expression" => "altered expression",
+		"decreased expression" => "decreased expression",
+		"increased expression" => "increased expression",
+	);
+}
+
+/**
+ * Returns an array of alteration options for protein molecular entity
+ */
+function getAlterationArrayProtein() {
+	return array (
+		"" => "",
+		"altered degradation" => "altered degradation",
+		"altered dimerization" => "altered dimerization",
+		"altered localization" => "altered localization",
+		"altered expression" => "altered expression",
+		"altered O-linked N-acetylglucosaminylation" => "altered O-linked N-acetylglucosaminylation",
+		"altered polymerization" => "altered polymerization",
+		"altered processing" => "altered processing",
+		"alternative form(s)" => "alternative form(s)",
+		"decreased acetylation" => "decreased acetylation",
+		"decreased carbonylation" => "decreased carbonylation",
+		"decreased degradation" => "decreased degradation",
+		"decreased DNA binding" => "decreased DNA binding",
+		"decreased dimerization" => "decreased dimerization",
+		"decreased expression" => "decreased expression",
+		"decreased glycation" => "decreased glycation",
+		"decreased glycosylation" => "decreased glycosylation",
+		"decreased homodimerization" => "decreased homodimerization",
+		"decreased homopolymerization" => "decreased homopolymerization",
+		"decreased hydroxylation" => "decreased hydroxylation",
+		"decreased internalization" => "decreased internalization",
+		"decreased localization" => "decreased localization",
+		"decreased methylation" => "decreased methylation",
+		"decreased modification" => "decreased modification",
+		"decreased nitration" => "decreased nitration",
+		"decreased nitrosylation" => "decreased nitrosylation",
+		"decreased O-linked N-acetylglucosaminylation" => "decreased O-linked N-acetylglucosaminylation",
+		"decreased oxidation" => "decreased oxidation",
+		"decreased phosphorylation" => "decreased phosphorylation",
+		"decreased processing" => "decreased processing",
+		"decreased promoter binding" => "decreased promoter binding",
+		"decreased S-glutathionylation" => "decreased S-glutathionylation",
+		"decreased secretion" => "decreased secretion",
+		"decreased serine phosphorylation" => "decreased serine phosphorylation",
+		"decreased stability" => "decreased stability",
+		"decreased sulfation" => "decreased sulfation",
+		"decreased sumoylation" => "decreased sumoylation",
+		"decreased threonine phosphorylation" => "decreased threonine phosphorylation",
+		"decreased tyrosine phosphorylation" => "decreased tyrosine phosphorylation",
+		"decreased tyrosine nitration" => "decreased tyrosine nitration",
+		"decreased ubiquitination" => "decreased ubiquitination",
+		"increased acetylation" => "increased acetylation",
+		"increased carbonylation" => "increased carbonylation",
+		"increased degradation" => "increased degradation",
+		"increased DNA binding" => "increased DNA binding",
+		"increased dimerization" => "increased dimerization",
+		"increased expression" => "increased expression",
+		"increased glycation" => "increased glycation",
+		"increased glycosylation" => "increased glycosylation",
+		"increased homodimerization" => "increased homodimerization",
+		"increased homopolymerization" => "increased homopolymerization",
+		"increased hydroxylation" => "increased hydroxylation",
+		"increased internalization" => "increased internalization",
+		"increased localization" => "increased localization",
+		"increased methylation" => "increased methylation",
+		"increased modification" => "increased modification",
+		"increased nitration" => "increased nitration",
+		"increased nitrosylation" => "increased nitrosylation",
+		"increased O-linked N-acetylglucosaminylation" => "increased O-linked N-acetylglucosaminylation",
+		"increased oxidation" => "increased oxidation",
+		"increased phosphorylation" => "increased phosphorylation",
+		"increased processing" => "increased processing",
+		"increased promoter binding" => "increased promoter binding",
+		"increased S-glutathionylation" => "increased S-glutathionylation",
+		"increased secretion" => "increased secretion",
+		"increased serine phosphorylation" => "increased serine phosphorylation",
+		"increased sulfation" => "increased sulfation",
+		"increased stability" => "increased stability",
+		"increased sumoylation" => "increased sumoylation",
+		"increased threonine phosphorylation" => "increased threonine phosphorylation",
+		"increased tyrosine nitration" => "increased tyrosine nitration",
+		"increased tyrosine phosphorylation" => "increased tyrosine phosphorylation",
+		"increased ubiquitination" => "increased ubiquitination",
+	);
+}
+
+/**
+ * Returns all alteration options as JSON for JavaScript
+ */
+function getAlterationOptionsJSON() {
+	$options = array(
+		"DNA" => array_keys(getAlterationArrayDNA()),
+		"mRNA" => array_keys(getAlterationArrayMRNA()),
+		"miRNA" => array_keys(getAlterationArrayMiRNA()),
+		"protein" => array_keys(getAlterationArrayProtein()),
+	);
+	return json_encode($options);
+}
+
 function getTermInfoByTermAcc($termAcc) {
 
 	$returnArray = array ();
@@ -1634,7 +1819,43 @@ function generateCoreToRefForm($theform, $objectArray, $referenceArray) {
 function curation_linkAnnotation() {
 
 	$toString = '<a name=\'title\'>&nbsp;</a>';
-	
+
+	// JavaScript for dynamic alteration dropdown based on molecular entity selection
+	$alterationOptionsJSON = getAlterationOptionsJSON();
+	$toString .= '<script type="text/javascript">
+	var alterationOptions = ' . $alterationOptionsJSON . ';
+
+	function updateAlterationDropdown() {
+		var molecularEntity = document.getElementById("molecular_entity");
+		var alteration = document.getElementById("alteration");
+
+		if (!molecularEntity || !alteration) return;
+
+		var selectedEntity = molecularEntity.value;
+		var options = alterationOptions[selectedEntity] || [""];
+
+		// Clear current options
+		alteration.innerHTML = "";
+
+		// Add new options
+		for (var i = 0; i < options.length; i++) {
+			var opt = document.createElement("option");
+			opt.value = options[i];
+			opt.text = options[i];
+			alteration.appendChild(opt);
+		}
+	}
+
+	// Run when page loads and when molecular entity changes
+	document.addEventListener("DOMContentLoaded", function() {
+		var molecularEntity = document.getElementById("molecular_entity");
+		if (molecularEntity) {
+			molecularEntity.addEventListener("change", updateAlterationDropdown);
+			updateAlterationDropdown(); // Initialize on page load
+		}
+	});
+	</script>';
+
 	setPageTitle("Make an Annotation");
 	if (!userLoggedIn()) {
 		return NOTLOGGEDIN_MSG;
@@ -1662,9 +1883,9 @@ function curation_linkAnnotation() {
 
 	$theform->addTextArea('notes', 'Notes', 10, 40, 1024, false);
 	$theform->addText('associated_with', 'Associated With', 20, 100, false);
-	$theform->addText('alteration', 'Alteration', 20, 100, false);
+	$theform->addSelect('molecular_entity', 'Molecular Entity', getMolecularEntityArray(), false);
 	$theform->addText('alteration_location', 'Alteration Location', 20, 100, false);
-	$theform->addText('molecular_entity', 'Molecular Entity', 20, 100, false);
+	$theform->addSelect('alteration', 'Alteration', array("" => ""), false);
 	$theform->addText('variant_nomenclature', 'Variant Nomenclature', 20, 100, false);
 	
 	// set up objectRGDIDS to be passed into getAnnotationsHTMLTableByGenes() method later. 
@@ -3246,7 +3467,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= $theform->endGroup();
 
 	$toString .= '<table width=100%><tr><td align=left>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info', 'associated_with', 'alteration', 'molecular_entity');
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info', 'associated_with', 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'annotation_extension', 'gene_product_form_id', 'alteration_location', 'variant_nomenclature');
 	$toString .= '</td><td align=left valign=bottom>';
