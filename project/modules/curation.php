@@ -1286,6 +1286,18 @@ function getAlterationArrayProtein() {
 }
 
 /**
+ * Returns all alteration options combined for form validation
+ */
+function getAllAlterationOptions() {
+	return array_merge(
+		getAlterationArrayDNA(),
+		getAlterationArrayMRNA(),
+		getAlterationArrayMiRNA(),
+		getAlterationArrayProtein()
+	);
+}
+
+/**
  * Returns all alteration options as JSON for JavaScript
  */
 function getAlterationOptionsJSON() {
@@ -1822,14 +1834,19 @@ function curation_linkAnnotation() {
 
 	// JavaScript for dynamic alteration dropdown based on molecular entity selection
 	$alterationOptionsJSON = getAlterationOptionsJSON();
+	$initialAlteration = getRequestVarString('alteration');
 	$toString .= '<script type="text/javascript">
 	var alterationOptions = ' . $alterationOptionsJSON . ';
+	var initialAlterationValue = ' . json_encode($initialAlteration) . ';
 
-	function updateAlterationDropdown() {
+	function updateAlterationDropdown(preserveValue) {
 		var molecularEntity = document.getElementById("molecular_entity");
 		var alteration = document.getElementById("alteration");
 
 		if (!molecularEntity || !alteration) return;
+
+		// Store the current value to restore after rebuilding
+		var currentValue = preserveValue ? alteration.value : initialAlterationValue;
 
 		var selectedEntity = molecularEntity.value;
 		var options = alterationOptions[selectedEntity] || [""];
@@ -1844,15 +1861,147 @@ function curation_linkAnnotation() {
 			opt.text = options[i];
 			alteration.appendChild(opt);
 		}
+
+		// Restore the selected value if it exists in the new options
+		if (currentValue) {
+			for (var i = 0; i < alteration.options.length; i++) {
+				if (alteration.options[i].value === currentValue) {
+					alteration.value = currentValue;
+					break;
+				}
+			}
+		}
 	}
 
 	// Run when page loads and when molecular entity changes
 	document.addEventListener("DOMContentLoaded", function() {
 		var molecularEntity = document.getElementById("molecular_entity");
 		if (molecularEntity) {
-			molecularEntity.addEventListener("change", updateAlterationDropdown);
-			updateAlterationDropdown(); // Initialize on page load
+			molecularEntity.addEventListener("change", function() { updateAlterationDropdown(true); });
+			updateAlterationDropdown(false); // Initialize on page load with initial value
 		}
+	});
+	</script>';
+
+	// jQuery libraries for autocomplete
+	$toString .= '<script src="/rgdweb/js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
+    <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-3.5.0.min.js"></script>
+    <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>';
+
+	// Autocomplete for Associated With field - limited to RDO, MP, HP ontologies
+	$toString .= '<script type="text/javascript">
+	var associationsList = [];
+
+	$(document).ready(function(){
+		$("#associated_with").autocomplete("/solr/OntoSolr/select", {
+			extraParams:{
+				"fq": "cat:(RDO MP HP)",
+				"wt": "velocity",
+				"bf": "term_len_l^.02",
+				"v.template": "termmatch",
+				"cacheLength": 0
+			},
+			scrollHeight: 240,
+			max: 40
+		});
+
+		// Update button visibility on page load
+		updateButtonVisibility();
+	});
+
+	function addFirstAssociation() {
+		var field = document.getElementById("associated_with");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add first term (no separator needed)
+		associationsList.push({value: currentValue, separator: ""});
+
+		// Update display and hidden field
+		updateAssociationDisplay();
+		updateHiddenField();
+		updateButtonVisibility();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function connectAssociation(separator) {
+		var field = document.getElementById("associated_with");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add term with the specified separator
+		associationsList.push({value: currentValue, separator: separator});
+
+		// Update display and hidden field
+		updateAssociationDisplay();
+		updateHiddenField();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function updateButtonVisibility() {
+		var addBtn = document.getElementById("btn_add_first");
+		var connectBtns = document.getElementById("btn_connect_group");
+
+		if (associationsList.length === 0) {
+			// Show only Add button
+			addBtn.style.display = "inline";
+			connectBtns.style.display = "none";
+		} else {
+			// Show Connect buttons
+			addBtn.style.display = "none";
+			connectBtns.style.display = "inline";
+		}
+	}
+
+	function updateAssociationDisplay() {
+		var displayField = document.getElementById("associated_with_display");
+		var html = "";
+
+		for (var i = 0; i < associationsList.length; i++) {
+			if (i > 0) {
+				var sepLabel = associationsList[i].separator === "|" ? " <strong>OR</strong> " : " <strong>AND</strong> ";
+				html += sepLabel;
+			}
+			html += "<span style=\"background-color:#e7f3ff; padding:2px 5px; border-radius:3px; margin:2px;\">" + associationsList[i].value + "</span>";
+		}
+		displayField.innerHTML = html;
+	}
+
+	function updateHiddenField() {
+		var hiddenField = document.getElementById("associated_with_values");
+		var combinedValue = "";
+
+		for (var i = 0; i < associationsList.length; i++) {
+			if (i > 0) {
+				combinedValue += associationsList[i].separator;
+			}
+			combinedValue += associationsList[i].value;
+		}
+		hiddenField.value = combinedValue;
+	}
+
+	function clearAssociations() {
+		associationsList = [];
+		document.getElementById("associated_with").value = "";
+		document.getElementById("associated_with_values").value = "";
+		document.getElementById("associated_with_display").innerHTML = "";
+		updateButtonVisibility();
+	}
+
+	// Before form submit, copy the combined value to associated_with field
+	$(document).ready(function(){
+		$("form").on("submit", function() {
+			var hiddenField = document.getElementById("associated_with_values");
+			var mainField = document.getElementById("associated_with");
+			if (hiddenField && hiddenField.value !== "") {
+				mainField.value = hiddenField.value;
+			}
+		});
 	});
 	</script>';
 
@@ -1885,7 +2034,7 @@ function curation_linkAnnotation() {
 	$theform->addText('associated_with', 'Associated With', 20, 100, false);
 	$theform->addSelect('molecular_entity', 'Molecular Entity', getMolecularEntityArray(), false);
 	$theform->addText('alteration_location', 'Alteration Location', 20, 100, false);
-	$theform->addSelect('alteration', 'Alteration', array("" => ""), false);
+	$theform->addSelect('alteration', 'Alteration', getAllAlterationOptions(), false);
 	$theform->addText('variant_nomenclature', 'Variant Nomenclature', 20, 100, false);
 	
 	// set up objectRGDIDS to be passed into getAnnotationsHTMLTableByGenes() method later. 
@@ -1941,18 +2090,22 @@ function curation_linkAnnotation() {
 			$toString .= $resultAnnotationForm->formStart();
 			
 			// $toString .= dump ( $resultArray ) ;
-			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Evidence', 'With Info', 'Species', 'Select');
+			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Qualifier 2', 'Evidence', 'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Species', 'Select');
 			$table->setAttributes('class="simple" width="100%"');
 			// foreach ( $resultArray as $objkey => $rowValue ) {
-			//   extract($rowValue) ; 
+			//   extract($rowValue) ;
 			// $table->addRow( $objectname, 'RGD:' . $refvalue, $ontDesc, $qualifier, $evidence, $with_info);
 			for ($i = 0; $i < $relCount; $i++) {
 				$table->addRow($resultAnnotationForm->renderLabeledFields('objectnameL' . $i),
 					'RGD:' . $resultAnnotationForm->renderLabeledFields('refvalueL' . $i),
 					$resultAnnotationForm->renderLabeledFields('ontDesc' . $i),
 					$resultAnnotationForm->renderLabeledFields('qualifierL'),
+					$resultAnnotationForm->renderLabeledFields('qualifier2L'),
 					$resultAnnotationForm->renderLabeledFields('evidenceL' . $i),
 					$resultAnnotationForm->renderLabeledFields('with_infoL' . $i),
+					$resultAnnotationForm->renderLabeledFields('associated_withL'),
+					$resultAnnotationForm->renderLabeledFields('molecular_entityL'),
+					$resultAnnotationForm->renderLabeledFields('alterationL'),
 					makeSpeciesLink($resultAnnotationForm->getValue('species' . $i)),
 					$resultAnnotationForm->renderLabeledFields('select' . $i));
 			}
@@ -2525,13 +2678,13 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	$useridKey . ','.
 	"SYSDATE, SYSDATE, 'DO',".
 	dbQuoteString($qualifier) . ",".
-	dbQuoteString($qualifier2) . ",";
+	dbQuoteString($qualifier2) . ",".
 	dbQuoteString($associated_with) . ",".
 	dbQuoteString($molecular_entity) . ",".
 	dbQuoteString($alteration) . ",".
 	dbQuoteString($alteration_location) . ",".
 	dbQuoteString($variant_nomenclature) . ",".
-	dbQuoteString($annotation_extension) . ",";
+	dbQuoteString($annotation_extension) . ",".
 	dbQuoteString($gene_product_form_id) . ")";
 
 	 dump ( "SQL " . $sql ) ;
@@ -2689,7 +2842,7 @@ function processAnnotationForm($theform) {
 			foreach ($onttermArray as $ontkey => $ontvalue) {
 				if ($autoAnn && substr($ontvalue, 0, 2) != 'DO'
 						&& substr($ontvalue, 0, 2) != 'PW' && substr($ontvalue, 0, 5) != 'CHEBI') break;
-				// restrict IGI orthologous ISO to disease terms
+				// restrict IGI Gorthologous ISO to disease terms
 				if ($autoAnn && $primeEvidence === 'IGI' && $evidence === 'ISO' && substr($ontvalue, 0, 2) != 'DO' ) break;
 
 				$oTermDescription = $ontTermsSessionArray[$ontvalue]; // f.e. '[C] clathrin complex'
@@ -2721,7 +2874,7 @@ function processAnnotationForm($theform) {
 			}
 		}
 	}
-	// fields that don't vary per row. 
+	// fields that don't vary per row.
 	$theRelform->AddHidden('notes', $theform->getValue('notes'));
 	$theRelform->addReadOnlyLabel('with_infoL', $theform->getValue('with_info'));
 //	$theRelform->addReadOnlyLabel('evidenceL', $theform->getValue('evidence'));
@@ -2729,12 +2882,16 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('evidence', $theform->getValue('evidence'));
 	$theRelform->addReadOnlyLabel('qualifierL', $theform->getValue('qualifier'));
 	$theRelform->AddHidden('qualifier', $theform->getValue('qualifier'));
+	$theRelform->addReadOnlyLabel('qualifier2L', $theform->getValue('qualifier2'));
+	$theRelform->AddHidden('qualifier2', $theform->getValue('qualifier2'));
+	$theRelform->addReadOnlyLabel('associated_withL', $theform->getValue('associated_with'));
 	$theRelform->AddHidden('associated_with', $theform->getValue('associated_with'));
+	$theRelform->addReadOnlyLabel('molecular_entityL', $theform->getValue('molecular_entity'));
 	$theRelform->AddHidden('molecular_entity', $theform->getValue('molecular_entity'));
+	$theRelform->addReadOnlyLabel('alterationL', $theform->getValue('alteration'));
 	$theRelform->AddHidden('alteration', $theform->getValue('alteration'));
 	$theRelform->AddHidden('alteration_location', $theform->getValue('alteration_location'));
 	$theRelform->AddHidden('variant_nomenclature', $theform->getValue('variant_nomenclature'));
-	$theRelform->AddHidden('qualifier2', $theform->getValue('qualifier2'));
 	$theRelform->AddHidden('annotation_extension', $theform->getValue('annotation_extension'));
 	$theRelform->AddHidden('gene_product_form_id', $theform->getValue('gene_product_form_id'));
 	$theRelform->AddHidden('relCount', $relCnt);
@@ -3467,7 +3624,23 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= $theform->endGroup();
 
 	$toString .= '<table width=100%><tr><td align=left>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info', 'associated_with', 'molecular_entity', 'alteration');
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info');
+
+	// Custom rendering for Associated With field with Add buttons
+	$toString .= '<table><tr><td>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'associated_with');
+	$toString .= '</td><td valign="bottom" style="padding-bottom:5px;">';
+	$toString .= '<button type="button" id="btn_add_first" onclick="addFirstAssociation(); return false;" title="Add association">Add</button> ';
+	$toString .= '<span id="btn_connect_group" style="display:none;">';
+	$toString .= '<button type="button" onclick="connectAssociation(\'|\'); return false;" title="Connect with OR">Connect with OR</button> ';
+	$toString .= '<button type="button" onclick="connectAssociation(\',\'); return false;" title="Connect with AND">Connect with AND</button> ';
+	$toString .= '</span>';
+	$toString .= '<button type="button" onclick="clearAssociations(); return false;" title="Clear all associations">Clear</button>';
+	$toString .= '</td></tr></table>';
+	$toString .= '<input type="hidden" id="associated_with_values" name="associated_with_values" value="">';
+	$toString .= '<div id="associated_with_display" style="padding:5px; margin-bottom:10px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:12px;"></div>';
+
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'annotation_extension', 'gene_product_form_id', 'alteration_location', 'variant_nomenclature');
 	$toString .= '</td><td align=left valign=bottom>';
