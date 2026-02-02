@@ -1470,7 +1470,9 @@ function curation_selectReferences() {
 	$toReturn .=  generateSearchOntoPubForm($theform);
 	$toReturn .= '<input type="button" onClick="verify()" value="Search in OntoMate">';
 	$toReturn .= '&nbsp;&nbsp;';
-	$toReturn .= '<input type="button" onClick="verifyOld()" value="Search in Old OntoMate">';
+	if (strpos($_SERVER['HTTP_HOST'], 'dev.') !== false) {
+		$toReturn .= '<input type="button" onClick="verifyOld()" value="Search in Old OntoMate">';
+	}
 
 	$toReturn .= '<p><p>';
 	
