@@ -2145,7 +2145,7 @@ function curation_linkAnnotation() {
 			$toString .= $resultAnnotationForm->formStart();
 			
 			// $toString .= dump ( $resultArray ) ;
-			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Qualifier 2', 'Evidence', 'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Species', 'Select');
+			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Qualifier 2', 'Evidence', 'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Variant Nomenclature', 'Alteration Location', 'Species', 'Select');
 			$table->setAttributes('class="simple" width="100%"');
 			// foreach ( $resultArray as $objkey => $rowValue ) {
 			//   extract($rowValue) ;
@@ -2161,6 +2161,8 @@ function curation_linkAnnotation() {
 					$resultAnnotationForm->renderLabeledFields('associated_withL'),
 					$resultAnnotationForm->renderLabeledFields('molecular_entityL'),
 					$resultAnnotationForm->renderLabeledFields('alterationL'),
+					$resultAnnotationForm->renderLabeledFields('variant_nomenclatureL'),
+					$resultAnnotationForm->renderLabeledFields('alteration_locationL'),
 					makeSpeciesLink($resultAnnotationForm->getValue('species' . $i)),
 					$resultAnnotationForm->renderLabeledFields('select' . $i));
 			}
@@ -2178,7 +2180,9 @@ function curation_linkAnnotation() {
 					} 
 					$toString .= '<h3>' . $relCount . ' Association(s) to be created:</h3>' ;
 					$toString .= '<a href="#title">Click here to revise</a><br>';
+					$toString .= '<div style="overflow-x: auto; max-width: 100%; border: 1px solid #ddd;">';
 					$toString .= $table->toHtml();
+					$toString .= '</div>';
 					$toString .= generateLinkAnnotaionFormHidden($theform, getBucketItems('GENE_OBJECT_BUCKET'));
 					$toString .= $resultAnnotationForm->formEnd();
 				}
@@ -2945,7 +2949,9 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('molecular_entity', $theform->getValue('molecular_entity'));
 	$theRelform->addReadOnlyLabel('alterationL', $theform->getValue('alteration'));
 	$theRelform->AddHidden('alteration', $theform->getValue('alteration'));
+	$theRelform->addReadOnlyLabel('alteration_locationL', $theform->getValue('alteration_location'));
 	$theRelform->AddHidden('alteration_location', $theform->getValue('alteration_location'));
+	$theRelform->addReadOnlyLabel('variant_nomenclatureL', $theform->getValue('variant_nomenclature'));
 	$theRelform->AddHidden('variant_nomenclature', $theform->getValue('variant_nomenclature'));
 	$theRelform->AddHidden('annotation_extension', $theform->getValue('annotation_extension'));
 	$theRelform->AddHidden('gene_product_form_id', $theform->getValue('gene_product_form_id'));
