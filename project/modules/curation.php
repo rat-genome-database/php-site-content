@@ -3849,7 +3849,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'alteration_location');
-	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Accession ID (for testing): </label><input type="text" id="alteration_location_accession" readonly style="font-size:11px; width:150px; background-color:#f0f0f0;"></div>';
+	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><input type="text" id="alteration_location_accession" readonly style="font-size:11px; width:150px; background-color:#f0f0f0;"></div>';
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
 	$toString .= '</td></tr>';
