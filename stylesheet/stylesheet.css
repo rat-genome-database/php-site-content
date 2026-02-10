@@ -43,6 +43,7 @@ table.simple td {
 }
 .mainpanel {
 	padding: 18px;
+	overflow-x: auto;
 }
 
 pre {
