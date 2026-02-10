@@ -2180,7 +2180,7 @@ function curation_linkAnnotation() {
 					} 
 					$toString .= '<h3>' . $relCount . ' Association(s) to be created:</h3>' ;
 					$toString .= '<a href="#title">Click here to revise</a><br>';
-					$toString .= '<div style="overflow-x: auto; max-width: 100%; border: 1px solid #ddd;">';
+					$toString .= '<div style="overflow-x: auto; max-width: calc(100vw - 150px); padding-bottom: 10px;">';
 					$toString .= $table->toHtml();
 					$toString .= '</div>';
 					$toString .= generateLinkAnnotaionFormHidden($theform, getBucketItems('GENE_OBJECT_BUCKET'));
