@@ -2060,6 +2060,17 @@ function curation_linkAnnotation() {
 			scrollHeight: 240,
 			max: 40
 		});
+
+		// Extract and display accession ID for testing
+		function extractAccessionId(value) {
+			var match = value.match(/\(([A-Z]+:\d+)\)/);
+			return match ? match[1] : "";
+		}
+
+		$("#alteration_location").on("change blur result", function() {
+			var accessionId = extractAccessionId($(this).val());
+			$("#alteration_location_accession").val(accessionId);
+		});
 	});
 	</script>';
 
@@ -3373,6 +3384,10 @@ function curation_createAnnotationRelationship() {
 	$molecular_entity = getRequestVarString('molecular_entity');
 	$alteration = getRequestVarString('alteration');
 	$alteration_location = getRequestVarString('alteration_location');
+	// Extract accession ID from alteration_location (e.g., "brain (UBERON:0000955)" -> "UBERON:0000955")
+	if (!empty($alteration_location) && preg_match('/\(([A-Z]+:\d+)\)/', $alteration_location, $matches)) {
+		$alteration_location = $matches[1];
+	}
 	$variant_nomenclature = getRequestVarString('variant_nomenclature');
 	$qualifier2 = getRequestVarString('qualifier2');
 	$annotation_extension = getRequestVarString('annotation_extension');
@@ -3704,6 +3719,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'alteration_location');
+	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Accession ID (for testing): </label><input type="text" id="alteration_location_accession" readonly style="font-size:11px; width:150px; background-color:#f0f0f0;"></div>';
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
 	$toString .= '</td></tr>';
