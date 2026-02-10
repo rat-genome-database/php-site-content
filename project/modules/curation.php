@@ -2070,9 +2070,6 @@ function curation_linkAnnotation() {
 	$theform->addText('with_info', 'With Info. ', 20, 200, false);
 	$theform->addHidden('command', 'generate');
 
-	$theform->addText('annotation_extension', 'Annotation Extension', 20, 100, false);
-	$theform->addText('gene_product_form_id', 'Gene Product Form ID', 20, 100, false);
-
 	$theform->addTextArea('notes', 'Notes', 10, 40, 1024, false);
 	$theform->addText('associated_with', 'Associated With', 20, 100, false);
 	$theform->addSelect('molecular_entity', 'Molecular Entity', getMolecularEntityArray(), false);
@@ -3685,7 +3682,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'annotation_extension', 'gene_product_form_id', 'alteration_location', 'variant_nomenclature');
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'alteration_location', 'variant_nomenclature');
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
 	$toString .= '</td></tr>';
