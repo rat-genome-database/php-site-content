@@ -15,9 +15,14 @@ function curationPanel_contents() {
 
 
 	if (!userLoggedIn()) {
+		if (strpos($_SERVER['HTTP_HOST'], 'dev.') !== false) {
+			$redirect_uri = 'https://dev.rgd.mcw.edu/rgdweb/curation/login.html';
+		} else {
+			$redirect_uri = 'https://pipelines.rgd.mcw.edu/rgdweb/curation/login.html';
+		}
 		$authorize_url = 'https://github.com/login/oauth/authorize?'.http_build_query([
-                    'client_id' => 'dc5513384190f8a788e5',
-                    'redirect_uri' => 'https://pipelines.rgd.mcw.edu/rgdweb/curation/login.html',
+                    'client_id' => '7de10c5ae2c3e3825007',
+                    'redirect_uri' => $redirect_uri,
                     'scope' => 'read:user',
                   ]);
 		$toReturn .= $pmb->begin_round();
