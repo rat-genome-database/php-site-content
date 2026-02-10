@@ -2146,7 +2146,7 @@ function curation_linkAnnotation() {
 			
 			// $toString .= dump ( $resultArray ) ;
 			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Qualifier 2', 'Evidence', 'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Variant Nomenclature', 'Alteration Location', 'Species', 'Select');
-			$table->setAttributes('class="simple" style="white-space: nowrap;"');
+			$table->setAttributes('class="simple" width="100%"');
 			// foreach ( $resultArray as $objkey => $rowValue ) {
 			//   extract($rowValue) ;
 			// $table->addRow( $objectname, 'RGD:' . $refvalue, $ontDesc, $qualifier, $evidence, $with_info);
@@ -2180,9 +2180,7 @@ function curation_linkAnnotation() {
 					} 
 					$toString .= '<h3>' . $relCount . ' Association(s) to be created:</h3>' ;
 					$toString .= '<a href="#title">Click here to revise</a><br>';
-					$toString .= '<div style="overflow-x: auto; width: 100%; padding-bottom: 15px;">';
 					$toString .= $table->toHtml();
-					$toString .= '</div>';
 					$toString .= generateLinkAnnotaionFormHidden($theform, getBucketItems('GENE_OBJECT_BUCKET'));
 					$toString .= $resultAnnotationForm->formEnd();
 				}
