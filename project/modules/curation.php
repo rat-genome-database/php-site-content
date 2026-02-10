@@ -2049,6 +2049,12 @@ function curation_linkAnnotation() {
 
 	// Autocomplete for Alteration Location field - limited to UBERON and CL ontologies
 	$(document).ready(function(){
+		// Extract accession ID from value like "brain (UBERON:0000955)" -> "UBERON:0000955"
+		function extractAccessionId(value) {
+			var match = value.match(/\(([A-Z]+:\d+)\)/);
+			return match ? match[1] : "";
+		}
+
 		$("#alteration_location").autocomplete("/solr/OntoSolr/select", {
 			extraParams:{
 				"fq": "cat:(UBERON CL)",
@@ -2059,18 +2065,23 @@ function curation_linkAnnotation() {
 			},
 			scrollHeight: 240,
 			max: 40
-		});
-
-		// Extract and display accession ID for testing
-		function extractAccessionId(value) {
-			var match = value.match(/\(([A-Z]+:\d+)\)/);
-			return match ? match[1] : "";
-		}
-
-		$("#alteration_location").on("change blur result", function() {
+		}).result(function(event, data, formatted) {
+			// Update test field when autocomplete result is selected
 			var accessionId = extractAccessionId($(this).val());
 			$("#alteration_location_accession").val(accessionId);
 		});
+
+		// Also update on blur (for manual entry)
+		$("#alteration_location").on("blur", function() {
+			var accessionId = extractAccessionId($(this).val());
+			$("#alteration_location_accession").val(accessionId);
+		});
+
+		// Also update on page load if field has a value
+		var initialValue = $("#alteration_location").val();
+		if (initialValue) {
+			$("#alteration_location_accession").val(extractAccessionId(initialValue));
+		}
 	});
 	</script>';
 
@@ -2960,8 +2971,14 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('molecular_entity', $theform->getValue('molecular_entity'));
 	$theRelform->addReadOnlyLabel('alterationL', $theform->getValue('alteration'));
 	$theRelform->AddHidden('alteration', $theform->getValue('alteration'));
-	$theRelform->addReadOnlyLabel('alteration_locationL', $theform->getValue('alteration_location'));
-	$theRelform->AddHidden('alteration_location', $theform->getValue('alteration_location'));
+	// Extract accession ID from alteration_location (e.g., "brain (UBERON:0000955)" -> "UBERON:0000955")
+	$alteration_location_raw = $theform->getValue('alteration_location');
+	$alteration_location_accession = $alteration_location_raw;
+	if (!empty($alteration_location_raw) && preg_match('/\(([A-Z]+:\d+)\)/', $alteration_location_raw, $matches)) {
+		$alteration_location_accession = $matches[1];
+	}
+	$theRelform->addReadOnlyLabel('alteration_locationL', $alteration_location_accession);
+	$theRelform->AddHidden('alteration_location', $alteration_location_accession);
 	$theRelform->addReadOnlyLabel('variant_nomenclatureL', $theform->getValue('variant_nomenclature'));
 	$theRelform->AddHidden('variant_nomenclature', $theform->getValue('variant_nomenclature'));
 	$theRelform->AddHidden('annotation_extension', $theform->getValue('annotation_extension'));
