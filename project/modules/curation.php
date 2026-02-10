@@ -2627,7 +2627,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 /**
  * Returns true if constraints will be ok , else returns false. 
  */
-function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key) {
+function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key, $qualifier2='', $associated_with='') {
 
 	$sql = "select FULL_ANNOT_KEY,NOTES from full_annot " .
 	'where ' .
@@ -2645,15 +2645,27 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	} else {
 		$sql .= ' and QUALIFIER is NULL ';
 	}
+	if (isReallySet($qualifier2)) {
+		$sql .= ' and QUALIFIER2 = ' . dbQuoteString($qualifier2) . ' ';
+	} else {
+		$sql .= ' and QUALIFIER2 is NULL ';
+	}
+	if (isReallySet($associated_with)) {
+		$sql .= ' and ASSOCIATED_WITH = ' . dbQuoteString($associated_with) . ' ';
+	} else {
+		$sql .= ' and ASSOCIATED_WITH is NULL ';
+	}
 
 	dump ($sql ) ;
-	// There is a constraint that the following foelds don't already exist. 
-	//            @TERM_ACC 
+	// There is a constraint that the following fields don't already exist.
+	//            @TERM_ACC
 	//            @ANNOTATED_OBJECT_RGD_ID
-	//            @REF_RGD_ID 
+	//            @REF_RGD_ID
 	//            @EVIDENCE
 	//            @WITH_INFO
 	//            @QUALIFIER
+	//            @QUALIFIER2
+	//            @ASSOCIATED_WITH
 	$full_annot_key = 0;
 	$resultConstraint = fetchRecord($sql);
 	if (count($resultConstraint) > 0) {
@@ -2811,7 +2823,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
 	$full_annot_key = 0;
-	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key)) {
+	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key, $qualifier2, $associated_with)) {
 
 		// This record already exists -- upgrade notes in already existing annotations
 		if( $full_annot_key>0 && isReallySet($notes) && strlen($notes)>0 ) {
