@@ -2146,7 +2146,7 @@ function curation_linkAnnotation() {
 			
 			// $toString .= dump ( $resultArray ) ;
 			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Qualifier 2', 'Evidence', 'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Variant Nomenclature', 'Alteration Location', 'Species', 'Select');
-			$table->setAttributes('class="simple"');
+			$table->setAttributes('class="simple" style="white-space: nowrap;"');
 			// foreach ( $resultArray as $objkey => $rowValue ) {
 			//   extract($rowValue) ;
 			// $table->addRow( $objectname, 'RGD:' . $refvalue, $ontDesc, $qualifier, $evidence, $with_info);
@@ -2180,9 +2180,9 @@ function curation_linkAnnotation() {
 					} 
 					$toString .= '<h3>' . $relCount . ' Association(s) to be created:</h3>' ;
 					$toString .= '<a href="#title">Click here to revise</a><br>';
-					$toString .= '<div style="width: 1100px; overflow: hidden;"><div style="overflow-x: scroll; padding-bottom: 15px;">';
+					$toString .= '<div style="overflow-x: auto; width: 100%; padding-bottom: 15px;">';
 					$toString .= $table->toHtml();
-					$toString .= '</div></div>';
+					$toString .= '</div>';
 					$toString .= generateLinkAnnotaionFormHidden($theform, getBucketItems('GENE_OBJECT_BUCKET'));
 					$toString .= $resultAnnotationForm->formEnd();
 				}
@@ -2499,10 +2499,10 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 
 	$finalSql = 'select * from (' . $sql . ') b order by score desc, object_symbol, EVIDENCE, term';
 	$records = fetchRecords($finalSql);
-	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Associated With', 
+	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Associated With',
 		hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'),
 		'Species', 'Modified','Notes');
-  
+
 	$table->setAttributes('class="simple" width="100%"');
 	foreach ($records as $record) {
 		extract($record);
@@ -2562,7 +2562,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	$toReturn .= $table->toHtml();
 	return $toReturn;
 }
-/** 
+/**
  * Returns true if constraints will be ok , else returns false. 
  */
 function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key) {
