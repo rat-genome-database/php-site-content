@@ -2026,6 +2026,38 @@ function curation_linkAnnotation() {
 			combinedValue += associationsList[i].value;
 		}
 		hiddenField.value = combinedValue;
+
+		// Update the "stored in database" display with extracted accession IDs
+		updateStoredDisplay(combinedValue);
+	}
+
+	// Extract accession IDs from the combined value while preserving | and , separators
+	function extractAccessionIds(value) {
+		if (!value) return "";
+		// Split by | and , while keeping the delimiters
+		var parts = value.split(/([|,])/);
+		var result = "";
+		for (var i = 0; i < parts.length; i++) {
+			if (parts[i] === "|" || parts[i] === ",") {
+				result += parts[i];
+			} else {
+				// Extract accession ID from this term (e.g., "term name (RDO:0000123)" -> "RDO:0000123")
+				var match = parts[i].match(/\(([A-Z]+:\d+)\)/);
+				if (match) {
+					result += match[1];
+				} else {
+					result += parts[i].trim(); // Keep original if no accession ID found
+				}
+			}
+		}
+		return result;
+	}
+
+	function updateStoredDisplay(combinedValue) {
+		var storedField = document.getElementById("associated_with_stored");
+		if (storedField) {
+			storedField.value = extractAccessionIds(combinedValue);
+		}
 	}
 
 	function clearAssociations() {
@@ -2033,6 +2065,8 @@ function curation_linkAnnotation() {
 		document.getElementById("associated_with").value = "";
 		document.getElementById("associated_with_values").value = "";
 		document.getElementById("associated_with_display").innerHTML = "";
+		var storedField = document.getElementById("associated_with_stored");
+		if (storedField) storedField.value = "";
 		updateButtonVisibility();
 	}
 
@@ -2045,6 +2079,12 @@ function curation_linkAnnotation() {
 				mainField.value = hiddenField.value;
 			}
 		});
+
+		// Initialize the "stored in database" display on page load if associated_with has a value
+		var initialAssociatedWith = document.getElementById("associated_with");
+		if (initialAssociatedWith && initialAssociatedWith.value) {
+			updateStoredDisplay(initialAssociatedWith.value);
+		}
 	});
 
 	// Autocomplete for Alteration Location field - limited to UBERON and CL ontologies
@@ -2965,8 +3005,32 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('qualifier', $theform->getValue('qualifier'));
 	$theRelform->addReadOnlyLabel('qualifier2L', $theform->getValue('qualifier2'));
 	$theRelform->AddHidden('qualifier2', $theform->getValue('qualifier2'));
-	$theRelform->addReadOnlyLabel('associated_withL', $theform->getValue('associated_with'));
-	$theRelform->AddHidden('associated_with', $theform->getValue('associated_with'));
+	// Extract accession IDs from associated_with while preserving | and , separators
+	// e.g., "heart disease (RDO:0000123)|brain tumor (RDO:0000456),liver disease (RDO:0000789)"
+	// becomes "RDO:0000123|RDO:0000456,RDO:0000789"
+	$associated_with_raw = $theform->getValue('associated_with');
+	$associated_with_accession = $associated_with_raw;
+	if (!empty($associated_with_raw)) {
+		// Split by | and , while keeping the delimiters
+		$parts = preg_split('/([|,])/', $associated_with_raw, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				// Extract accession ID from this term
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part); // Keep original if no accession ID found
+				}
+			}
+		}
+		$associated_with_accession = $result;
+	}
+	$theRelform->addReadOnlyLabel('associated_withL', $associated_with_accession);
+	$theRelform->AddHidden('associated_with', $associated_with_accession);
+	$theRelform->addReadOnlyLabel('associated_with_storedL', $associated_with_accession);
 	$theRelform->addReadOnlyLabel('molecular_entityL', $theform->getValue('molecular_entity'));
 	$theRelform->AddHidden('molecular_entity', $theform->getValue('molecular_entity'));
 	$theRelform->addReadOnlyLabel('alterationL', $theform->getValue('alteration'));
@@ -3398,6 +3462,24 @@ function curation_createAnnotationRelationship() {
 	$qualifier = getRequestVarString('qualifier');
 	$notes = getRequestVarString('notes');
 	$associated_with = getRequestVarString('associated_with');
+	// Extract accession IDs from associated_with while preserving | and , separators
+	// e.g., "heart disease (RDO:0000123)|brain tumor (RDO:0000456)" -> "RDO:0000123|RDO:0000456"
+	if (!empty($associated_with)) {
+		$parts = preg_split('/([|,])/', $associated_with, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part);
+				}
+			}
+		}
+		$associated_with = $result;
+	}
 	$molecular_entity = getRequestVarString('molecular_entity');
 	$alteration = getRequestVarString('alteration');
 	$alteration_location = getRequestVarString('alteration_location');
@@ -3732,6 +3814,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '</td></tr></table>';
 	$toString .= '<input type="hidden" id="associated_with_values" name="associated_with_values" value="">';
 	$toString .= '<div id="associated_with_display" style="padding:5px; margin-bottom:10px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:12px;"></div>';
+	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Associated With (stored in database): </label><input type="text" id="associated_with_stored" readonly style="font-size:11px; width:300px; background-color:#f0f0f0;"></div>';
 
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
