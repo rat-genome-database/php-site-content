@@ -2845,15 +2845,33 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
         if ($rowsUpdated==0) {
             $sql='update full_annot set data_src=\'RGD\' where term_acc= ' . dbQuoteString($termAcc) .
                 ' and ANNOTATED_OBJECT_RGD_ID=' . $coreObjectRGDID  .
-                  ' and REF_RGD_ID=' . $refRGDID .
-                   ' and EVIDENCE=' . dbQuoteString($evidence);
+                ' and REF_RGD_ID=' . $refRGDID .
+                ' and EVIDENCE=' . dbQuoteString($evidence);
 
-                   if ($with_info === null) {
-                        $sql = $sql . ' and WITH_INFO is null ';
-                    }else {
-                        $sql = $sql . ' and WITH_INFO=' . dbQuoteString($with_info);
-                    }
-                    $sql = $sql . ' and QUALIFIER= ' . dbQuoteString($qualifier);
+            // WITH_INFO null check
+            if (!isReallySet($with_info)) {
+                $sql .= ' and WITH_INFO is null ';
+            } else {
+                $sql .= ' and WITH_INFO=' . dbQuoteString($with_info);
+            }
+            // QUALIFIER null check
+            if (!isReallySet($qualifier)) {
+                $sql .= ' and QUALIFIER is null ';
+            } else {
+                $sql .= ' and QUALIFIER=' . dbQuoteString($qualifier);
+            }
+            // QUALIFIER2 null check
+            if (!isReallySet($qualifier2)) {
+                $sql .= ' and QUALIFIER2 is null ';
+            } else {
+                $sql .= ' and QUALIFIER2=' . dbQuoteString($qualifier2);
+            }
+            // ASSOCIATED_WITH null check
+            if (!isReallySet($associated_with)) {
+                $sql .= ' and ASSOCIATED_WITH is null ';
+            } else {
+                $sql .= ' and ASSOCIATED_WITH=' . dbQuoteString($associated_with);
+            }
 
             dump($sql);
             $rowsUpdated = executeUpdate($sql);
