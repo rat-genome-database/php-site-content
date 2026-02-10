@@ -1233,7 +1233,7 @@ function curation_selectTerms() {
 			$toReturn .= '<script type="text/javascript">function accSelected(event){oid=event.originalEvent.data.split("|")[0];term=event.originalEvent.data.split("|")[1];location.href="/rgdCuration/?module=curation&func=addTermToBucket&searchTerm="+term+" ("+oid+")&termAcc="+oid;}; </script>';
 
 			$toReturn .= $theForm->quickRender();
-			$toReturn .= ' <div id="mydiv"><a href="https://ontomate.rgd.mcw.edu/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
+			$toReturn .= ' <div id="mydiv"><a href="/solr/OntoSolr/browse?">OntoSolr ontology search tool</a><iframe id="frame" src="" width="100%" height="580">
    </iframe></div>';
 
 			return $toReturn;
@@ -1265,7 +1265,12 @@ function curation_selectReferences() {
 	$theform->addText('condition', 'Additional Condition:', 120, 200, false);
 	
 	$toReturn .=  generateSearchOntoPubForm($theform);
-	
+	$toReturn .= '<input type="button" onClick="verify()" value="Search in OntoMate">';
+	$toReturn .= '&nbsp;&nbsp;';
+	if (strpos($_SERVER['HTTP_HOST'], 'dev.') !== false) {
+		$toReturn .= '<input type="button" onClick="verifyOld()" value="Search in Old OntoMate">';
+	}
+
 	$toReturn .= '<p><p>';
 	
 	$toReturn .= '<p><center>-- OR --</center><p>';
@@ -1301,6 +1306,7 @@ function curation_selectReferences() {
 	$toReturn .= "<p><p>";
 	$toReturn .= '<script type="text/javascript"> ' . "\n";
 	$toReturn .= "var wHandle = null;" . "\n";
+	$toReturn .= "var wHandle2 = null;" . "\n";
 	$toReturn .= 'function verify() { ' . "\n";
 	$toReturn .= ' 
 			var form = document.forms["searchForm"];
@@ -1327,7 +1333,7 @@ function curation_selectReferences() {
 			};
 			rs += "userId=' .getUserID(). '&userFullName='. getUserFullName() .'";
 			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
-			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;
+			rs = "/QueryBuilder/getResultForCuration?" + rs;
 			console.log("RS:" +rs);
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
@@ -1338,9 +1344,46 @@ function curation_selectReferences() {
 					';
 	$toReturn .= 'return false; ' . "\n";
 	$toReturn .= '} ' . "\n";
+	$toReturn .= 'function verifyOld() { ' . "\n";
+	$toReturn .= '
+			var form = document.forms["searchForm"];
+			var rs = "qSource=old&";
+			var objIdx = 0;
+			var termIdx = 0;
+			for (var i = 0; i < form.elements.length; i++) {
+				var element = form.elements[i];
+			    if (element.checked) {
+					if (element.name == "objectsFrom[]") {
+						rs += "qRgdIds[" + objIdx + "].rgdId=" + element.value + "&";
+			            objIdx ++;
+			        } else if (element.name == "looseMatch") {
+						rs += "qLooseMatch=true&";
+			        } else {
+						rs += "qOntoIds[" + termIdx + "].ontoId=" + element.value + "&";
+			            termIdx ++;
+					}
+			    } else if (element.name == "condition") {
+			            rs += "qCond=" + element.value + "&";
+				} else if (element.name == "geneCondition") {
+			            rs += "qGeneCond=" + element.value + "&";
+				}
+			};
+			rs += "userId=' .getUserID(). '&userFullName='. getUserFullName() .'";
+			rs += "&userKey=' .getSessionVar('userKey'). '&curHost=' .$_SERVER['HTTP_HOST'] .'" ;
+			rs = "/QueryBuilder/getResultForCuration?" + rs;
+			console.log("RS:" +rs);
+		    if (wHandle2 != null && !wHandle2.closed) {
+				wHandle2.location.href=rs;
+			} else {
+				wHandle2 = window.open(rs, "_blank", "status = 1,height=750,width=1000,resizable=1,scrollbars=1,dependent=1,toolbar=1,location=1");
+			};
+			wHandle2.focus();
+					';
+	$toReturn .= 'return false; ' . "\n";
+	$toReturn .= '} ' . "\n";
 	$toReturn .= '</script>' . "\n";
-	
-	
+
+
 	$keywords = trim(getRequestVarString('keywords'));
 	$author = trim(getRequestVarString('author'));
 	$year = trim(getRequestVarString('year'));
@@ -3237,7 +3280,7 @@ function getReferenceOntoPubLink($refArray) {
 	$toReturn .= ' 
 			var rs = "' . $qs . '";
 			rs += "&curHost=' .$_SERVER['HTTP_HOST'] .'";
-			rs = "https://ontomate.rgd.mcw.edu/QueryBuilder/getResultForCuration?" + rs;		
+			rs = "/QueryBuilder/getResultForCuration?" + rs;		
 
 		    if (wHandle != null && !wHandle.closed) {
 				wHandle.location.href=rs;
