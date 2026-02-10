@@ -2046,6 +2046,21 @@ function curation_linkAnnotation() {
 			}
 		});
 	});
+
+	// Autocomplete for Alteration Location field - limited to UBERON and CL ontologies
+	$(document).ready(function(){
+		$("#alteration_location").autocomplete("/solr/OntoSolr/select", {
+			extraParams:{
+				"fq": "cat:(UBERON CL)",
+				"wt": "velocity",
+				"bf": "term_len_l^.02",
+				"v.template": "termmatch",
+				"cacheLength": 0
+			},
+			scrollHeight: 240,
+			max: 40
+		});
+	});
 	</script>';
 
 	setPageTitle("Make an Annotation");
@@ -3682,7 +3697,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'alteration_location', 'variant_nomenclature');
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'alteration_location');
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
 	$toString .= '</td></tr>';
