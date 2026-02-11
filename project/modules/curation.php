@@ -2885,6 +2885,28 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
         $with_info_str=dbQuoteString($with_info);
     }
 
+    // Handle NULL for qualifier2, associated_with, alteration_location
+    if (!isReallySet($qualifier2)) {
+        $qualifier2 = null;
+        $qualifier2_str = 'null';
+    } else {
+        $qualifier2_str = dbQuoteString($qualifier2);
+    }
+
+    if (!isReallySet($associated_with)) {
+        $associated_with = null;
+        $associated_with_str = 'null';
+    } else {
+        $associated_with_str = dbQuoteString($associated_with);
+    }
+
+    if (!isReallySet($alteration_location)) {
+        $alteration_location = null;
+        $alteration_location_str = 'null';
+    } else {
+        $alteration_location_str = dbQuoteString($alteration_location);
+    }
+
 	$sql = 'INSERT INTO full_annot ('.
 		'full_annot_key, '.
 		'term, '.
@@ -2931,11 +2953,11 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	$useridKey . ','.
 	"SYSDATE, SYSDATE, 'DO',".
 	dbQuoteString($qualifier) . ",".
-	dbQuoteString($qualifier2) . ",".
-	dbQuoteString($associated_with) . ",".
+	$qualifier2_str . ",".
+	$associated_with_str . ",".
 	dbQuoteString($molecular_entity) . ",".
 	dbQuoteString($alteration) . ",".
-	dbQuoteString($alteration_location) . ",".
+	$alteration_location_str . ",".
 	dbQuoteString($variant_nomenclature) . ",".
 	dbQuoteString($annotation_extension) . ",".
 	dbQuoteString($gene_product_form_id) . ")";
