@@ -1935,6 +1935,7 @@ function curation_linkAnnotation() {
 	// Autocomplete for Associated With field - limited to RDO, MP, HP ontologies
 	$toString .= '<script type="text/javascript">
 	var associationsList = [];
+	var alterationLocationsList = [];
 
 	$(document).ready(function(){
 		$("#associated_with").autocomplete("/solr/OntoSolr/select", {
@@ -2070,13 +2071,116 @@ function curation_linkAnnotation() {
 		updateButtonVisibility();
 	}
 
-	// Before form submit, copy the combined value to associated_with field
+	// ========== Alteration Location Functions ==========
+	function addFirstAlterationLocation() {
+		var field = document.getElementById("alteration_location");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add first term (no separator needed)
+		alterationLocationsList.push({value: currentValue, separator: ""});
+
+		// Update display and hidden field
+		updateAlterationLocationDisplay();
+		updateAlterationLocationHiddenField();
+		updateAlterationLocationButtonVisibility();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function connectAlterationLocation(separator) {
+		var field = document.getElementById("alteration_location");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add term with the specified separator
+		alterationLocationsList.push({value: currentValue, separator: separator});
+
+		// Update display and hidden field
+		updateAlterationLocationDisplay();
+		updateAlterationLocationHiddenField();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function updateAlterationLocationButtonVisibility() {
+		var addBtn = document.getElementById("btn_add_first_loc");
+		var connectBtns = document.getElementById("btn_connect_group_loc");
+
+		if (alterationLocationsList.length === 0) {
+			// Show only Add button
+			addBtn.style.display = "inline";
+			connectBtns.style.display = "none";
+		} else {
+			// Show Connect buttons
+			addBtn.style.display = "none";
+			connectBtns.style.display = "inline";
+		}
+	}
+
+	function updateAlterationLocationDisplay() {
+		var displayField = document.getElementById("alteration_location_display");
+		var html = "";
+
+		for (var i = 0; i < alterationLocationsList.length; i++) {
+			if (i > 0) {
+				var sepLabel = alterationLocationsList[i].separator === "|" ? " <strong>OR</strong> " : " <strong>AND</strong> ";
+				html += sepLabel;
+			}
+			html += "<span style=\"background-color:#e7f3ff; padding:2px 5px; border-radius:3px; margin:2px;\">" + alterationLocationsList[i].value + "</span>";
+		}
+		displayField.innerHTML = html;
+	}
+
+	function updateAlterationLocationHiddenField() {
+		var hiddenField = document.getElementById("alteration_location_values");
+		var combinedValue = "";
+
+		for (var i = 0; i < alterationLocationsList.length; i++) {
+			if (i > 0) {
+				combinedValue += alterationLocationsList[i].separator;
+			}
+			combinedValue += alterationLocationsList[i].value;
+		}
+		hiddenField.value = combinedValue;
+
+		// Update the "stored in database" display with extracted accession IDs
+		updateAlterationLocationStoredDisplay(combinedValue);
+	}
+
+	function updateAlterationLocationStoredDisplay(combinedValue) {
+		var storedField = document.getElementById("alteration_location_accession");
+		if (storedField) {
+			storedField.value = extractAccessionIds(combinedValue);
+		}
+	}
+
+	function clearAlterationLocations() {
+		alterationLocationsList = [];
+		document.getElementById("alteration_location").value = "";
+		document.getElementById("alteration_location_values").value = "";
+		document.getElementById("alteration_location_display").innerHTML = "";
+		var storedField = document.getElementById("alteration_location_accession");
+		if (storedField) storedField.value = "";
+		updateAlterationLocationButtonVisibility();
+	}
+
+	// Before form submit, copy the combined values to main fields
 	$(document).ready(function(){
 		$("form").on("submit", function() {
+			// Copy associated_with_values to associated_with
 			var hiddenField = document.getElementById("associated_with_values");
 			var mainField = document.getElementById("associated_with");
 			if (hiddenField && hiddenField.value !== "") {
 				mainField.value = hiddenField.value;
+			}
+			// Copy alteration_location_values to alteration_location
+			var hiddenFieldLoc = document.getElementById("alteration_location_values");
+			var mainFieldLoc = document.getElementById("alteration_location");
+			if (hiddenFieldLoc && hiddenFieldLoc.value !== "") {
+				mainFieldLoc.value = hiddenFieldLoc.value;
 			}
 		});
 
@@ -2085,6 +2189,16 @@ function curation_linkAnnotation() {
 		if (initialAssociatedWith && initialAssociatedWith.value) {
 			updateStoredDisplay(initialAssociatedWith.value);
 		}
+
+		// Initialize the "stored in database" display on page load if alteration_location has a value
+		var initialAlterationLocation = document.getElementById("alteration_location");
+		if (initialAlterationLocation && initialAlterationLocation.value) {
+			updateAlterationLocationStoredDisplay(initialAlterationLocation.value);
+		}
+
+		// Update button visibility for both fields on page load
+		updateButtonVisibility();
+		updateAlterationLocationButtonVisibility();
 	});
 
 	// Autocomplete for Alteration Location field - limited to UBERON and CL ontologies
@@ -2627,7 +2741,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 /**
  * Returns true if constraints will be ok , else returns false. 
  */
-function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key, $qualifier2='', $associated_with='') {
+function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key, $qualifier2='', $associated_with='', $alteration_location='') {
 
 	$sql = "select FULL_ANNOT_KEY,NOTES from full_annot " .
 	'where ' .
@@ -2655,6 +2769,11 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	} else {
 		$sql .= ' and ASSOCIATED_WITH is NULL ';
 	}
+	if (isReallySet($alteration_location)) {
+		$sql .= ' and ALTERATION_LOCATION = ' . dbQuoteString($alteration_location) . ' ';
+	} else {
+		$sql .= ' and ALTERATION_LOCATION is NULL ';
+	}
 
 	dump ($sql ) ;
 	// There is a constraint that the following fields don't already exist.
@@ -2666,6 +2785,7 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	//            @QUALIFIER
 	//            @QUALIFIER2
 	//            @ASSOCIATED_WITH
+	//            @ALTERATION_LOCATION
 	$full_annot_key = 0;
 	$resultConstraint = fetchRecord($sql);
 	if (count($resultConstraint) > 0) {
@@ -2823,7 +2943,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
 	$full_annot_key = 0;
-	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key, $qualifier2, $associated_with)) {
+	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key, $qualifier2, $associated_with, $alteration_location)) {
 
 		// This record already exists -- upgrade notes in already existing annotations
 		if( $full_annot_key>0 && isReallySet($notes) && strlen($notes)>0 ) {
@@ -2871,6 +2991,12 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
                 $sql .= ' and ASSOCIATED_WITH is null ';
             } else {
                 $sql .= ' and ASSOCIATED_WITH=' . dbQuoteString($associated_with);
+            }
+            // ALTERATION_LOCATION null check
+            if (!isReallySet($alteration_location)) {
+                $sql .= ' and ALTERATION_LOCATION is null ';
+            } else {
+                $sql .= ' and ALTERATION_LOCATION=' . dbQuoteString($alteration_location);
             }
 
             dump($sql);
@@ -3065,11 +3191,25 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('molecular_entity', $theform->getValue('molecular_entity'));
 	$theRelform->addReadOnlyLabel('alterationL', $theform->getValue('alteration'));
 	$theRelform->AddHidden('alteration', $theform->getValue('alteration'));
-	// Extract accession ID from alteration_location (e.g., "brain (UBERON:0000955)" -> "UBERON:0000955")
+	// Extract accession IDs from alteration_location while preserving | and , separators
+	// e.g., "brain (UBERON:0000955)|liver (UBERON:0002107)" -> "UBERON:0000955|UBERON:0002107"
 	$alteration_location_raw = $theform->getValue('alteration_location');
 	$alteration_location_accession = $alteration_location_raw;
-	if (!empty($alteration_location_raw) && preg_match('/\(([A-Z]+:\d+)\)/', $alteration_location_raw, $matches)) {
-		$alteration_location_accession = $matches[1];
+	if (!empty($alteration_location_raw)) {
+		$parts = preg_split('/([|,])/', $alteration_location_raw, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part);
+				}
+			}
+		}
+		$alteration_location_accession = $result;
 	}
 	$theRelform->addReadOnlyLabel('alteration_locationL', $alteration_location_accession);
 	$theRelform->AddHidden('alteration_location', $alteration_location_accession);
@@ -3513,9 +3653,23 @@ function curation_createAnnotationRelationship() {
 	$molecular_entity = getRequestVarString('molecular_entity');
 	$alteration = getRequestVarString('alteration');
 	$alteration_location = getRequestVarString('alteration_location');
-	// Extract accession ID from alteration_location (e.g., "brain (UBERON:0000955)" -> "UBERON:0000955")
-	if (!empty($alteration_location) && preg_match('/\(([A-Z]+:\d+)\)/', $alteration_location, $matches)) {
-		$alteration_location = $matches[1];
+	// Extract accession IDs from alteration_location while preserving | and , separators
+	// e.g., "brain (UBERON:0000955)|liver (UBERON:0002107)" -> "UBERON:0000955|UBERON:0002107"
+	if (!empty($alteration_location)) {
+		$parts = preg_split('/([|,])/', $alteration_location, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part);
+				}
+			}
+		}
+		$alteration_location = $result;
 	}
 	$variant_nomenclature = getRequestVarString('variant_nomenclature');
 	$qualifier2 = getRequestVarString('qualifier2');
@@ -3848,8 +4002,22 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
 	$toString .= '</td><td align=left valign=bottom>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'alteration_location');
-	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><input type="text" id="alteration_location_accession" readonly style="font-size:11px; width:150px; background-color:#f0f0f0;"></div>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature');
+
+	// Custom rendering for Alteration Location field with Add buttons
+	$toString .= '<table><tr><td>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'alteration_location');
+	$toString .= '</td><td valign="bottom" style="padding-bottom:5px;">';
+	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location">Add</button> ';
+	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
+	$toString .= '<button type="button" onclick="connectAlterationLocation(\'|\'); return false;" title="Connect with OR">Connect with OR</button> ';
+	$toString .= '<button type="button" onclick="connectAlterationLocation(\',\'); return false;" title="Connect with AND">Connect with AND</button> ';
+	$toString .= '</span>';
+	$toString .= '<button type="button" onclick="clearAlterationLocations(); return false;" title="Clear all locations">Clear</button>';
+	$toString .= '</td></tr></table>';
+	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
+	$toString .= '<div id="alteration_location_display" style="padding:5px; margin-bottom:10px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:12px;"></div>';
+	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><input type="text" id="alteration_location_accession" readonly style="font-size:11px; width:300px; background-color:#f0f0f0;"></div>';
 	$toString .= '</td><td align=left valign=bottom>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
 	$toString .= '</td></tr>';
