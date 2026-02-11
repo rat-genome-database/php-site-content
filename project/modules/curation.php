@@ -2741,7 +2741,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 /**
  * Returns true if constraints will be ok , else returns false. 
  */
-function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key, $qualifier2='', $associated_with='', $alteration_location='') {
+function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key, $qualifier2='', $associated_with='') {
 
 	$sql = "select FULL_ANNOT_KEY,NOTES from full_annot " .
 	'where ' .
@@ -2769,11 +2769,6 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	} else {
 		$sql .= ' and ASSOCIATED_WITH is NULL ';
 	}
-	if (isReallySet($alteration_location)) {
-		$sql .= ' and ALTERATION_LOCATION = ' . dbQuoteString($alteration_location) . ' ';
-	} else {
-		$sql .= ' and ALTERATION_LOCATION is NULL ';
-	}
 
 	dump ($sql ) ;
 	// There is a constraint that the following fields don't already exist.
@@ -2785,7 +2780,6 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	//            @QUALIFIER
 	//            @QUALIFIER2
 	//            @ASSOCIATED_WITH
-	//            @ALTERATION_LOCATION
 	$full_annot_key = 0;
 	$resultConstraint = fetchRecord($sql);
 	if (count($resultConstraint) > 0) {
@@ -2965,7 +2959,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
 	$full_annot_key = 0;
-	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key, $qualifier2, $associated_with, $alteration_location)) {
+	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key, $qualifier2, $associated_with)) {
 
 		// This record already exists -- upgrade notes in already existing annotations
 		if( $full_annot_key>0 && isReallySet($notes) && strlen($notes)>0 ) {
@@ -3013,12 +3007,6 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
                 $sql .= ' and ASSOCIATED_WITH is null ';
             } else {
                 $sql .= ' and ASSOCIATED_WITH=' . dbQuoteString($associated_with);
-            }
-            // ALTERATION_LOCATION null check
-            if (!isReallySet($alteration_location)) {
-                $sql .= ' and ALTERATION_LOCATION is null ';
-            } else {
-                $sql .= ' and ALTERATION_LOCATION=' . dbQuoteString($alteration_location);
             }
 
             dump($sql);
