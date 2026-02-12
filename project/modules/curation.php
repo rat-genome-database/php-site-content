@@ -1252,27 +1252,27 @@ function curation_selectReferences() {
 		return NOTLOGGEDIN_MSG;
 	}
 	$toReturn = 'You have the following options:<p>';
-	
+
 	$theform = newForm('Search in OntoMate', 'GET', 'curation', 'searchRefInOntoMate', 'searchForm');
 	$theform->confirmText = true;
 	$objectArray = getObjectArrayFromSession();
 	$ontTerms = getOntTermsArrayFromSession();
-	
+
 	$theform->addMultipleCheckBox('objectsFrom', '', $objectArray, false, "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp");
 	$theform->addText('geneCondition', 'Additional Condition:', 120, 200, false);
 	$theform->addCheckBox('looseMatch', 'Loose match', '');
 	$theform->addMultipleCheckBox('ontterms', '', $ontTerms, false, "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp");
 	$theform->addText('condition', 'Additional Condition:', 120, 200, false);
-	
+
 	$toReturn .=  generateSearchOntoPubForm($theform);
-	$toReturn .= '<input type="button" onClick="verify()" value="Search in OntoMate">';
+//	$toReturn .= '<input type="button" onClick="verify()" value="Search in OntoMate">';
 	$toReturn .= '&nbsp;&nbsp;';
 //	if (strpos($_SERVER['HTTP_HOST'], 'dev.') !== false) {
-		$toReturn .= '<input type="button" onClick="verifyOld()" value="Search in Old OntoMate">';
+	$toReturn .= '<input type="button" onClick="verifyOld()" value="Search in Old OntoMate">';
 //	}
 
 	$toReturn .= '<p><p>';
-	
+
 	$toReturn .= '<p><center>-- OR --</center><p>';
 
 	// Form to add one PubMedID directly.
@@ -1283,7 +1283,7 @@ function curation_selectReferences() {
 	$toReturn .= $pmidForm->quickRender();
 	$toReturn .= '</LEGEND></FIELDSET>';
 	$toReturn .= '<p><center>-- OR --</center><p>';
-	
+
 	$toReturn .= '<P><FIELDSET><LEGEND> Search By Existing Reference </legend>';
 	$theForm = newForm('Find References', 'GET', 'curation', 'selectReferences');
 	$theForm->addText('keywords', 'Keywords in Title, Citation, or RGDID:', 12, 80, false);
@@ -1299,10 +1299,10 @@ function curation_selectReferences() {
 	$toReturn .= '<p><center>-- OR --</center><p>';
 
 	$toReturn .= '<p><p>';
-	
+
 	// New update that does nto query remote screens
 	$toReturn .= makeExternalLink('Create a new Reference', "/tools/curation/ref_edit.cgi?action=new");
-	
+
 	$toReturn .= "<p><p>";
 	$toReturn .= '<script type="text/javascript"> ' . "\n";
 	$toReturn .= "var wHandle = null;" . "\n";
@@ -1390,8 +1390,8 @@ function curation_selectReferences() {
 	$resultsOrder = getRequestVarString('resultsOrder');
 
 	$toReturn .= '<p><p>';
-	
-	
+
+
 	switch ($theForm->getState()) {
 		case INITIAL_GET :
 			return $toReturn;
@@ -1411,7 +1411,7 @@ function curation_selectReferences() {
 			return $toString;
 			break;
 		default :
-			}
+	}
 	return $toReturn;
 
 }
@@ -3232,8 +3232,8 @@ function generateSearchOntoPubForm($theform) {
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'condition');
 	$toString .= $theform->endGroup();
 	$toString .= "<p>\n";
-	$toString .= $theform->formEnd();
-	
+	$toString .= '</form>';
+
 	return $toString;
 }
 
