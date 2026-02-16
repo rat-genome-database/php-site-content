@@ -2738,7 +2738,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 	}
 	}
-	$toReturn .= '<div style="overflow-x:auto;">' . $table->toHtml() . '</div>';
+	$toReturn .= '<div style="overflow-x:auto; max-width:calc(100vw - 200px);">' . $table->toHtml() . '</div>';
 	return $toReturn;
 }
 /**
