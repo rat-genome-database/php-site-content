@@ -2689,7 +2689,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$colMolecularEntity = $MOLECULAR_ENTITY ?? '';
 		$colAlteration = $ALTERATION ?? '';
 		$altLocVal = str_replace("|", "| ", $ALTERATION_LOCATION ?? '');
-		$colAlterationLocation = $altLocVal ? '<div style="max-width:100px; word-break:break-all;">' . $altLocVal . '</div>' : '';
+		$colAlterationLocation = $altLocVal ? '<div style="max-width:150px; word-break:break-all;">' . $altLocVal . '</div>' : '';
 		//$colNotes = substr(str_replace('|','| ',$NOTES ?? ''), 0, 80);
 		$colNotes = str_replace('|','| ',$NOTES ?? '');
 	switch ($SCORE) {
