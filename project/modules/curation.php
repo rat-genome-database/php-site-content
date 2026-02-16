@@ -2688,8 +2688,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$colAssociatedWith = str_replace("|", "| ", $ASSOCIATED_WITH ?? '');
 		$colMolecularEntity = $MOLECULAR_ENTITY ?? '';
 		$colAlteration = $ALTERATION ?? '';
-		$altLocVal = str_replace("|", "| ", $ALTERATION_LOCATION ?? '');
-		$colAlterationLocation = $altLocVal ? '<div style="max-width:150px; word-break:break-all;">' . $altLocVal . '</div>' : '';
+		$colAlterationLocation = str_replace("|", "| ", $ALTERATION_LOCATION ?? '');
 		//$colNotes = substr(str_replace('|','| ',$NOTES ?? ''), 0, 80);
 		$colNotes = str_replace('|','| ',$NOTES ?? '');
 	switch ($SCORE) {
@@ -2739,7 +2738,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 	}
 	}
-	$toReturn .= $table->toHtml();
+	$toReturn .= '<div style="overflow-x:auto;">' . $table->toHtml() . '</div>';
 	return $toReturn;
 }
 /**
