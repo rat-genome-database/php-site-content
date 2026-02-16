@@ -2675,7 +2675,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 
 	$finalSql = 'select * from (' . $sql . ') b order by score desc, object_symbol, EVIDENCE, term';
 	$records = fetchRecords($finalSql);
-	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Alteration Location',
+	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Assoc.With', 'Mol.Entity', 'Altr.', 'Altr.Loc',
 		hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'),
 		'Species', 'Modified','Notes');
 
