@@ -2675,7 +2675,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 
 	$finalSql = 'select * from (' . $sql . ') b order by score desc, object_symbol, EVIDENCE, term';
 	$records = fetchRecords($finalSql);
-	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Associated With',
+	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Alteration Location',
 		hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'),
 		'Species', 'Modified','Notes');
 
@@ -2686,6 +2686,9 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$editLink = makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token);
 		$colWithInfo = str_replace("|", "| ", $WITH_INFO ?? '');
 		$colAssociatedWith = str_replace("|", "| ", $ASSOCIATED_WITH ?? '');
+		$colMolecularEntity = $MOLECULAR_ENTITY ?? '';
+		$colAlteration = $ALTERATION ?? '';
+		$colAlterationLocation = str_replace("|", "| ", $ALTERATION_LOCATION ?? '');
 		//$colNotes = substr(str_replace('|','| ',$NOTES ?? ''), 0, 80);
 		$colNotes = str_replace('|','| ',$NOTES ?? '');
 	switch ($SCORE) {
@@ -2695,7 +2698,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 				makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)),
 				'<font color="red">'.$TERM.'</font>',
 				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
-				$colWithInfo, $colAssociatedWith,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
 				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
     		break;
 		case 4:
@@ -2704,7 +2707,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
 				'<font color="red">'.$TERM.'</font>',
 				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
-				$colWithInfo, $colAssociatedWith,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
 				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		case 3:
@@ -2713,7 +2716,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
 				'<font color="orange">'.$TERM.'</font>',
 				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
-				$colWithInfo, $colAssociatedWith,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
 				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		case 2:
@@ -2722,7 +2725,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 				makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)),
 				$TERM,
 				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
-				$colWithInfo, $colAssociatedWith,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
 				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		default:
@@ -2731,7 +2734,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
 				$TERM,
 				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
-				$colWithInfo, $colAssociatedWith,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
 				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 	}
 	}
