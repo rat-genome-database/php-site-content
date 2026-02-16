@@ -27,6 +27,7 @@ table.simple td {
 .leftpanel {
 	border-right:thin solid #BD1010;
 	padding: 4px;
+	min-width: 120px;
 }
 .headerpanel {
   border-bottom:thin solid #BD1010;
