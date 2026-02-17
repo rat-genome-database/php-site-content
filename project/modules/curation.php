@@ -2262,9 +2262,9 @@ function curation_linkAnnotation() {
 	$theform->addHidden('command', 'generate');
 
 	$theform->addTextArea('notes', 'Notes', 3, 40, 1024, false);
-	$theform->addTextArea('associated_with', 'Associated With', 3, 20, 100, false);
+	$theform->addTextArea('associated_with', 'Associated With', 1, 20, 100, false);
 	$theform->addSelect('molecular_entity', 'Molecular Entity', getMolecularEntityArray(), false);
-	$theform->addTextArea('alteration_location', 'Alteration Location', 2, 20, 100, false);
+	$theform->addTextArea('alteration_location', 'Alteration Location', 1, 20, 100, false);
 	$theform->addSelect('alteration', 'Alteration', getAllAlterationOptions(), false);
 	$theform->addText('variant_nomenclature', 'Variant Nomenclature', 20, 100, false);
 	$theform->addHidden('annotation_extension', '');
@@ -4016,9 +4016,9 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 
 	// Molecular Entity | Alteration | Alteration Location (single row)
 	$toString .= '<table width=100%><tr>';
-	$toString .= '<td valign=bottom style="padding-right:8px;">Molecular Entity ' . $theform->renderField('molecular_entity') . '</td>';
-	$toString .= '<td valign=bottom style="padding-right:8px;">Alteration ' . $theform->renderField('alteration') . '</td>';
-	$toString .= '<td valign=bottom>';
+	$toString .= '<td valign=top style="padding-right:8px;">Molecular Entity ' . $theform->renderField('molecular_entity') . '</td>';
+	$toString .= '<td valign=top style="padding-right:8px;">Alteration ' . $theform->renderField('alteration') . '</td>';
+	$toString .= '<td valign=top>';
 	$toString .= 'Alteration Location ' . $theform->renderField('alteration_location') . ' ';
 	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location">Add</button> ';
 	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
