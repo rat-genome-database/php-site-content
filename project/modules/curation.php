@@ -4014,9 +4014,11 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<div id="associated_with_display" style="padding:5px; margin-bottom:10px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:12px;"></div>';
 	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Associated With (stored in database): </label><input type="text" id="associated_with_stored" readonly style="font-size:11px; width:300px; background-color:#f0f0f0;"></div>';
 
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity', 'alteration');
+	// Row 1: Molecular Entity | Alteration | Alteration Location (side by side)
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'molecular_entity');
 	$toString .= '</td><td align=left valign=bottom>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature');
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'alteration');
+	$toString .= '</td><td align=left valign=bottom>';
 
 	// Custom rendering for Alteration Location field with Add buttons
 	$toString .= '<table><tr><td>';
@@ -4032,8 +4034,10 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
 	$toString .= '<div id="alteration_location_display" style="padding:5px; margin-bottom:10px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:12px;"></div>';
 	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><input type="text" id="alteration_location_accession" readonly style="font-size:11px; width:300px; background-color:#f0f0f0;"></div>';
-	$toString .= '</td><td align=left valign=bottom>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
+
+	// Row 2: Variant Nomenclature and Notes (below Molecular Entity)
+	$toString .= '</td></tr><tr><td align=left valign=bottom>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'notes');
 	$toString .= '</td></tr>';
 
 	$toString .= '<a name=\'result\'>&nbsp;</a>';
