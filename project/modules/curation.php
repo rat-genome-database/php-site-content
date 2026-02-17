@@ -4015,7 +4015,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Associated With (stored in database): </label><textarea id="associated_with_stored" readonly rows="2" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
 
 	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
-	$toString .= '<div style="margin-top:5px;">';
+	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
 	$toString .= 'Molecular Entity ' . $theform->renderField('molecular_entity');
 	$toString .= ' &nbsp; Alteration ' . $theform->renderField('alteration');
 	$toString .= ' &nbsp; Alteration Location ' . $theform->renderField('alteration_location') . ' ';
