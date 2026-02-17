@@ -4017,18 +4017,23 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
 	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
 	$toString .= 'Molecular Entity ' . $theform->renderField('molecular_entity');
-	$toString .= ' &nbsp; Alteration ' . $theform->renderField('alteration');
-	$toString .= ' &nbsp; Alteration Location ' . $theform->renderField('alteration_location') . ' ';
+	$toString .= ' &nbsp;&nbsp;&nbsp; Alteration ' . $theform->renderField('alteration');
+	$toString .= ' &nbsp;&nbsp;&nbsp; ';
+	// Wrap Alteration Location + its sub-elements in inline-block so grey div and stored field stay below it
+	$toString .= '<span style="display:inline-block; vertical-align:top; white-space:normal;">';
+	$toString .= '<span style="white-space:nowrap;">Alteration Location <span style="vertical-align:middle; display:inline-block;">' . $theform->renderField('alteration_location') . '</span> ';
 	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location">Add</button> ';
 	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
 	$toString .= '<button type="button" onclick="connectAlterationLocation(\'|\'); return false;" title="Connect with OR">Connect with OR</button> ';
 	$toString .= '<button type="button" onclick="connectAlterationLocation(\',\'); return false;" title="Connect with AND">Connect with AND</button> ';
 	$toString .= '</span>';
 	$toString .= '<button type="button" onclick="clearAlterationLocations(); return false;" title="Clear all locations">Clear</button>';
-	$toString .= '</div>';
+	$toString .= '</span>';
 	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
 	$toString .= '<div id="alteration_location_display" style="padding:3px; margin-top:3px; min-height:20px; max-width:400px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word;"></div>';
 	$toString .= '<div style="margin-top:3px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><textarea id="alteration_location_accession" readonly rows="2" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
+	$toString .= '</span>';
+	$toString .= '</div>';
 
 	// Variant Nomenclature and Notes
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'notes');
