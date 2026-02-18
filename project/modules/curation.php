@@ -3999,20 +3999,22 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<table width=100%><tr><td align=left>';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info');
 
-	// Custom rendering for Associated With field with Add buttons
-	$toString .= '<table><tr><td>';
+	// Custom rendering for Associated With field with Add buttons, grey div, and stored field (all on one row)
+	$toString .= '<table><tr><td valign="top">';
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'associated_with');
-	$toString .= '</td><td valign="bottom" style="padding-bottom:5px;">';
+	$toString .= '</td><td valign="top" style="padding-left:5px;">';
 	$toString .= '<button type="button" id="btn_add_first" onclick="addFirstAssociation(); return false;" title="Add association">Add</button> ';
 	$toString .= '<span id="btn_connect_group" style="display:none;">';
 	$toString .= '<button type="button" onclick="connectAssociation(\'|\'); return false;" title="Connect with OR">Connect with OR</button> ';
 	$toString .= '<button type="button" onclick="connectAssociation(\',\'); return false;" title="Connect with AND">Connect with AND</button> ';
 	$toString .= '</span>';
 	$toString .= '<button type="button" onclick="clearAssociations(); return false;" title="Clear all associations">Clear</button>';
-	$toString .= '</td></tr></table>';
+	$toString .= '</td><td valign="top" style="padding-left:10px;">';
 	$toString .= '<input type="hidden" id="associated_with_values" name="associated_with_values" value="">';
-	$toString .= '<div id="associated_with_display" style="padding:3px; margin-bottom:5px; min-height:20px; max-width:400px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word;"></div>';
-	$toString .= '<div style="margin-top:5px;"><label style="font-size:11px; color:#666;">Associated With (stored in database): </label><textarea id="associated_with_stored" readonly rows="2" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
+	$toString .= '<div id="associated_with_display" style="padding:3px; min-height:20px; max-width:300px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word;"></div>';
+	$toString .= '</td><td valign="top" style="padding-left:10px;">';
+	$toString .= '<label style="font-size:11px; color:#666;">Associated With (stored in database): </label><textarea id="associated_with_stored" readonly rows="1" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea>';
+	$toString .= '</td></tr></table>';
 
 	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
 	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
@@ -4031,7 +4033,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '</span>';
 	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
 	$toString .= '<div id="alteration_location_display" style="padding:3px; margin-top:3px; min-height:20px; max-width:400px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word;"></div>';
-	$toString .= '<div style="margin-top:3px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><textarea id="alteration_location_accession" readonly rows="2" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
+	$toString .= '<div style="margin-top:3px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><textarea id="alteration_location_accession" readonly rows="1" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
 	$toString .= '</span>';
 	$toString .= '</div>';
 
