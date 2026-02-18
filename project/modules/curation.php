@@ -4019,7 +4019,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<span style="vertical-align:middle;">Molecular Entity </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('molecular_entity') . '</span>';
 	$toString .= ' &nbsp;&nbsp;&nbsp; <span style="vertical-align:middle;">Alteration </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration') . '</span>';
 	$toString .= ' &nbsp;&nbsp;&nbsp; ';
-	$toString .= '<span style="display:inline-block; vertical-align:top;">';
+	$toString .= '<span style="display:inline-block; vertical-align:baseline;">';
 	$toString .= '<span id="alteration_location_label" style="vertical-align:middle;">Alteration Location </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration_location') . '</span> ';
 	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location" style="vertical-align:middle;">Add</button> ';
 	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
