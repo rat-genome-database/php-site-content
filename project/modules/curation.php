@@ -4011,7 +4011,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<button type="button" onclick="clearAssociations(); return false;" title="Clear all associations" style="vertical-align:middle;">Clear</button>';
 	$toString .= '<input type="hidden" id="associated_with_values" name="associated_with_values" value="">';
 	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="associated_with_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
-	$toString .= ' &nbsp;&nbsp; <span style="vertical-align:middle; font-size:11px; color:#666;">Associated With (stored in database): </span><span style="display:inline-block; vertical-align:middle;"><textarea id="associated_with_stored" readonly rows="1" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></span>';
+	$toString .= ' &nbsp;&nbsp; <span style="vertical-align:middle; color:#666;">Associated With (stored in database): </span><span style="display:inline-block; vertical-align:middle;"><textarea id="associated_with_stored" readonly rows="1" cols="25" style="background-color:#f0f0f0; resize:vertical;"></textarea></span>';
 	$toString .= '</div>';
 
 	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
@@ -4029,7 +4029,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
 	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="alteration_location_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
 	$toString .= '</div>';
-	$toString .= '<div id="alteration_location_stored_div" style="margin-top:3px;">Alteration Location (stored in database): <textarea id="alteration_location_accession" readonly rows="1" cols="35" style="background-color:#f0f0f0; resize:vertical;"></textarea></div>';
+	$toString .= '<div id="alteration_location_stored_div" style="margin-top:3px;"><span style="color:#666;">Alteration Location (stored in database): </span><textarea id="alteration_location_accession" readonly rows="1" cols="35" style="background-color:#f0f0f0; resize:vertical; vertical-align:middle;"></textarea></div>';
 	$toString .= '<script>document.addEventListener("DOMContentLoaded", function() { var label = document.getElementById("alteration_location_label"); var storedDiv = document.getElementById("alteration_location_stored_div"); if (label && storedDiv) { var rect = label.getBoundingClientRect(); var parentRect = storedDiv.parentElement.getBoundingClientRect(); storedDiv.style.marginLeft = (rect.left - parentRect.left) + "px"; } });</script>';
 
 	// Variant Nomenclature and Notes
