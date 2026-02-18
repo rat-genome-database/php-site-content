@@ -2201,7 +2201,7 @@ function curation_linkAnnotation() {
 		updateAlterationLocationButtonVisibility();
 	});
 
-	// Autocomplete for Alteration Location field - limited to UBERON and CL ontologies
+	// Autocomplete for Alteration Location field - limited to UBERON, CL, and SO ontologies
 	$(document).ready(function(){
 		// Extract accession ID from value like "brain (UBERON:0000955)" -> "UBERON:0000955"
 		function extractAccessionId(value) {
@@ -2211,7 +2211,7 @@ function curation_linkAnnotation() {
 
 		$("#alteration_location").autocomplete("/solr/OntoSolr/select", {
 			extraParams:{
-				"fq": "cat:(UBERON CL)",
+				"fq": "cat:(UBERON CL SO)",
 				"wt": "velocity",
 				"bf": "term_len_l^.02",
 				"v.template": "termmatch",
