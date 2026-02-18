@@ -4011,7 +4011,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<button type="button" onclick="clearAssociations(); return false;" title="Clear all associations" style="vertical-align:middle;">Clear</button>';
 	$toString .= '<input type="hidden" id="associated_with_values" name="associated_with_values" value="">';
 	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="associated_with_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
-	$toString .= ' &nbsp;&nbsp; <span style="vertical-align:middle; font-size:11px; color:#666;">Associated With (stored in database): </span><span style="display:inline-block; vertical-align:middle;"><textarea id="associated_with_stored" readonly rows="1" cols="20" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></span>';
+	$toString .= ' &nbsp;&nbsp; <span style="vertical-align:middle; font-size:11px; color:#666;">Associated With (stored in database): </span><span style="display:inline-block; vertical-align:middle;"><textarea id="associated_with_stored" readonly rows="1" cols="35" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></span>';
 	$toString .= '</div>';
 
 	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
@@ -4021,17 +4021,17 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= ' &nbsp;&nbsp;&nbsp; ';
 	// Wrap Alteration Location + its sub-elements in inline-block so grey div and stored field stay below it
 	$toString .= '<span style="display:inline-block; vertical-align:top; white-space:normal;">';
-	$toString .= '<span style="white-space:nowrap;">Alteration Location <span style="vertical-align:middle; display:inline-block;">' . $theform->renderField('alteration_location') . '</span> ';
-	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location">Add</button> ';
+	$toString .= '<span style="white-space:nowrap;"><span style="vertical-align:middle;">Alteration Location </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration_location') . '</span> ';
+	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location" style="vertical-align:middle;">Add</button> ';
 	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
-	$toString .= '<button type="button" onclick="connectAlterationLocation(\'|\'); return false;" title="Connect with OR">Connect with OR</button> ';
-	$toString .= '<button type="button" onclick="connectAlterationLocation(\',\'); return false;" title="Connect with AND">Connect with AND</button> ';
+	$toString .= '<button type="button" onclick="connectAlterationLocation(\'|\'); return false;" title="Connect with OR" style="vertical-align:middle;">Connect with OR</button> ';
+	$toString .= '<button type="button" onclick="connectAlterationLocation(\',\'); return false;" title="Connect with AND" style="vertical-align:middle;">Connect with AND</button> ';
 	$toString .= '</span>';
-	$toString .= '<button type="button" onclick="clearAlterationLocations(); return false;" title="Clear all locations">Clear</button>';
+	$toString .= '<button type="button" onclick="clearAlterationLocations(); return false;" title="Clear all locations" style="vertical-align:middle;">Clear</button>';
 	$toString .= '</span>';
 	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
-	$toString .= '<div id="alteration_location_display" style="padding:3px; margin-top:3px; min-height:20px; max-width:400px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word;"></div>';
-	$toString .= '<div style="margin-top:3px;"><label style="font-size:11px; color:#666;">Alteration Location (stored in database): </label><textarea id="alteration_location_accession" readonly rows="1" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
+	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="alteration_location_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
+	$toString .= ' &nbsp;&nbsp; <span style="vertical-align:middle; font-size:11px; color:#666;">Alteration Location (stored in database): </span><span style="display:inline-block; vertical-align:middle;"><textarea id="alteration_location_accession" readonly rows="1" cols="35" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></span>';
 	$toString .= '</span>';
 	$toString .= '</div>';
 
