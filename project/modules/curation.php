@@ -4019,6 +4019,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<span style="vertical-align:middle;">Molecular Entity </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('molecular_entity') . '</span>';
 	$toString .= ' &nbsp;&nbsp;&nbsp; <span style="vertical-align:middle;">Alteration </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration') . '</span>';
 	$toString .= ' &nbsp;&nbsp;&nbsp; ';
+	$toString .= '<span style="display:inline-block; vertical-align:top;">';
 	$toString .= '<span id="alteration_location_label" style="vertical-align:middle;">Alteration Location </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration_location') . '</span> ';
 	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location" style="vertical-align:middle;">Add</button> ';
 	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
@@ -4028,24 +4029,9 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<button type="button" onclick="clearAlterationLocations(); return false;" title="Clear all locations" style="vertical-align:middle;">Clear</button>';
 	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
 	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="alteration_location_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
-	$toString .= '</div>';
 	$toString .= '<div id="alteration_location_stored_div" style="margin-top:3px;"><span style="color:#666;">Alteration Location (stored in database): </span><textarea id="alteration_location_accession" readonly rows="1" cols="35" style="background-color:#f0f0f0; resize:vertical; vertical-align:middle;"></textarea></div>';
-	$toString .= '<script>
-	function alignStoredDiv() {
-		var label = document.getElementById("alteration_location_label");
-		var storedDiv = document.getElementById("alteration_location_stored_div");
-		if (label && storedDiv) {
-			var labelRect = label.getBoundingClientRect();
-			var storedRect = storedDiv.getBoundingClientRect();
-			var offset = labelRect.left - storedRect.left;
-			if (offset > 0) {
-				storedDiv.style.paddingLeft = offset + "px";
-			}
-		}
-	}
-	document.addEventListener("DOMContentLoaded", alignStoredDiv);
-	window.addEventListener("load", alignStoredDiv);
-	</script>';
+	$toString .= '</span>';
+	$toString .= '</div>';
 
 	// Variant Nomenclature and Notes
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'notes');
