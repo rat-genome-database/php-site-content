@@ -4000,21 +4000,18 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info');
 
 	// Custom rendering for Associated With field with Add buttons, grey div, and stored field (all on one row)
-	$toString .= '<table><tr><td valign="top">';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'associated_with');
-	$toString .= '</td><td valign="top" style="padding-left:5px;">';
+	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
+	$toString .= 'Associated With ' . $theform->renderField('associated_with') . ' ';
 	$toString .= '<button type="button" id="btn_add_first" onclick="addFirstAssociation(); return false;" title="Add association">Add</button> ';
 	$toString .= '<span id="btn_connect_group" style="display:none;">';
 	$toString .= '<button type="button" onclick="connectAssociation(\'|\'); return false;" title="Connect with OR">Connect with OR</button> ';
 	$toString .= '<button type="button" onclick="connectAssociation(\',\'); return false;" title="Connect with AND">Connect with AND</button> ';
 	$toString .= '</span>';
 	$toString .= '<button type="button" onclick="clearAssociations(); return false;" title="Clear all associations">Clear</button>';
-	$toString .= '</td><td valign="top" style="padding-left:10px;">';
 	$toString .= '<input type="hidden" id="associated_with_values" name="associated_with_values" value="">';
-	$toString .= '<div id="associated_with_display" style="padding:3px; min-height:20px; max-width:300px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word;"></div>';
-	$toString .= '</td><td valign="top" style="padding-left:10px;">';
-	$toString .= '<label style="font-size:11px; color:#666;">Associated With (stored in database): </label><textarea id="associated_with_stored" readonly rows="1" cols="25" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea>';
-	$toString .= '</td></tr></table>';
+	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:top; width:200px;"><div id="associated_with_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
+	$toString .= ' &nbsp;&nbsp; <span style="font-size:11px; color:#666;">Associated With (stored in database): </span><textarea id="associated_with_stored" readonly rows="1" cols="20" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea>';
+	$toString .= '</div>';
 
 	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
 	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
