@@ -4020,7 +4020,7 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= ' &nbsp;&nbsp;&nbsp; Alteration ' . $theform->renderField('alteration');
 	$toString .= ' &nbsp;&nbsp;&nbsp; ';
 	// Wrap Alteration Location + its sub-elements in inline-block so sub-elements stay below it
-	$toString .= '<span style="display:inline-block; vertical-align:middle; white-space:normal;">';
+	$toString .= '<span style="display:inline-block; vertical-align:top; white-space:normal;">';
 	$toString .= '<span style="white-space:nowrap;"><span style="vertical-align:middle;">Alteration Location </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration_location') . '</span> ';
 	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location" style="vertical-align:middle;">Add</button> ';
 	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
