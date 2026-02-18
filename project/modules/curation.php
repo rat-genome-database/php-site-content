@@ -4016,8 +4016,8 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 
 	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
 	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
-	$toString .= 'Molecular Entity ' . $theform->renderField('molecular_entity');
-	$toString .= ' &nbsp;&nbsp;&nbsp; Alteration ' . $theform->renderField('alteration');
+	$toString .= '<span style="vertical-align:middle;">Molecular Entity </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('molecular_entity') . '</span>';
+	$toString .= ' &nbsp;&nbsp;&nbsp; <span style="vertical-align:middle;">Alteration </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration') . '</span>';
 	$toString .= ' &nbsp;&nbsp;&nbsp; ';
 	$toString .= '<span style="vertical-align:middle;">Alteration Location </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration_location') . '</span> ';
 	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location" style="vertical-align:middle;">Add</button> ';
@@ -4029,7 +4029,8 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
 	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="alteration_location_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
 	$toString .= '</div>';
-	$toString .= '<div style="margin-top:3px;"><span style="font-size:11px; color:#666;">Alteration Location (stored in database): </span><textarea id="alteration_location_accession" readonly rows="1" cols="35" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
+	$toString .= '<div id="alteration_location_stored_div" style="margin-top:3px;"><span style="font-size:11px; color:#666;">Alteration Location (stored in database): </span><textarea id="alteration_location_accession" readonly rows="1" cols="35" style="font-size:11px; background-color:#f0f0f0; resize:vertical;"></textarea></div>';
+	$toString .= '<script>document.addEventListener("DOMContentLoaded", function() { var altLocField = document.getElementById("alteration_location"); var storedDiv = document.getElementById("alteration_location_stored_div"); if (altLocField && storedDiv) { var rect = altLocField.getBoundingClientRect(); var parentRect = storedDiv.parentElement.getBoundingClientRect(); storedDiv.style.marginLeft = (rect.left - parentRect.left) + "px"; } });</script>';
 
 	// Variant Nomenclature and Notes
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'notes');
