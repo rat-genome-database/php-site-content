@@ -867,13 +867,14 @@ function doSearchforQTLsByName($objectName, $urlSearchArray, $matchType) {
 	$sql .= ' where';
 	$sql .= ' c.rgd_id = r.rgd_id';
 	// take care of searching for RGDID directly here
+	// the RGD ID / name alternatives are grouped so the join condition applies to both
 	if (is_numeric($rgd_id_to_searchfor)) {
-		$sql .= ' and ( c.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
+		$sql .= ' and ( ( c.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
 	} else {
-		$sql .= ' and ';
+		$sql .= ' and ( ';
 	}
 	$sql .= '  ( upper ( c.qtl_name)  like \'' . strtoupper($objectName) . '\' or ';
-	$sql .= ' upper ( c.qtl_symbol ) like \'' . strtoupper($objectName) . '\' )';
+	$sql .= ' upper ( c.qtl_symbol ) like \'' . strtoupper($objectName) . '\' ) )';
 	$sql .= ' order by c.qtl_symbol';
 
 	//dump( $sql ) ; 
@@ -912,12 +913,13 @@ function doSearchforSSLPsByName($objectName, $urlSearchArray, $matchType) {
 		    where 
 		    s.rgd_id = r.rgd_id';
 	// take care of searching for RGDID directly here
+	// the RGD ID / name alternatives are grouped so the join condition applies to both
 	if (is_numeric($rgd_id_to_searchfor)) {
-		$sql .= ' and ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
+		$sql .= ' and ( ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
 	} else {
-		$sql .= ' and ';
+		$sql .= ' and ( ';
 	}
-	$sql .= ' upper ( s.rgd_name)  like \'' . strtoupper($objectName) . '\'  order by s.rgd_name';
+	$sql .= ' upper ( s.rgd_name)  like \'' . strtoupper($objectName) . '\' )  order by s.rgd_name';
 
 	// dump( $sql ) ; 
 	// $toReturn .= $sql . "<br>";
