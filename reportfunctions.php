@@ -22,23 +22,23 @@ $user = null) {
 
   $aspect = getAspect($ont_codes);
   	 
-  $objCount = count($object);
-  $specCount = count($species);
-  $evCount = count($evidence_code);
-  $aspectCount = count($aspect);
+  $objCount = count((array)$object);
+  $specCount = count((array)$species);
+  $evCount = count((array)$evidence_code);
+  $aspectCount = count((array)$aspect);
   $userkill=(!$user)?'--':'';  //if $user isn't passed in, userkill = '--',
   $distkill=(!$byannot)?'--':''; //etc, etc
   $aspectkill=(!$aspect)?'--':'';   //this comments out the relevant SQL
   $pipekill=(!$pipeline)?'--':'';
   $evidencekill=(!$evidence_code)?'--':'';
   $num=count($dateArray);
-  $csObject = join(",", $object);  //set up comma separated strings for the SQL
-    if (count($species) > 1){$species = join(",", $species);}
+  $csObject = join(",", (array)$object);  //set up comma separated strings for the SQL
+    if (count((array)$species) > 1){$species = join(",", $species);}
     
-    $neoEvidence = join(",", $evidence_code);
+    $neoEvidence = join(",", (array)$evidence_code);
     // $csEvidence = "'".str_replace(",", "','", $neoEvidence)."'";
     // not needed evidence array comes in a quoted strings
-    $csAspect = join(",", $aspect);
+    $csAspect = join(",", (array)$aspect);
     $toReturn=array();
 
       for ($i=0;$i<$num-1;$i++)
@@ -229,23 +229,23 @@ $user = null) {
 
   $aspect = getAspect($ont_codes);
   
-  $objCount = count($object);
-  $specCount = count($species);
-  $evCount = count($evidence_code);
-  $aspectCount = count($aspect);
+  $objCount = count((array)$object);
+  $specCount = count((array)$species);
+  $evCount = count((array)$evidence_code);
+  $aspectCount = count((array)$aspect);
   $userkill=(!$user)?'--':'';  //if $user isn't passed in, userkill = '--',
   $distkill=(!$byannot)?'--':''; //etc, etc
   $aspectkill=(!$aspect)?'--':'';   //this comments out the relevant SQL
   $pipekill=(!$pipeline)?'--':'';
   $evidencekill=(!$evidence_code)?'--':'';
   $num=count($dateArray);
-  $csObject = join(",", $object);  //set up comma separated strings for the SQL
-    if (count($species) > 1){$species = join(",", $species);}
+  $csObject = join(",", (array)$object);  //set up comma separated strings for the SQL
+    if (count((array)$species) > 1){$species = join(",", $species);}
     
-    $neoEvidence = join(",", $evidence_code);
+    $neoEvidence = join(",", (array)$evidence_code);
     // $csEvidence = "'".str_replace(",", "','", $neoEvidence)."'";
     // not needed evidence array comes in a quoted strings
-    $csAspect = join(",", $aspect);
+    $csAspect = join(",", (array)$aspect);
     $toReturn=array();
 
 

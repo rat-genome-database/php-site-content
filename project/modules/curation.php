@@ -956,14 +956,15 @@ function doSearchforStrainsByName($objectName, $urlSearchArray, $matchType) {
 			LEFT JOIN aliases a ON s.rgd_id=a.rgd_id
 		    WHERE object_status=\'ACTIVE\'';
 	// take care of searching for RGDID directly here
+	// the RGD ID / name alternatives are grouped so the ACTIVE filter applies to both
 	if (is_numeric($rgd_id_to_searchfor)) {
-		$sql .= ' and ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
+		$sql .= ' and ( ( s.rgd_id = ' . $rgd_id_to_searchfor . ' ) or ';
 	} else {
-		$sql .= ' and ';
+		$sql .= ' and ( ';
 	}
-	$sql .= ' ( upper ( s.full_name)  like \'' . strtoupper($objectName) . '\' or 
+	$sql .= ' ( upper ( s.full_name)  like \'' . strtoupper($objectName) . '\' or
 		    upper ( s.strain_symbol ) like \'' . strtoupper($objectName) . '\' or
-		    upper ( a.alias_value ) like \'' . strtoupper($objectName) . '\' )';
+		    upper ( a.alias_value ) like \'' . strtoupper($objectName) . '\' ) )';
 
 	$sql .= ' order by s.strain_symbol';
 

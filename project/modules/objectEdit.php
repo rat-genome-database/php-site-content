@@ -124,9 +124,9 @@ function objectEdit_updateQTLS() {
         $sql = 'select q.*, r.species_type_key  from QTLS q , rgd_ids r where QTL_KEY  = '. $qtlKey .' and q.rgd_id = r.rgd_id ';
         $entry = fetchRecord($sql);
         $theForm->setDefaults($entry);
-        $speciesID = $entry{'SPECIES_TYPE_KEY'};
+        $speciesID = $entry['SPECIES_TYPE_KEY'];
         $theForm->setDefault('species', $speciesID);
-        setPageTitle('Update QTL Entry for RGDID: '. $entry{'RGD_ID'});
+        setPageTitle('Update QTL Entry for RGDID: '. $entry['RGD_ID']);
       } else {
         setPageTitle('New QTL Entry');
       }
