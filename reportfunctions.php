@@ -318,15 +318,16 @@ return "</h2></br></br>".makeLink('Export as CSV','report5','CSVPrep',array('tac
  function getActiveUser()
 {
  
+  // the curators in the main users table (the same table the GitHub sign-in uses)
   $sql ="
-    select USER_KEY, FIRST_NAME from USERS 
-    where ACTIVE_YN = 'Y'
-    and PRIVILEGE = 'write'";
-   
-   $result= fetchRecords($sql,'LOGIN');
+    select USER_KEY, FIRST_NAME, LAST_NAME from USERS
+    order by FIRST_NAME, LAST_NAME";
+
+   $result= fetchRecords($sql);
+   $toReturn = array();
     foreach($result as $key =>$value)
    {
-   $toReturn[$value['USER_KEY']]= $value['FIRST_NAME'];
+   $toReturn[$value['USER_KEY']]= trim($value['FIRST_NAME'].' '.$value['LAST_NAME']);
    }
   //var_dump($result);
   //exit(0);

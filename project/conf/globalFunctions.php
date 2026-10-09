@@ -485,14 +485,6 @@ function displayUserLevel($level) {
   }
 }
 
-function getLoginForm() {
-  $theForm = newForm('Login', 'POST', 'admin', 'login');
-
-  $theForm->addText('username', 'Username', 12, 80, false);
-  $theForm->addPassword('password', 'Password', 12, 50, false);
-  return $theForm;
-}
-
 function getGenderArray() {
   return array (
   'M' => 'Male',
@@ -844,10 +836,6 @@ function getResponseArray() {
   }
 }
 
-function getActiveArray() {
-  return array( 'Y' => "Active", 'N' => "Inactive" ) ;
-}
-
 /**
  * Return the next value for a particular $rowname from $table
  */
@@ -858,48 +846,6 @@ function getNextDBKey (  $table,  $dbconnection = NULL ) {
 }
 
 
-/**
- * The letter l (lowercase L) and the number 1
- * have been removed, as they can be mistaken
- * for each other.
- */
-
-function createRandomPassword($size = 7) {
-
-    if ( $size < 2 ) { $size = 7; }
-    $chars = "abcdefghijkmnopqrstuvwxyz023456789";
-    srand((double)microtime()*1000000);
-    $i = 0;
-    $pass = '' ;
-
-    while ($i <= $size -1 ) {
-        $num = rand() % 33;
-        $tmp = substr($chars, $num, 1);
-        $pass = $pass . $tmp;
-        $i++;
-    }
-
-    return $pass;
-
-}
-
-function getSecurityRoleArray() {
-  static $returnArray ;
-  if (isset($returnArray)) {
-    return $returnArray;
-  }
-  else {
-    // $theArray = fetchArrayForSelectField('select code, descr from cd_roles order by descr');
-    $theArray = fetchRecords('select distinct ( user_group )  from users order by user_group', 'LOGIN');
-    foreach ( $theArray as $key => $role) {
-     //  dump ($role['USER_GROUP'] ) ;
-      $returnArray[$role['USER_GROUP']] = $role['USER_GROUP'];
-    }
-    // dump ( $returnArray);
-    return $returnArray;
-  }
-
-}
 
 function getScanTypeArray() {
   static $theArray;
