@@ -853,8 +853,8 @@ function getActiveArray() {
  */
 function getNextDBKey (  $table,  $dbconnection = NULL ) {
   // $keyArray = fetchRecord( "select max(". $rowName . ") +1 as value from " . $table, $dbconnection ) ;
-  $keyArray = fetchRecord ( "select " . $table . "_seq.nextval as value from dual", $dbconnection ) ;
-  return $keyArray['VALUE'];
+  // getSeq() emits nextval('<seq>') on PostgreSQL and <seq>.nextval on Oracle for the given connection
+  return getSeq ( $table . "_seq", $dbconnection ) ;
 }
 
 
@@ -890,7 +890,7 @@ function getSecurityRoleArray() {
   }
   else {
     // $theArray = fetchArrayForSelectField('select code, descr from cd_roles order by descr');
-    $theArray = fetchRecords('select unique ( user_group )  from users order by user_group', 'LOGIN');
+    $theArray = fetchRecords('select distinct ( user_group )  from users order by user_group', 'LOGIN');
     foreach ( $theArray as $key => $role) {
      //  dump ($role['USER_GROUP'] ) ;
       $returnArray[$role['USER_GROUP']] = $role['USER_GROUP'];
@@ -1621,7 +1621,7 @@ function getObjectInfoByRGID($rgdID) {
       break;
 
     case 'REFERENCES' :
-      $result = fetchRecord('select ref.*, r.OBJECT_KEY from references ref  , rgd_ids r where   ref.rgd_id = r.rgd_id and  ref.rgd_id = ' . $rgdID);
+      $result = fetchRecord('select ref.*, r.OBJECT_KEY from "references" ref  , rgd_ids r where   ref.rgd_id = r.rgd_id and  ref.rgd_id = ' . $rgdID);
       $returnArray['OBJECT_KEY'] = $result['OBJECT_KEY'];
       $returnArray['TITLE'] = $result['TITLE'];
       $returnArray['ID'] = $result['RGD_ID'];
@@ -1866,23 +1866,23 @@ function getEvidenceArrayForDropDown($not=true,$annot='GO')
     //eco($annot,2);
     if ($annot[0]=='G')
     {
-        $sql='select unique(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'G%\'';
+        $sql='select distinct(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'G%\'';
     }
     elseif ($annot[0]=='D')
     {
-        $sql='select unique(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'D%\'';
+        $sql='select distinct(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'D%\'';
     }
     elseif ($annot[0]=='P')
     {
-        $sql='select unique(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'PW%\'';
+        $sql='select distinct(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'PW%\'';
     }
     elseif ($annot[0]=='M')
     {
-        $sql='select unique(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'MP%\'';
+        $sql='select distinct(f.evidence) as EVIDENCE from full_annot f,genes g, rgd_ids r where g.rgd_id=r.rgd_id and f.annotated_object_rgd_id=g.rgd_id and f.term_acc like \'MP%\'';
     }
     else
     {
-        $sql='select unique(f.evidence) as EVIDENCE from full_annot f';
+        $sql='select distinct(f.evidence) as EVIDENCE from full_annot f';
     }
     $result=fetchRecords($sql);
     //var_dump($result);

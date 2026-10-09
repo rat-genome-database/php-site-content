@@ -141,7 +141,7 @@ function objectEdit_updateQTLS() {
       
       $result = fetchRecord($sql);
       if (count($result) != 0) {
-        executeUpdate('update QTLS set ' . getFieldsForUpdate($theForm) . ' where QTL_KEY =  ' . dbQuoteString($qtlKey));
+        executeUpdate('update QTLS set ' . getFieldsForUpdateWithNull($theForm) . ' where QTL_KEY =  ' . dbQuoteString($qtlKey));
         executeUpdate('update rgd_ids set species_type_key  = ' . $newSpeciesID . ' where rgd_id =  ( select rgd_id from qtls where qtl_key =' . $qtlKey . ')' );
         redirectWithMessage('QTL  successfully changed', makeUrl('objectEdit', 'updateQTLS', array ( 'QTL_KEY' => $qtlKey)));
       } else {

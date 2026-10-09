@@ -97,7 +97,7 @@ function getGenesByMonth($dateArray,$pipeline)
     {
         if (!$pipeline)
         {
-            $sql="select count(UNIQUE( G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
+            $sql="select count(DISTINCT( G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
         }
         else
         {
@@ -217,7 +217,7 @@ function getVariantsByMonth($dateArray,$pipeline)
     {
         if (!$pipeline)
         {
-            $sql="select count(UNIQUE(G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and g.GENE_TYPE_LC='splice' and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
+            $sql="select count(DISTINCT(G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and g.GENE_TYPE_LC='splice' and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
         }
         else
         {
@@ -339,7 +339,7 @@ function getPseudogenesByMonth($dateArray,$pipeline)
     {
         if (!$pipeline)
         {
-            $sql="select count(UNIQUE( G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and  r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and (g.GENE_TYPE_LC='pseudo' or g.GENE_TYPE_LC='pseudogene') and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
+            $sql="select count(DISTINCT( G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and  r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and (g.GENE_TYPE_LC='pseudo' or g.GENE_TYPE_LC='pseudogene') and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
         }
         else
         {
@@ -458,7 +458,7 @@ function getCumMonthlyGWAnyAnnotationsByMonth($dateArray,$pipeline)
     $num=count($dateArray);
     $dateArray[$num-1]+=5;
     $toReturn=array();
-    $sql="select count ( unique (  g.gene_symbol ) )
+    $sql="select count ( distinct (  g.gene_symbol ) ) as COUNT
     from genes g, full_annot f ,  rgd_ids r
     where g.rgd_id = f.annotated_object_rgd_id
     and r.object_status = 'ACTIVE'
@@ -469,9 +469,9 @@ function getCumMonthlyGWAnyAnnotationsByMonth($dateArray,$pipeline)
         $sql.=' and ((f.created_by not in (69,70) or f.created_by is null) and f.evidence!=\'IEA\' and (f.xref_source like \'PMID%\' or f.evidence not in(\'ISS\')))';
     }
     $result=fetchRecord($sql);
-    $total=$result['COUNT(UNIQUE(G.GENE_SYMBOL))'];
+    $total=$result['COUNT'];
     //echo $total.'</br>';
-    $sql="select count ( unique (  g.gene_symbol ) )
+    $sql="select count ( distinct (  g.gene_symbol ) ) as COUNT
     from genes g, full_annot f ,  rgd_ids r
     where g.rgd_id = f.annotated_object_rgd_id
     and r.object_status = 'ACTIVE'
@@ -484,12 +484,12 @@ function getCumMonthlyGWAnyAnnotationsByMonth($dateArray,$pipeline)
         $sql.=' and ((f.created_by not in (69,70) or f.created_by is null) and f.evidence!=\'IEA\' and (f.xref_source like \'PMID%\' or f.evidence not in(\'ISS\')))';
     }
     $result=fetchRecord($sql);
-    $total-=$result['COUNT(UNIQUE(G.GENE_SYMBOL))'];
+    $total-=$result['COUNT'];
     //$toReturn[]=$total;
     //echo $total.'</br>';
     for ($i=0;$i<$num-1;$i++)
     {
-        $sql="select count ( unique (  g.gene_symbol ) )
+        $sql="select count ( distinct (  g.gene_symbol ) ) as COUNT
         from genes g, full_annot f ,  rgd_ids r
         where g.rgd_id = f.annotated_object_rgd_id
         and r.object_status = 'ACTIVE'
@@ -514,7 +514,7 @@ function getCumMonthlyGWAnyAnnotationsByMonth($dateArray,$pipeline)
         //dump($result);
         //echo('\n\n');
         //$total-=$result['COUNT(UNIQUE(G.GENE_SYMBOL))'];
-        $toReturn[]=$total-$result['COUNT(UNIQUE(G.GENE_SYMBOL))'];
+        $toReturn[]=$total-$result['COUNT'];
     }
     $toReturn[]=$total;
     //var_dump($toReturn);
@@ -605,7 +605,7 @@ function getGWMBCAnnotationsByMonth($dateArray,$pipeline)
     $toReturn=array();
     for ($i=0;$i<$num-1;$i++)
     {
-        $sql="select count ( unique ( g.gene_key) )    from genes g, rgd_ids r , full_annot f
+        $sql="select count ( distinct ( g.gene_key) ) as COUNT    from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -634,7 +634,7 @@ function getGWMBCAnnotationsByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         //dump($result);
         //echo('\n\n');
-        $toReturn[]=$result['COUNT(UNIQUE(G.GENE_KEY))'];
+        $toReturn[]=$result['COUNT'];
     }
     return $toReturn;
 }
@@ -948,8 +948,8 @@ function getReferences()
     //for ($i=0;$i<$num-1;$i++)
     //{
     $sql="
-    select   count ( r.ref_key )
-    from references  r , rgd_ids
+    select   count ( r.ref_key ) as COUNT
+    from \"references\"  r , rgd_ids
     where
     r.rgd_id = rgd_ids .rgd_id
     and rgd_ids.object_status  = 'ACTIVE'";
@@ -957,7 +957,7 @@ function getReferences()
     $result = fetchRecord($sql);
     //dump($result);
     //echo('\n\n');
-    $toReturn+=$result['COUNT(R.REF_KEY)'];
+    $toReturn+=$result['COUNT'];
     //}
     return $toReturn;
 }
@@ -1050,7 +1050,7 @@ function getXDB()
     //for ($i=0;$i<$num-1;$i++)
     //{
     $sql="
-    select count(distinct a.rgd_id) from RGD_ACC_XDB a, RGD_IDS r where a.rgd_id=r.rgd_id and r.species_type_key in ($species) and r.OBJECT_STATUS='ACTIVE' and a.XDB_KEY=$XDB and a.ACC_ID is not null";
+    select count(distinct a.rgd_id) as COUNT from RGD_ACC_XDB a, RGD_IDS r where a.rgd_id=r.rgd_id and r.species_type_key in ($species) and r.OBJECT_STATUS='ACTIVE' and a.XDB_KEY=$XDB and a.ACC_ID is not null";
     //echo "$sql<br><br>";
     if (!$pipeline)
     {
@@ -1060,7 +1060,7 @@ function getXDB()
     $result = fetchRecord($sql);
     //dump($result);
     //echo('\n\n');
-    $toReturn+=$result['COUNT(DISTINCTA.RGD_ID)'];
+    $toReturn+=$result['COUNT'];
     //}
     return $toReturn;
 }
@@ -1160,7 +1160,7 @@ function getCumMonthlyReferencesByMonth($dateArray,$pipeline)
     if (!$pipeline)
     {
         $sql="select   count ( r.ref_key )  as COUNT
-        from full_annot f, references  r , rgd_ids
+        from full_annot f, \"references\"  r , rgd_ids
         where r.rgd_id = f.annotated_object_rgd_id and
         r.rgd_id = rgd_ids .rgd_id
         and rgd_ids.object_status  = 'ACTIVE'";
@@ -1168,7 +1168,7 @@ function getCumMonthlyReferencesByMonth($dateArray,$pipeline)
     else
     {
         $sql="select   count ( r.ref_key )  as COUNT
-        from references  r , rgd_ids
+        from \"references\"  r , rgd_ids
         where
         r.rgd_id = rgd_ids .rgd_id
         and rgd_ids.object_status  = 'ACTIVE'";
@@ -1184,8 +1184,8 @@ function getCumMonthlyReferencesByMonth($dateArray,$pipeline)
     //echo $total.'</br>';
     if (!$pipeline)
     {
-        $sql="select   count ( r.ref_key )
-        from full_annot f, references  r , rgd_ids
+        $sql="select   count ( r.ref_key ) as COUNT
+        from full_annot f, \"references\"  r , rgd_ids
         where r.rgd_id = f.annotated_object_rgd_id and
         r.rgd_id = rgd_ids .rgd_id
         and rgd_ids.object_status  = 'ACTIVE'
@@ -1194,8 +1194,8 @@ function getCumMonthlyReferencesByMonth($dateArray,$pipeline)
     }
     else
     {
-        $sql="select   count ( r.ref_key )
-        from references  r , rgd_ids
+        $sql="select   count ( r.ref_key ) as COUNT
+        from \"references\"  r , rgd_ids
         where
         r.rgd_id = rgd_ids .rgd_id
         and rgd_ids.object_status  = 'ACTIVE'
@@ -1209,15 +1209,15 @@ function getCumMonthlyReferencesByMonth($dateArray,$pipeline)
         and ((f.created_by not in (69,70) or f.created_by is null) and f.evidence!=\'IEA\' and (f.xref_source like \'PMID%\' or f.evidence not in(\'ISS\')))';
     }
     $result=fetchRecord($sql);
-    $total-=$result['COUNT(R.REF_KEY)'];
+    $total-=$result['COUNT'];
     //$toReturn[]=$total;
     //echo $total.'</br>';
     for ($i=0;$i<$num-1;$i++)
     {
         if (!$pipeline)
         {
-            $sql="select   count ( r.ref_key )
-            from full_annot f, references  r , rgd_ids
+            $sql="select   count ( r.ref_key ) as COUNT
+            from full_annot f, \"references\"  r , rgd_ids
             where r.rgd_id = f.annotated_object_rgd_id and
             r.rgd_id = rgd_ids .rgd_id
             and rgd_ids.object_status  = 'ACTIVE'
@@ -1225,8 +1225,8 @@ function getCumMonthlyReferencesByMonth($dateArray,$pipeline)
         }
         else
         {
-            $sql="select   count ( r.ref_key )
-            from references  r , rgd_ids
+            $sql="select   count ( r.ref_key ) as COUNT
+            from \"references\"  r , rgd_ids
             where
             r.rgd_id = rgd_ids .rgd_id
             and rgd_ids.object_status  = 'ACTIVE'
@@ -1252,7 +1252,7 @@ function getCumMonthlyReferencesByMonth($dateArray,$pipeline)
         //dump($result);
         //echo('\n\n');
         //$total-=$result['COUNT(UNIQUE(G.GENE_SYMBOL))'];
-        $toReturn[]=$total-$result['COUNT(R.REF_KEY)'];
+        $toReturn[]=$total-$result['COUNT'];
     }
     $toReturn[]=$total;
     //var_dump($toReturn);
@@ -1360,7 +1360,7 @@ function getCumGWMBCAByMonth($dateArray,$pipeline)
     $num=count($dateArray);
     $dateArray[$num-1]+=5;
     $toReturn=array();
-    $sql="select count ( unique ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
+    $sql="select count ( distinct ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
     where
     g.rgd_id = r.rgd_id
     and g.rgd_id = f.annotated_object_rgd_id
@@ -1377,7 +1377,7 @@ function getCumGWMBCAByMonth($dateArray,$pipeline)
     $result=fetchRecord($sql);
     $total=$result['COUNT'];
     //echo $total.'</br>';
-    $sql="select count ( unique ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
+    $sql="select count ( distinct ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
     where
     g.rgd_id = r.rgd_id
     and g.rgd_id = f.annotated_object_rgd_id
@@ -1399,7 +1399,7 @@ function getCumGWMBCAByMonth($dateArray,$pipeline)
     //echo $total.'</br>';
     for ($i=0;$i<$num-1;$i++)
     {
-        $sql="select count ( unique ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
+        $sql="select count ( distinct ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -2052,7 +2052,7 @@ function getCumGWEvidenceByMonth($dateArray,$pipeline)
     $num=count($dateArray);
     $dateArray[$num-1]+=5;
     $toReturn=array();
-    $sql="select count ( unique ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
+    $sql="select count ( distinct ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -2086,7 +2086,7 @@ function getCumGWEvidenceByMonth($dateArray,$pipeline)
     $result=fetchRecord($sql);
     $total=$result['COUNT'];
     //echo $total.'</br>';
-    $sql="select count ( unique ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
+    $sql="select count ( distinct ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -2125,7 +2125,7 @@ function getCumGWEvidenceByMonth($dateArray,$pipeline)
     //echo $total.'</br>';
     for ($i=0;$i<$num-1;$i++)
     {
-        $sql="select count ( unique ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
+        $sql="select count ( distinct ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -3312,7 +3312,7 @@ function getGOAnnotationsByMonth($dateArray,$pipeline)
     for ($i=0;$i<$num-1;$i++)
     {
         $sql ="-- total number of GO annotations for rat genes F1
-        select count ( *)  from full_annot f, rgd_ids r
+        select count ( *) as COUNT  from full_annot f, rgd_ids r
         where
         f.annotated_object_rgd_id = r.rgd_id
         and f.rgd_object_key = 1 -- GENE
@@ -3339,7 +3339,7 @@ function getGOAnnotationsByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         if ($go)
         {
-            $part1=$result['COUNT(*)'];
+            $part1=$result['COUNT'];
             $sql="select e.extract_value,e.created_date from report_extracts e
             where
             e.rpt_process_type_id=6 --GOAnnotationRat
@@ -3377,7 +3377,7 @@ function getGOAnnotationsByMonth($dateArray,$pipeline)
         }
         else
         {
-            $toReturn[]=$result['COUNT(*)'];
+            $toReturn[]=$result['COUNT'];
         }
         //dump($result);
         //echo('\n\n');
@@ -3810,8 +3810,8 @@ function getMonthlyReferencesByMonth($dateArray,$pipeline)
     {
         if (!$pipeline)
         {
-            $sql="select   count ( r.ref_key )
-            from full_annot f, references  r , rgd_ids
+            $sql="select   count ( r.ref_key ) as COUNT
+            from full_annot f, \"references\"  r , rgd_ids
             where r.rgd_id = f.annotated_object_rgd_id and
             r.rgd_id = rgd_ids .rgd_id
             and rgd_ids.object_status  = 'ACTIVE'
@@ -3819,8 +3819,8 @@ function getMonthlyReferencesByMonth($dateArray,$pipeline)
         }
         else
         {
-            $sql="select   count ( r.ref_key )
-            from references  r , rgd_ids
+            $sql="select   count ( r.ref_key ) as COUNT
+            from \"references\"  r , rgd_ids
             where
             r.rgd_id = rgd_ids .rgd_id
             and rgd_ids.object_status  = 'ACTIVE'
@@ -3844,7 +3844,7 @@ function getMonthlyReferencesByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         //dump($result);
         //echo('\n\n');
-        $toReturn[]=$result['COUNT(R.REF_KEY)'];
+        $toReturn[]=$result['COUNT'];
     }
     return $toReturn;
 }
@@ -4475,7 +4475,7 @@ function getGWGOAnnotationsByMonth($dateArray,$pipeline)
         //and f.term_acc like 'G%'
         //and f.last_modified_date between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and //to_date('";
         $sql ="-- Total Number of rat genes with GO Annotations F5 ( 11605 )
-        select count ( unique ( g.gene_key) )    from genes g, rgd_ids r , full_annot f
+        select count ( distinct ( g.gene_key) ) as COUNT    from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -4501,7 +4501,7 @@ function getGWGOAnnotationsByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         //dump($result);
         //echo('\n\n');
-        $toReturn[]=$result['COUNT(UNIQUE(G.GENE_KEY))'];
+        $toReturn[]=$result['COUNT'];
     }
     return $toReturn;
 }
@@ -4732,11 +4732,11 @@ function getAllelesByMonth($dateArray,$pipeline)
     {
         if (!$pipeline)
         {
-            $sql="select count(*) from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and  r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and g.GENE_TYPE_LC='allele' and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
+            $sql="select count(*) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and  r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and g.GENE_TYPE_LC='allele' and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
         }
         else
         {
-            $sql="select count(*) from GENES g, RGD_IDS r where  r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and g.GENE_TYPE_LC='allele' and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
+            $sql="select count(*) as COUNT from GENES g, RGD_IDS r where  r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and g.GENE_TYPE_LC='allele' and r.RGD_ID=g.RGD_ID and r.CREATED_DATE  between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('";
         }
         
         if ($i<$num-2)
@@ -4755,7 +4755,7 @@ function getAllelesByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         //dump($result);
         //echo('\n\n');
-        $toReturn[]=$result['COUNT(*)'];
+        $toReturn[]=$result['COUNT'];
     }
     return $toReturn;
 }
@@ -5160,7 +5160,7 @@ function getMBCAnnotationsByMonth($dateArray,$pipeline)
     $toReturn=array();
     for ($i=0;$i<$num-1;$i++)
     {
-        $sql="select count(*)   from full_annot f, rgd_ids r
+        $sql="select count(*) as COUNT   from full_annot f, rgd_ids r
         where
         f.annotated_object_rgd_id = r.rgd_id
         and f.rgd_object_key = 1
@@ -5187,7 +5187,7 @@ function getMBCAnnotationsByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         //dump($result);
         //echo('\n\n');
-        $toReturn[]=$result['COUNT(*)'];
+        $toReturn[]=$result['COUNT'];
     }
     return $toReturn;
 }
@@ -5476,7 +5476,7 @@ function getGWEvidencennotationsByMonth($dateArray,$pipeline)
     for ($i=0;$i<$num-1;$i++)
     {
         $sql="
-        select count ( unique ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
+        select count ( distinct ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -5717,7 +5717,7 @@ function getMonthlyGWAnyAnnotationsByMonth($dateArray,$pipeline)
     $toReturn=array();
     for ($i=0;$i<$num-1;$i++)
     {
-        $sql="select count ( unique (  g.gene_symbol ) )
+        $sql="select count ( distinct (  g.gene_symbol ) ) as COUNT
         from genes g, full_annot f ,  rgd_ids r
         where g.rgd_id = f.annotated_object_rgd_id
         and r.object_status = 'ACTIVE'
@@ -5742,7 +5742,7 @@ function getMonthlyGWAnyAnnotationsByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         //dump($result);
         //echo('\n\n');
-        $toReturn[]=$result['COUNT(UNIQUE(G.GENE_SYMBOL))'];
+        $toReturn[]=$result['COUNT'];
     }
     return $toReturn;
 }
@@ -6255,7 +6255,7 @@ function getCumGWGOAByMonth($dateArray,$pipeline)
     $dateArray[$num-1]+=5;
     $toReturn=array();
     $sql="-- Total Number of rat genes with GO Annotations F5 ( 11605 )
-    select count ( unique ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
+    select count ( distinct ( g.gene_key) ) as COUNT   from genes g, rgd_ids r , full_annot f
     where
     g.rgd_id = r.rgd_id
     and g.rgd_id = f.annotated_object_rgd_id
@@ -6272,7 +6272,7 @@ function getCumGWGOAByMonth($dateArray,$pipeline)
     $total=$result['COUNT'];
     //echo $total.'</br>';
     $sql="-- Total Number of rat genes with GO Annotations F5 ( 11605 )
-    select count ( unique ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
+    select count ( distinct ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
     where
     g.rgd_id = r.rgd_id
     and g.rgd_id = f.annotated_object_rgd_id
@@ -6294,7 +6294,7 @@ function getCumGWGOAByMonth($dateArray,$pipeline)
     for ($i=0;$i<$num-1;$i++)
     {
         $sql="-- Total Number of rat genes with GO Annotations F5 ( 11605 )
-        select count ( unique ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
+        select count ( distinct ( g.gene_key) )  as COUNT  from genes g, rgd_ids r , full_annot f
         where
         g.rgd_id = r.rgd_id
         and g.rgd_id = f.annotated_object_rgd_id
@@ -6421,7 +6421,7 @@ function getKPByMonth($dateArray,$pipeline)
     {
         if (!$pipeline)
         {
-            $sql="select count(UNIQUE( G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and
+            $sql="select count(DISTINCT( G.GENE_KEY)) as COUNT from full_annot f, GENES g, RGD_IDS r where r.rgd_id = f.annotated_object_rgd_id and
             r.OBJECT_STATUS='ACTIVE' and r.SPECIES_TYPE_KEY in ($species) and g.GENE_TYPE_LC in ($annot) and r.RGD_ID=g.RGD_ID and r.CREATED_DATE between to_date('".date('m-d-Y',$dateArray[$i])."', 'MM-DD-YYYY') and to_date('
             ";
         }
@@ -6697,7 +6697,7 @@ function getPercentAnnotated()
     //{
     //annotated
     $sql="
-    select count ( unique g.gene_key ) from genes g, rgd_ids r , full_annot f
+    select count ( distinct g.gene_key ) as COUNT from genes g, rgd_ids r , full_annot f
     where
     g.rgd_id = r.rgd_id
     and g.rgd_id = f.annotated_object_rgd_id
@@ -6713,11 +6713,11 @@ function getPercentAnnotated()
     $result = fetchRecord($sql);
     //dump($result);
     //echo('\n\n');
-    $toReturn+=$result['COUNT(UNIQUEG.GENE_KEY)'];
+    $toReturn+=$result['COUNT'];
     //}
     //all
     $sql="
-    select count ( *)  from genes g, rgd_ids r
+    select count ( *) as COUNT  from genes g, rgd_ids r
     where
     g.rgd_id = r.rgd_id
     and r.object_key = 1
@@ -6732,7 +6732,7 @@ function getPercentAnnotated()
     $result = fetchRecord($sql);
     //dump($result);
     //echo('\n\n');
-    $toReturn/=$result['COUNT(*)'];
+    $toReturn/=$result['COUNT'];
     $toReturn*=100;
     $toReturn.='%';
     return $toReturn;
@@ -6830,7 +6830,7 @@ function getMonthlyAnyAnnotationsByMonth($dateArray,$pipeline)
     $toReturn=array();
     for ($i=0;$i<$num-1;$i++)
     {
-        $sql="select count (*)
+        $sql="select count (*) as COUNT
         from genes g, full_annot f ,  rgd_ids r
         where g.rgd_id = f.annotated_object_rgd_id
         and r.object_status = 'ACTIVE'
@@ -6855,7 +6855,7 @@ function getMonthlyAnyAnnotationsByMonth($dateArray,$pipeline)
         $result = fetchRecord($sql);
         //dump($result);
         //echo('\n\n');
-        $toReturn[]=$result['COUNT(*)'];
+        $toReturn[]=$result['COUNT'];
     }
     return $toReturn;
 }

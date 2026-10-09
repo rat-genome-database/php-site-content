@@ -615,7 +615,7 @@ function generateFooter(&$toReturn ) {
  function getMonthEndDate($processMonthStr ) { 
   if ( $processMonthStr == 'c' ) { $processMonthStr = 0; } 
   // $processMonthStr = $processMonthStr -1 ; 
-  $sql = ' select TO_CHAR (  ADD_MONTHS (last_day ( sysdate ) , '. $processMonthStr . ")  , 'MM-DD-YYYY' ) as MYDATE from dual ";
+  $sql = ' select TO_CHAR ( date_trunc(\'month\', LOCALTIMESTAMP(0)) + ( '. $processMonthStr . " + 1 ) * INTERVAL '1 month' - INTERVAL '1 day' , 'MM-DD-YYYY' ) as MYDATE ";
   $row = fetchRecord ( $sql ) ; 
   return $row['MYDATE'];
   
@@ -624,7 +624,7 @@ function generateFooter(&$toReturn ) {
  function getMonthStartDate($processMonthStr ) { 
   if ( $processMonthStr == 'c' ) { $processMonthStr = 0; } 
   $processMonthStr = $processMonthStr -1 ; 
-  $sql = ' select TO_CHAR (  ADD_MONTHS (last_day ( sysdate ) , '. $processMonthStr . ") + 1  , 'MM-DD-YYYY' ) as MYDATE from dual ";
+  $sql = ' select TO_CHAR ( date_trunc(\'month\', LOCALTIMESTAMP(0)) + ( '. $processMonthStr . " + 1 ) * INTERVAL '1 month' , 'MM-DD-YYYY' ) as MYDATE ";
   $row = fetchRecord ( $sql ) ; 
   return $row['MYDATE'];
  } 
@@ -637,7 +637,7 @@ function generateFooter(&$toReturn ) {
     $returnArray[] = $processDateStr; 
     $mcount = 0;
     while (  $processDateStr !== $endDate ) { 
-       $sql = ' select TO_CHAR ( to_date (  \''. $processDateStr . "'  , 'MM-DD-YYYY' ) + 1 , 'MM-DD-YYYY')  as MYDATE from dual ";
+       $sql = ' select TO_CHAR ( to_date (  \''. $processDateStr . "'  , 'MM-DD-YYYY' ) + 1 , 'MM-DD-YYYY')  as MYDATE ";
         $result = fetchRecord($sql); 
         $returnArray[] = $result['MYDATE']; 
         $processDateStr = $result['MYDATE'];
@@ -712,7 +712,7 @@ function report_dataToCSV2() {
       if ( $typeSelected == 'all'){
       $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD\') as CDATE,  EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' order by CDATE ASC';}
       else {
-        $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD HH24:MI:SS\') as CDATE, EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' and CREATED_DATE between (sysdate - 90) and sysdate order by CDATE ASC';
+        $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD HH24:MI:SS\') as CDATE, EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' and CREATED_DATE between (LOCALTIMESTAMP(0) - INTERVAL \'90\' DAY) and LOCALTIMESTAMP(0) order by CDATE ASC';
         
       }
       $results = fetchRecords($dataRequest);
@@ -746,7 +746,7 @@ function report_procTypeDescChosen() {
 
   $valueSelected = getRequestVarString('theValue');
 
-  $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD HH24:MI:SS\') as CDATE, EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' and CREATED_DATE between (sysdate - 90) and sysdate order by CDATE ASC'; //sql string, gets all selected data for the last 90 days in a PHP-friendly date format
+  $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD HH24:MI:SS\') as CDATE, EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' and CREATED_DATE between (LOCALTIMESTAMP(0) - INTERVAL \'90\' DAY) and LOCALTIMESTAMP(0) order by CDATE ASC'; //sql string, gets all selected data for the last 90 days in a PHP-friendly date format
 
   $reports = fetchRecords($dataRequest);
 

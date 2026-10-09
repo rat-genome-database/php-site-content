@@ -15,7 +15,7 @@ function report2_procTypeDescChosen() {
   //return;
 //  $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD HH24:MI:SS\') as CDATE, EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' order by CDATE ASC';
 
-  $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD HH24:MI:SS\') as CDATE, EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' and CREATED_DATE between (sysdate - 91) and sysdate order by CDATE ASC';
+  $dataRequest = 'select to_char(CREATED_DATE, \'YYYY-MM-DD HH24:MI:SS\') as CDATE, EXTRACT_VALUE from REPORT_EXTRACTS where RPT_PROCESS_TYPE_ID = '.$valueSelected.' and CREATED_DATE between (LOCALTIMESTAMP(0) - INTERVAL \'91\' DAY) and LOCALTIMESTAMP(0) order by CDATE ASC';
   //echo "before fetch </br>";
   $reports = fetchRecords($dataRequest);
  // echo "fetched data</br>";

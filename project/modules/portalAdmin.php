@@ -442,7 +442,7 @@ function portalAdmin_toggleTopTerm() {
     $removed = true;
   }
   else {
-    executeUpdate("insert into portal_termset1 (portal_termset_id, portal_key, term_acc, ont_term_name) values (portal_termset1_seq.nextval, $portalKey, '$termAcc', '$termName' )");
+    executeUpdate("insert into portal_termset1 (portal_termset_id, portal_key, term_acc, ont_term_name) values (nextval('portal_termset1_seq'), $portalKey, '$termAcc', '$termName' )");
   }
   $message = $removed?"Removed":"Added $termAcc";
   
@@ -468,7 +468,7 @@ function portalAdmin_toggleChildTerm() {
     $removed = true;
   }
   else {
-    executeUpdate("insert into portal_termset1 (portal_termset_id, portal_key, parent_TermSet_Id, term_acc, ont_term_name) values (portal_termset1_seq.nextval, $portalKey, $parentTermSetId, '$termAcc', $termName )");
+    executeUpdate("insert into portal_termset1 (portal_termset_id, portal_key, parent_TermSet_Id, term_acc, ont_term_name) values (nextval('portal_termset1_seq'), $portalKey, $parentTermSetId, '$termAcc', $termName )");
   }
   $message = $removed?"Removed":"Added $termAcc";
   
@@ -581,11 +581,13 @@ function portalAdmin_showChildTerms() {
          ont_terms t
         WHERE
           t.term_acc IN ( 
-            SELECT child_term_acc
-			FROM ont_dag
-            START WITH child_term_acc = '$PARENT_ONT_TERM_ACC'
-			CONNECT BY PRIOR child_term_acc = parent_term_acc
-        ) 
+            WITH RECURSIVE dag_desc(child_term_acc) AS (
+              SELECT child_term_acc FROM ont_dag WHERE child_term_acc = '$PARENT_ONT_TERM_ACC'
+              UNION
+              SELECT d.child_term_acc FROM ont_dag d JOIN dag_desc p ON d.parent_term_acc = p.child_term_acc
+            )
+            SELECT child_term_acc FROM dag_desc
+        )
         AND ("; 
        
       $termArray = preg_split('/\n/', $term);

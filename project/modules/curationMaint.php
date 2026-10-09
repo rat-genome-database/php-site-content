@@ -126,7 +126,8 @@ function curationMaint_showMyAnnotation() {
  function getMonthEndDate($processMonthStr ) { 
   if ( $processMonthStr == 'c' ) { $processMonthStr = 0; } 
   // $processMonthStr = $processMonthStr -1 ; 
-  $sql = ' select TO_CHAR (  ADD_MONTHS (last_day ( sysdate ) , '. $processMonthStr . ")  , 'MM-DD-YYYY' ) as MYDATE from dual ";
+  // last day of the month $processMonthStr months from now (Oracle: ADD_MONTHS(LAST_DAY(SYSDATE), n))
+  $sql = " select TO_CHAR ( date_trunc('month', LOCALTIMESTAMP(0)) + (". $processMonthStr . " + 1) * INTERVAL '1 month' - INTERVAL '1 day' , 'MM-DD-YYYY' ) as MYDATE ";
   $row = fetchRecord ( $sql ) ; 
   return $row['MYDATE'];
   
@@ -135,7 +136,8 @@ function curationMaint_showMyAnnotation() {
  function getMonthStartDate($processMonthStr ) { 
   if ( $processMonthStr == 'c' ) { $processMonthStr = 0; } 
   $processMonthStr = $processMonthStr -1 ; 
-  $sql = ' select TO_CHAR (  ADD_MONTHS (last_day ( sysdate ) , '. $processMonthStr . ") + 1  , 'MM-DD-YYYY' ) as MYDATE from dual ";
+  // first day of the month after the month $processMonthStr months from now (Oracle: ADD_MONTHS(LAST_DAY(SYSDATE), n) + 1)
+  $sql = " select TO_CHAR ( date_trunc('month', LOCALTIMESTAMP(0)) + (". $processMonthStr . " + 1) * INTERVAL '1 month' , 'MM-DD-YYYY' ) as MYDATE ";
   $row = fetchRecord ( $sql ) ; 
   return $row['MYDATE'];
  } 

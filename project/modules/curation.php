@@ -319,7 +319,7 @@ function curation_addReferenceToBucket() {
 
 function _addReferenceToBucket($refRgdId) {
 
-	$result = fetchRecord("select r.ref_key, r.title, r.citation, r.rgd_id, x.acc_id   from references r left outer join rgd_acc_xdb x on r.rgd_id = x.rgd_id where r.rgd_id = " . $refRgdId);
+	$result = fetchRecord("select r.ref_key, r.title, r.citation, r.rgd_id, x.acc_id   from \"references\" r left outer join rgd_acc_xdb x on r.rgd_id = x.rgd_id where r.rgd_id = " . $refRgdId);
 	extract($result);
 	$storedResult = array (
 		'rgdID' => $refRgdId,
@@ -409,7 +409,7 @@ function curation_addReferences() {
 		extract($referenceRow);
 		$referenceTypeArray[$REFERENCE_TYPE] = $REF_TYPE_DESC;
 	}
-	$publicationResult = fetchRecords("select distinct ( publication )as publication from references ");
+	$publicationResult = fetchRecords("select distinct ( publication )as publication from \"references\" ");
 	foreach ($publicationResult as $publicationRow) {
 		extract($publicationRow);
 		$publications[$PUBLICATION] = $PUBLICATION;
@@ -504,7 +504,7 @@ function doSearchForTermsByName($searchTerm, $ontology) {
 		default :
 			// Don't add anything for Any saerch of "all"
 	}
-	$sql .= ' ORDER BY DECODE(LOWER(term), ' . dbQuoteString(strtolower($searchTerm)) . ', 0, 1), NVL(aspect,\'Z\'), LOWER(term)';
+	$sql .= ' ORDER BY CASE WHEN LOWER(term) = ' . dbQuoteString(strtolower($searchTerm)) . ' THEN 0 ELSE 1 END, COALESCE(aspect,\'Z\'), LOWER(term)';
 	// dump ( $sql ) ; 
 
 	$terms = fetchRecords($sql);
@@ -639,7 +639,7 @@ function getGenesByName($objectName, $matchType, $speciesArray) {
 		$sql .= $speciesID;
 	}
 	
-	$sql .= ' ) and rownum <= ' . $maxresults . ' and (( upper ( gene_symbol ) like \'' . strtoupper($objectName) . '\' ) ';
+	$sql .= ' ) and (( upper ( gene_symbol ) like \'' . strtoupper($objectName) . '\' ) ';
 	$sql .= 'or ( upper ( full_name ) like \'' . strtoupper($objectName) . '\' )';
 	// take care of searching for RGDID directly here
 	if (is_numeric($rgd_id_to_searchfor)) {
@@ -652,7 +652,8 @@ function getGenesByName($objectName, $matchType, $speciesArray) {
 	$sql .= ')))';
 	//
 	
-	$sql .= ' order by decode(lower(g.gene_symbol), \'' . $rgd_id_to_searchfor . '\', 0, 1),lower(g.gene_symbol), abs(r.species_type_key - 3)';
+	$sql .= ' order by CASE WHEN lower(g.gene_symbol) = \'' . $rgd_id_to_searchfor . '\' THEN 0 ELSE 1 END,lower(g.gene_symbol), abs(r.species_type_key - 3), g.rgd_id';
+	$sql .= ' FETCH FIRST ' . $maxresults . ' ROWS ONLY';
 	
 	
 	// dump ( $sql ) ;
@@ -726,7 +727,7 @@ function doSearchforGeneAndOrthologByName($objectName, $urlSearchArray, $matchTy
 		$rgdIds .= $RGD_ID;
 	};
 	
-	$sql = 'SELECT DISTINCT * FROM (';
+	$sql = 'SELECT * FROM (SELECT DISTINCT * FROM (';
 	$sql .= 'SELECT g.gene_key, g.gene_symbol, g.full_name, g.rgd_id, r.object_status, r.species_type_key, oth.SRC_RGD_ID as rat_rgd_id ';
 	$sql .= 'FROM genes g, rgd_ids r, genetogene_rgd_id_rlt oth';
 	$sql .= " where oth.SRC_RGD_ID in ($rgdIds) ";
@@ -736,8 +737,8 @@ function doSearchforGeneAndOrthologByName($objectName, $urlSearchArray, $matchTy
 	$sql .= 'FROM genes g, rgd_ids r, genetogene_rgd_id_rlt oth';
 	$sql .= " where oth.DEST_RGD_ID in ($rgdIds) ";
 	$sql .= " AND oth.dest_rgd_id=r.rgd_id AND r.object_status='ACTIVE' AND r.species_type_key IN ($orthoSpecies) AND r.rgd_id=g.rgd_id";
-	$sql .= ') a ';
-	$sql .= "ORDER BY DECODE(lower(a.gene_symbol), '$rgd_id_to_searchfor', 0, 1),lower(a.gene_symbol), abs(a.species_type_key-$speciesTypeKey)";
+	$sql .= ') a) a ';
+	$sql .= "ORDER BY CASE WHEN lower(a.gene_symbol) = '$rgd_id_to_searchfor' THEN 0 ELSE 1 END,lower(a.gene_symbol), abs(a.species_type_key-$speciesTypeKey)";
 //dump ( $sql ) ;
 	$orthologs = fetchRecords($sql);
 	
@@ -824,7 +825,7 @@ function getAliasesInHtml($rgdID, $aliasType, $escapeQuotes = true) {
 
 	$flip = -1;
 	$returnString = '<table border=0>';
-	$sql = 'select * from aliases where rgd_ID = ' . $rgdID;
+	$sql = 'select * from aliases where rgd_ID = ' . $rgdID . ' ';
 	switch ($aliasType) {
 		case 'gene' :
 			$sql .= 'and alias_type_name_lc in( \'old_gene_symbol\', \'old_gene_name\', \'alternate_id\', \'alternate_symbol\', \'alternate_name\') ';
@@ -1443,7 +1444,7 @@ function doSearchforReferencesByAll($keywords, $author, $year, $orderBy, & $coun
 			break;
 		default :
 			}
-	$sql .= $orderby . 'FROM references r, rgd_ref_author k, rgd_ids rgd ';
+	$sql .= $orderby . 'FROM "references" r, rgd_ref_author k, rgd_ids rgd ';
 
 	if ($author != "") {
 		$sql .= ', authors a where k.author_key = a.author_key ';
@@ -2040,14 +2041,14 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	}
 	// generate the SQL to return all annotations for the objects that the user has in their bucket
 	// except CHEBI and ClinVar pipeline annotations
-	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
+	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
 	$sql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 	$sql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 	$sql .= ' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
 //	$sql .= '  order by object_symbol, EVIDENCE, term ';
 
 	if($refIds != '' && $termAcc != '') {
-        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
+        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
         $comboSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
         $comboSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
         $comboSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -2056,7 +2057,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
         $sql = $comboSql . ' union ' . $sql;
     }
 	if ($refIds != '') {
-		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
+		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
 		$refSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$refSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$refSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -2069,7 +2070,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$sql = $refSql . ' union ' . $sql;
 	} 
 	if ($termAcc != '') {
-		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
+		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
 		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
@@ -2080,13 +2081,13 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		    $sql .= ' and a.term_acc not in (' . $termAccs . ')';
 		}
 		$sql = $termSql. ' union ' . $sql;
-		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, DBMS_LOB.SUBSTR(a.notes, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
+		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
 		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
 		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
 		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
-		$termSql .= ' and a.term_acc in (select distinct od.CHILD_TERM_ACC from ONT_DAG od connect by prior od.CHILD_TERM_ACC = od.PARENT_TERM_ACC start with od.PARENT_TERM_ACC in (' . $termAccs . '))';
+		$termSql .= ' and a.term_acc in (WITH RECURSIVE d(acc) AS (SELECT od.CHILD_TERM_ACC FROM ONT_DAG od WHERE od.PARENT_TERM_ACC in (' . $termAccs . ') UNION SELECT od.CHILD_TERM_ACC FROM ONT_DAG od JOIN d ON od.PARENT_TERM_ACC = d.acc) SELECT acc FROM d)';
 		$termSql .= ' and a.term_acc not in (' . $termAccs . ')';
-		$sql .= ' and a.term_acc not in (select distinct od.CHILD_TERM_ACC from ONT_DAG od connect by prior od.CHILD_TERM_ACC = od.PARENT_TERM_ACC start with od.PARENT_TERM_ACC in (' . $termAccs . '))';
+		$sql .= ' and a.term_acc not in (WITH RECURSIVE d(acc) AS (SELECT od.CHILD_TERM_ACC FROM ONT_DAG od WHERE od.PARENT_TERM_ACC in (' . $termAccs . ') UNION SELECT od.CHILD_TERM_ACC FROM ONT_DAG od JOIN d ON od.PARENT_TERM_ACC = d.acc) SELECT acc FROM d)';
 		$sql = $termSql. ' union ' . $sql;
 	} 
 	//dump ( $sql ) ;
@@ -2269,7 +2270,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		'curation_flag,' .
 		'qualifier'.
 	') VALUES ( '.
-	"FULL_ANNOT_SEQ.NEXTVAL," .
+	"nextval('full_annot_seq'),".
 	dbQuoteString($termName) . "," . // from ONT_TERMS.TERM
 	$coreObjectRGDID . ", " . // Object RGD ID
 	$objectTypeKey . "," . //RGD_OBJECT_KEY
@@ -2279,13 +2280,13 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	dbQuoteString($evidence) . ','.
 	$with_info_str . ','.
 	dbQuoteString($aspect) . ','.
-	dbQuoteString($objectName) . ','.
-	dbQuoteString($notes) . ','.
+	'NULLIF(' . dbQuoteString($objectName) . ", ''),".
+	'NULLIF(' . dbQuoteString($notes) . ", ''),".
 	dbQuoteString($termAcc) . ','.
 	$useridKey . ','.
 	$useridKey . ','.
-	"SYSDATE, SYSDATE, 'DO',".
-	dbQuoteString($qualifier) . ")";
+	"LOCALTIMESTAMP(0), LOCALTIMESTAMP(0), 'DO',".
+	'NULLIF(' . dbQuoteString($qualifier) . ", ''))";
 
 	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
@@ -2320,7 +2321,7 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
                     }else {
                         $sql = $sql . ' and WITH_INFO=' . dbQuoteString($with_info);
                     }
-                    $sql = $sql . ' and QUALIFIER= ' . dbQuoteString($qualifier);
+                    $sql = $sql . ' and QUALIFIER= NULLIF(' . dbQuoteString($qualifier) . ", '')";
 
             dump($sql);
             $rowsUpdated = executeUpdate($sql);
@@ -2955,12 +2956,12 @@ function relationshipCreateGtoG($geneFromObject, $geneToObject, & $returnMessage
   else {  
     // Create new Ortholog relationship
     $sql = 'insert into GENETOGENE_RGD_ID_RLT (GENETOGENE_KEY, SRC_RGD_ID, DEST_RGD_ID, XREF_DATA_SRC, XREF_DATA_SET, ORTHOLOG_TYPE_KEY, CREATED_BY, LAST_MODIFIED_BY, CREATED_DATE, LAST_MODIFIED_DATE ) values (' . 
-    'GENETOGENE_RGD_ID_RLT_SEQ.NEXTVAL,' . 
+    'nextval(\'genetogene_rgd_id_rlt_seq\'),' . 
     $geneFromObject['ID'] . ',' . 
     $geneToObject['ID'] . ',' . 
     " 'RGD', 'RGD', 12, " . // ortholog_type=12: manual ortholog
     $userKey . ',' . $userKey . ',' . 
-    ' sysdate, sysdate' . 
+    ' LOCALTIMESTAMP(0), LOCALTIMESTAMP(0)' . 
     ')';
   
     $rowsUpdated = executeUpdate($sql);
@@ -2982,12 +2983,12 @@ function relationshipCreateGtoG($geneFromObject, $geneToObject, & $returnMessage
   else {
     // Create new reverse ortholog relationship
     $sql = 'insert into GENETOGENE_RGD_ID_RLT (GENETOGENE_KEY, SRC_RGD_ID, DEST_RGD_ID, XREF_DATA_SRC, XREF_DATA_SET, ORTHOLOG_TYPE_KEY, CREATED_BY, LAST_MODIFIED_BY, CREATED_DATE, LAST_MODIFIED_DATE ) values (' . 
-	  'GENETOGENE_RGD_ID_RLT_SEQ.NEXTVAL,' . 
+	  'nextval(\'genetogene_rgd_id_rlt_seq\'),' . 
       $geneToObject['ID'] . ',' . 
       $geneFromObject['ID'] . ',' . 
     " 'RGD', 'RGD', 12, " . // ortholog_type=12: manual ortholog
       $userKey . ',' . $userKey . ',' . 
-      ' sysdate, sysdate' . 
+      ' LOCALTIMESTAMP(0), LOCALTIMESTAMP(0)' . 
       ')';
     $rowsUpdated = executeUpdate($sql);
     if ($rowsUpdated == 1) {
@@ -3365,12 +3366,12 @@ function updateGeneDescriptions($theForm) {
 		$currentDescription = $resultType['GENE_DESC'];
 		if ($currentDescription != $newDescription) {
 			// Update record in genes table with new description
-			$sql = "update genes set gene_desc = " . dbQuoteString($newDescription) . ' where rgd_id = ' . $rgdIDToUpdate;
+			$sql = "update genes set gene_desc = NULLIF(" . dbQuoteString($newDescription) . ", '') where rgd_id = " . $rgdIDToUpdate;
 			$rowsUpdated = executeUpdate($sql);
 			$updateCount += $rowsUpdated;
 
 			// Now update rgd_ids table with last mod time.  
-			$sql = "update rgd_ids set last_modified_date = sysdate where rgd_id = " . $rgdIDToUpdate;
+			$sql = "update rgd_ids set last_modified_date = LOCALTIMESTAMP(0) where rgd_id = " . $rgdIDToUpdate;
 			$rowsUpdated = executeUpdate($sql);
 
 		}

@@ -85,7 +85,7 @@ function tableMaint_updateProcessTypes() {
 				setPageTitle('Update Entry');
 			} else {
 				// set the default subsystem name to the last one entered to make it easy on the admin. 
-				$entry = fetchRecord('select SUBSYSTEM_NAME from ( select * from REPORT_PROCESS_TYPES  order by RPT_PROCESS_TYPE_ID desc ) where  rownum =1 ');
+				$entry = fetchRecord('select SUBSYSTEM_NAME from REPORT_PROCESS_TYPES order by RPT_PROCESS_TYPE_ID desc FETCH FIRST 1 ROWS ONLY');
 
 				$theForm->setDefault('SUBSYSTEM_NAME', $entry['SUBSYSTEM_NAME']);
 
@@ -214,7 +214,7 @@ function tableMaint_deleteGeneTypes() {
 	}
 	$GENE_TYPE_LC = getRequestVarString('GENE_TYPE_LC');
 	// Verify that this gene Type is not being used by the GENES table before deleting
-	$result = fetchRecord('select GENE_TYPE_LC from ( select GENE_TYPE_LC from GENES where GENE_TYPE_LC = ' . dbQuoteString($GENE_TYPE_LC) . ' ) where  rownum =1 ');
+	$result = fetchRecord('select GENE_TYPE_LC from GENES where GENE_TYPE_LC = ' . dbQuoteString($GENE_TYPE_LC) . ' FETCH FIRST 1 ROWS ONLY');
 	if (count($result) != 0) {
 		redirectWithMessage('Sorry , this type cannot be deleted as it is being used in the GENES.GENE_TYPE_LC column. Change or delete occurances of \'' . $GENE_TYPE_LC . '\'  from this column first. ', makeUrl('tableMaint', 'geneTypes'));
 
@@ -319,7 +319,7 @@ function tableMaint_deleteRGDxdb() {
 	}
 	$xdbKey = getRequestVarNum('XDB_KEY');
   // check to see if this key is being used in the RGD_ACC_XDB table. 
-	$sql = 'select XDB_KEY from RGD_ACC_XDB where XDB_KEY = ' . $xdbKey . ' and  rownum = 1';
+	$sql = 'select XDB_KEY from RGD_ACC_XDB where XDB_KEY = ' . $xdbKey . ' FETCH FIRST 1 ROWS ONLY';
 	$result = fetchRecords($sql);
 	if (count($result) != 0) {
 		redirectWithMessage('Sorry , this type cannot be deleted as it is being used in the RGD_ACC_XDB.XDB_KEY column. Change or delete occurances of \'' . $xdbKey . '\'  from this column first. ', makeUrl('tableMaint', 'RGDxdb'));
@@ -327,7 +327,7 @@ function tableMaint_deleteRGDxdb() {
 	} else {
     
     // Check if this is referenced in the RGD_XDB_SPECIES_URL table. Don't allow deletion if it is. 
-    $sql = 'select XDB_KEY from RGD_XDB_SPECIES_URL where XDB_KEY = ' . $xdbKey . ' and  rownum = 1';
+    $sql = 'select XDB_KEY from RGD_XDB_SPECIES_URL where XDB_KEY = ' . $xdbKey . ' FETCH FIRST 1 ROWS ONLY';
     $result = fetchRecords($sql);
     if (count($result) != 0) {
       redirectWithMessage('Sorry , this type cannot be deleted as it is being used in the RGD_XDB_SPECIES_URL.XDB_KEY column. Change or delete occurances of \'' . $xdbKey . '\'  from this column first. ', makeUrl('tableMaint', 'RGDxdb'));
@@ -506,7 +506,7 @@ function getXDBNameByKey($xdbKey) {
  * 
  */
  function rgdXdbSpeciesAlreadyExist($xdbKey, $speciesTypeKey) { 
-  $result = fetchRecord('select *  from RGD_XDB_SPECIES_URL where XDB_KEY = ' . $xdbKey . ' and SPECIES_TYPE_KEY = ' . $speciesTypeKey . ' and  rownum =1 ');
+  $result = fetchRecord('select *  from RGD_XDB_SPECIES_URL where XDB_KEY = ' . $xdbKey . ' and SPECIES_TYPE_KEY = ' . $speciesTypeKey . ' FETCH FIRST 1 ROWS ONLY');
   if (count($result) != 0) {
     return true; 
   } else { 

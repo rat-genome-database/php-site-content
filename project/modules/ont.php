@@ -21,7 +21,7 @@ function ont_obsoleteTerms() {
   setPageTitle('Obsolete Terms');
   $toReturn = '';
   $toReturn .= 'These terms are either obsolete or no longer in our database, but we still have annotations referencing them.  Click "view annotations" to see the orphaned annotations and either delete them or change them to reference a different term.<br/><br/>';
-  $items = fetchRecords('SELECT DISTINCT term_acc, term, ont_id, aspect, reference_type
+  $items = fetchRecords('SELECT * FROM (SELECT DISTINCT term_acc, term, ont_id, aspect, reference_type
     FROM (
 		SELECT t.term_acc, t.term, o.ont_id, o.aspect, f.created_by, f.ref_rgd_id FROM full_annot f,ont_terms t,ontologies o,rgd_ids i
 		WHERE t.is_obsolete<>0 and f.term_acc=t.term_acc and t.ont_id=o.ont_id
@@ -29,8 +29,9 @@ function ont_obsoleteTerms() {
 		UNION ALL
 		SELECT f.term_acc, f.term, \'(deleted)\' ont_id, f.aspect, f.created_by, f.ref_rgd_id FROM full_annot f
 		WHERE NOT EXISTS(SELECT 1 FROM ont_terms t WHERE t.term_acc=f.term_acc)
-	) x, references r
-	WHERE ref_rgd_id=r.rgd_id(+) AND created_by NOT IN('.$PIPELINE_USER_IDS.')
+	) x LEFT JOIN "references" r ON x.ref_rgd_id=r.rgd_id
+	WHERE created_by NOT IN('.$PIPELINE_USER_IDS.')
+	) t
 	ORDER BY aspect,LOWER(term)');
   $table = newTable('','TERM', 'ONT_ID', 'ASPECT', 'TERM_ACC', 'REFERENCE_TYPE');
   $table->setAttributes("class=simple");
@@ -68,7 +69,7 @@ function ont_addAnnotToBucket() {
     return NOTLOGGEDIN_MSG;
   }  
   $fullAnnotKey = getRequestVarNum('FULL_ANNOT_KEY');
-  $fullAnnotRecord = fetchRecord('SELECT * FROM full_annot f, references r WHERE f.ref_rgd_id = r.rgd_id (+) AND f.full_annot_key = '.$fullAnnotKey);
+  $fullAnnotRecord = fetchRecord('SELECT * FROM full_annot f LEFT JOIN "references" r ON f.ref_rgd_id = r.rgd_id WHERE f.full_annot_key = '.$fullAnnotKey);
   extract($fullAnnotRecord);
   addItemToBucket(ONT_BUCKET_PREFIX.getRequestVarString('name'), $fullAnnotKey, $fullAnnotRecord);
   redirectWithMessage('Successfully added the annotation to the bucket', makeUrl('ont', 'annotations', 'TERM_ACC='.$TERM_ACC));
@@ -81,7 +82,7 @@ function ont_addAnnotsToBucket() {
   $fullAnnotKeysStr = getRequestVarString('FULL_ANNOT_KEYS');
   $fullAnnotKeys = explode(',',$fullAnnotKeysStr);
   foreach( $fullAnnotKeys as $fullAnnotKey ) {
-    $fullAnnotRecord = fetchRecord('SELECT * FROM full_annot f, references r WHERE f.ref_rgd_id = r.rgd_id (+) AND f.full_annot_key = '.$fullAnnotKey);
+    $fullAnnotRecord = fetchRecord('SELECT * FROM full_annot f LEFT JOIN "references" r ON f.ref_rgd_id = r.rgd_id WHERE f.full_annot_key = '.$fullAnnotKey);
     extract($fullAnnotRecord);
     addItemToBucket(ONT_BUCKET_PREFIX.getRequestVarString('name'), $fullAnnotKey, $fullAnnotRecord);
   }
@@ -189,7 +190,7 @@ function ont_annotations() {
   
  
   $term = $termAcc; 
-  $items = fetchRecords("SELECT * FROM full_annot a, references r WHERE a.ref_rgd_id=r.rgd_id(+) AND term_acc = ".dbQuoteString($termAcc)
+  $items = fetchRecords("SELECT * FROM full_annot a LEFT JOIN \"references\" r ON a.ref_rgd_id=r.rgd_id WHERE term_acc = ".dbQuoteString($termAcc)
   .' AND created_by NOT IN('.$PIPELINE_USER_IDS.')'); // exclude non-manual annotations
   $table = newTable('EDIT','ADD TO BUCKET', 'ANNOTATED OBJECT / OBJ NAME', 'REFERENCE / TITLE (TYPE)', 'EVIDENCE', 'WITH INFO', 'ASPECT', 'NOTES', 'QUALIFIER', 'TERM');
   $table->setAttributes("class=simple");

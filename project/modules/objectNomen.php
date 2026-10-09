@@ -93,7 +93,7 @@ function doSearchforGenesByName($objectName, $urlSearchArray, $matchType, $speci
     $sql .= $speciesID;
   }
 
-  $sql .= ' ) and rownum <= ' . $maxresults . ' and (( upper ( gene_symbol ) like \'' . strtoupper($objectName) . '\' ) ';
+  $sql .= ' ) and (( upper ( gene_symbol ) like \'' . strtoupper($objectName) . '\' ) ';
   $sql .= 'or ( upper ( full_name ) like \'' . strtoupper($objectName) . '\' )';
   // take care of searching for RGDID directly here
   if (is_numeric($rgd_id_to_searchfor)) {
@@ -104,6 +104,7 @@ function doSearchforGenesByName($objectName, $urlSearchArray, $matchType, $speci
   $sql .= 'select rgd_id from aliases where alias_value_lc like \'' . strtolower($objectName) . '\'  ';
   $sql .= 'and ( alias_type_name_lc = \'old_gene_symbol\'  or alias_type_name_lc = \'old_gene_name\' )';
   $sql .= ')))';
+  $sql .= ' ORDER BY g.rgd_id FETCH FIRST ' . $maxresults . ' ROWS ONLY';
 
   // dump ( $sql ) ;
   $genes = fetchRecords($sql);
