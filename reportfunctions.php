@@ -17,7 +17,7 @@ function getAspect($ont_codes) {
 	return $aspect;
 }
 
-function generateQuery($pipeline, $object, $species, $evidence_code = null, $dateArray, $ont_codes = null, $byannot = false,
+function generateQuery($pipeline, $object, $species, $evidence_code, $dateArray, $ont_codes = null, $byannot = false,
 $user = null) {
 
   $aspect = getAspect($ont_codes);
@@ -224,7 +224,7 @@ function generateTables($dateArray,$annotType,$species)
 }
 
 
-function generateCumQuery($pipeline, $object, $species, $evidence_code = null, $dateArray, $ont_codes = null, $byannot = false,
+function generateCumQuery($pipeline, $object, $species, $evidence_code, $dateArray, $ont_codes = null, $byannot = false,
 $user = null) {
 
   $aspect = getAspect($ont_codes);
