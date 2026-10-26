@@ -21,15 +21,9 @@
     $toReturn .= "<br/><br/>";
     $toReturn .=  makeLink('Merge/Retire/Split Objects', 'objectNomen', 'selectObjects');
     $toReturn .= "<br/><br/>";
-    $toReturn .=  makeLink('Notes Editor', 'notesEdit', 'selectObjects');
-    $toReturn .= "<br/><br/>";
-    $toReturn .=  makeLink('Reference Editor', 'reference', 'contents');
-    $toReturn .= "<br/><br/>";
 //    $toReturn .=  makeLink('Portal Admin', 'portalAdmin', 'processPortal');
 //    $toReturn .= "<br/><br/>";
 //    $toReturn .= makeLink('User Admin', 'admin', 'users');
-    $toReturn .= '<br><br/>' . makeLink('Lookup Tables', 'tableMaint', 'home');
-    $toReturn .= "<br/><br/>";
     $toReturn .=  makeLink('Reports', 'report', 'home');
     $toReturn .= "<br/><br/>";
     $toReturn .=  makeLink('Obsolete Terms', 'ont', 'obsoleteTerms');
