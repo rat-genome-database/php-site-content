@@ -1499,13 +1499,7 @@ function curation_selectReferences() {
 
 	$toReturn .= $theForm->quickRender();
 	$toReturn .= '</LEGEND></FIELDSET>';
-	$toReturn .= '<p><center>-- OR --</center><p>';
 
-	$toReturn .= '<p><p>';
-	
-	// New update that does nto query remote screens
-	$toReturn .= makeExternalLink('Create a new Reference', "/tools/curation/ref_edit.cgi?action=new");
-	
 	$toReturn .= "<p><p>";
 	$toReturn .= '<script type="text/javascript"> ' . "\n";
 	$toReturn .= "var wHandle = null;" . "\n";
