@@ -686,7 +686,13 @@ function doSearchforGenesByName($objectName, $urlSearchArray, $matchType, $speci
 
 		$urlSearchArray['RGD_ID'] = $RGD_ID;
 		// create a named anchor for every gene RGDID -- Sep'11 MT
-		$table->addRow($RGD_ID."<a name='$RGD_ID'></a>", $GENE_SYMBOL, $FULL_NAME, makeSpeciesLink($SPECIES_TYPE_KEY), getAliasesInHtml($RGD_ID, 'gene'), makeObjectStatusLink($OBJECT_STATUS), makeLink('<img src="icons/basket_put.png" border=0 alt="Add">', 'curation', 'addGeneToBucket', $urlSearchArray));
+		$table->addRow($RGD_ID."<a name='$RGD_ID'></a>",
+			$GENE_SYMBOL,
+			$FULL_NAME,
+			makeSpeciesLink($SPECIES_TYPE_KEY),
+			getAliasesInHtml($RGD_ID, 'gene'),
+			makeObjectStatusLink($OBJECT_STATUS),
+			makeLink('<img src="icons/basket_put.png" border=0 alt="Add">', 'curation', 'addGeneToBucket', $urlSearchArray));
 	}
 
 	if ($genecount == $maxresults) {
@@ -1109,6 +1115,203 @@ function getEvidenceCodeArray() {
 		"ND" => "ND",
 	);
 	return $returnArray;
+}
+
+/**
+ * Returns an array of molecular entity options for dropdown
+ */
+function getMolecularEntityArray() {
+	return array (
+		"" => "",
+		"DNA" => "DNA",
+		"mRNA" => "mRNA",
+		"miRNA" => "miRNA",
+		"protein" => "protein",
+	);
+}
+
+/**
+ * Returns an array of alteration options for DNA molecular entity
+ */
+function getAlterationArrayDNA() {
+	return array (
+		"" => "",
+		"altered methylation" => "altered methylation",
+		"amplification" => "amplification",
+		"CNV(s)" => "CNV(s)",
+		"deletion(s)" => "deletion(s)",
+		"duplication(s)" => "duplication(s)",
+		"frameshift mutation(s)" => "frameshift mutation(s)",
+		"gene fusion(s)" => "gene fusion(s)",
+		"gene instability" => "gene instability",
+		"haploinsufficiency" => "haploinsufficiency",
+		"haplotype(s)" => "haplotype(s)",
+		"hypermethylation" => "hypermethylation",
+		"hypomethylation" => "hypomethylation",
+		"inversion" => "inversion",
+		"insertion(s)" => "insertion(s)",
+		"insertion/deletion" => "insertion/deletion",
+		"loss of heterozygosity" => "loss of heterozygosity",
+		"ltr(s)" => "ltr(s)",
+		"microsatellite instability" => "microsatellite instability",
+		"missense mutation(s)" => "missense mutation(s)",
+		"mutation(s)" => "mutation(s)",
+		"nonsense mutation(s)" => "nonsense mutation(s)",
+		"point mutation(s)" => "point mutation(s)",
+		"polymorphism(s)" => "polymorphism(s)",
+		"protein-truncating variant(s)" => "protein-truncating variant(s)",
+		"PTV(s)" => "PTV(s)",
+		"repeat(s)" => "repeat(s)",
+		"silent mutation" => "silent mutation",
+		"SNP(s)" => "SNP(s)",
+		"SNV(s)" => "SNV(s)",
+		"splice-site mutation(s)" => "splice-site mutation(s)",
+		"SSLP(s)" => "SSLP(s)",
+		"substitution(s)" => "substitution(s)",
+		"transition(s)" => "transition(s)",
+		"translocation(s)" => "translocation(s)",
+		"transversion(s)" => "transversion(s)",
+		"VNTR" => "VNTR",
+	);
+}
+
+/**
+ * Returns an array of alteration options for mRNA molecular entity
+ */
+function getAlterationArrayMRNA() {
+	return array (
+		"" => "",
+		"allelic imbalance" => "allelic imbalance",
+		"alternative form" => "alternative form",
+		"altered expression" => "altered expression",
+		"decreased editing" => "decreased editing",
+		"decreased expression" => "decreased expression",
+		"decreased stability" => "decreased stability",
+		"increased editing" => "increased editing",
+		"increased expression" => "increased expression",
+		"increased stability" => "increased stability",
+		"editing error(s)" => "editing error(s)",
+		"splice variant(s)" => "splice variant(s)",
+		"splicing error(s)" => "splicing error(s)",
+	);
+}
+
+/**
+ * Returns an array of alteration options for miRNA molecular entity
+ */
+function getAlterationArrayMiRNA() {
+	return array (
+		"" => "",
+		"altered expression" => "altered expression",
+		"decreased expression" => "decreased expression",
+		"increased expression" => "increased expression",
+	);
+}
+
+/**
+ * Returns an array of alteration options for protein molecular entity
+ */
+function getAlterationArrayProtein() {
+	return array (
+		"" => "",
+		"altered degradation" => "altered degradation",
+		"altered dimerization" => "altered dimerization",
+		"altered localization" => "altered localization",
+		"altered expression" => "altered expression",
+		"altered O-linked N-acetylglucosaminylation" => "altered O-linked N-acetylglucosaminylation",
+		"altered polymerization" => "altered polymerization",
+		"altered processing" => "altered processing",
+		"alternative form(s)" => "alternative form(s)",
+		"decreased acetylation" => "decreased acetylation",
+		"decreased carbonylation" => "decreased carbonylation",
+		"decreased degradation" => "decreased degradation",
+		"decreased DNA binding" => "decreased DNA binding",
+		"decreased dimerization" => "decreased dimerization",
+		"decreased expression" => "decreased expression",
+		"decreased glycation" => "decreased glycation",
+		"decreased glycosylation" => "decreased glycosylation",
+		"decreased homodimerization" => "decreased homodimerization",
+		"decreased homopolymerization" => "decreased homopolymerization",
+		"decreased hydroxylation" => "decreased hydroxylation",
+		"decreased internalization" => "decreased internalization",
+		"decreased localization" => "decreased localization",
+		"decreased methylation" => "decreased methylation",
+		"decreased modification" => "decreased modification",
+		"decreased nitration" => "decreased nitration",
+		"decreased nitrosylation" => "decreased nitrosylation",
+		"decreased O-linked N-acetylglucosaminylation" => "decreased O-linked N-acetylglucosaminylation",
+		"decreased oxidation" => "decreased oxidation",
+		"decreased phosphorylation" => "decreased phosphorylation",
+		"decreased processing" => "decreased processing",
+		"decreased promoter binding" => "decreased promoter binding",
+		"decreased S-glutathionylation" => "decreased S-glutathionylation",
+		"decreased secretion" => "decreased secretion",
+		"decreased serine phosphorylation" => "decreased serine phosphorylation",
+		"decreased stability" => "decreased stability",
+		"decreased sulfation" => "decreased sulfation",
+		"decreased sumoylation" => "decreased sumoylation",
+		"decreased threonine phosphorylation" => "decreased threonine phosphorylation",
+		"decreased tyrosine phosphorylation" => "decreased tyrosine phosphorylation",
+		"decreased tyrosine nitration" => "decreased tyrosine nitration",
+		"decreased ubiquitination" => "decreased ubiquitination",
+		"increased acetylation" => "increased acetylation",
+		"increased carbonylation" => "increased carbonylation",
+		"increased degradation" => "increased degradation",
+		"increased DNA binding" => "increased DNA binding",
+		"increased dimerization" => "increased dimerization",
+		"increased expression" => "increased expression",
+		"increased glycation" => "increased glycation",
+		"increased glycosylation" => "increased glycosylation",
+		"increased homodimerization" => "increased homodimerization",
+		"increased homopolymerization" => "increased homopolymerization",
+		"increased hydroxylation" => "increased hydroxylation",
+		"increased internalization" => "increased internalization",
+		"increased localization" => "increased localization",
+		"increased methylation" => "increased methylation",
+		"increased modification" => "increased modification",
+		"increased nitration" => "increased nitration",
+		"increased nitrosylation" => "increased nitrosylation",
+		"increased O-linked N-acetylglucosaminylation" => "increased O-linked N-acetylglucosaminylation",
+		"increased oxidation" => "increased oxidation",
+		"increased phosphorylation" => "increased phosphorylation",
+		"increased processing" => "increased processing",
+		"increased promoter binding" => "increased promoter binding",
+		"increased S-glutathionylation" => "increased S-glutathionylation",
+		"increased secretion" => "increased secretion",
+		"increased serine phosphorylation" => "increased serine phosphorylation",
+		"increased sulfation" => "increased sulfation",
+		"increased stability" => "increased stability",
+		"increased sumoylation" => "increased sumoylation",
+		"increased threonine phosphorylation" => "increased threonine phosphorylation",
+		"increased tyrosine nitration" => "increased tyrosine nitration",
+		"increased tyrosine phosphorylation" => "increased tyrosine phosphorylation",
+		"increased ubiquitination" => "increased ubiquitination",
+	);
+}
+
+/**
+ * Returns all alteration options combined for form validation
+ */
+function getAllAlterationOptions() {
+	return array_merge(
+		getAlterationArrayDNA(),
+		getAlterationArrayMRNA(),
+		getAlterationArrayMiRNA(),
+		getAlterationArrayProtein()
+	);
+}
+
+/**
+ * Returns all alteration options as JSON for JavaScript
+ */
+function getAlterationOptionsJSON() {
+	$options = array(
+		"DNA" => array_keys(getAlterationArrayDNA()),
+		"mRNA" => array_keys(getAlterationArrayMRNA()),
+		"miRNA" => array_keys(getAlterationArrayMiRNA()),
+		"protein" => array_keys(getAlterationArrayProtein()),
+	);
+	return json_encode($options);
 }
 
 function getTermInfoByTermAcc($termAcc) {
@@ -1669,7 +1872,371 @@ function generateCoreToRefForm($theform, $objectArray, $referenceArray) {
 function curation_linkAnnotation() {
 
 	$toString = '<a name=\'title\'>&nbsp;</a>';
-	
+
+	// JavaScript for dynamic alteration dropdown based on molecular entity selection
+	$alterationOptionsJSON = getAlterationOptionsJSON();
+	$initialAlteration = getRequestVarString('alteration');
+	$toString .= '<script type="text/javascript">
+	var alterationOptions = ' . $alterationOptionsJSON . ';
+	var initialAlterationValue = ' . json_encode($initialAlteration) . ';
+
+	function updateAlterationDropdown(preserveValue) {
+		var molecularEntity = document.getElementById("molecular_entity");
+		var alteration = document.getElementById("alteration");
+
+		if (!molecularEntity || !alteration) return;
+
+		// Store the current value to restore after rebuilding
+		var currentValue = preserveValue ? alteration.value : initialAlterationValue;
+
+		var selectedEntity = molecularEntity.value;
+		var options = alterationOptions[selectedEntity] || [""];
+
+		// Clear current options
+		alteration.innerHTML = "";
+
+		// Add new options
+		for (var i = 0; i < options.length; i++) {
+			var opt = document.createElement("option");
+			opt.value = options[i];
+			opt.text = options[i];
+			alteration.appendChild(opt);
+		}
+
+		// Restore the selected value if it exists in the new options
+		if (currentValue) {
+			for (var i = 0; i < alteration.options.length; i++) {
+				if (alteration.options[i].value === currentValue) {
+					alteration.value = currentValue;
+					break;
+				}
+			}
+		}
+	}
+
+	// Run when page loads and when molecular entity changes
+	document.addEventListener("DOMContentLoaded", function() {
+		var molecularEntity = document.getElementById("molecular_entity");
+		if (molecularEntity) {
+			molecularEntity.addEventListener("change", function() { updateAlterationDropdown(true); });
+			updateAlterationDropdown(false); // Initialize on page load with initial value
+		}
+	});
+	</script>';
+
+	// jQuery libraries for autocomplete
+	$toString .= '<script src="/rgdweb/js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="/rgdweb/js/jquery/jquery-ui-1.8.18.custom.min.js"></script>
+    <script type="text/javascript" src="/rgdweb/js/jquery/jquery-migrate-3.5.0.min.js"></script>
+    <script type="text/javascript" src="/QueryBuilder/js/jquery.autocomplete.js"></script>';
+
+	// Autocomplete for Associated With field - limited to RDO, MP, HP ontologies
+	$toString .= '<script type="text/javascript">
+	var associationsList = [];
+	var alterationLocationsList = [];
+
+	$(document).ready(function(){
+		$("#associated_with").autocomplete("/solr/OntoSolr/select", {
+			extraParams:{
+				"fq": "cat:(RDO MP HP)",
+				"wt": "velocity",
+				"bf": "term_len_l^.02",
+				"v.template": "termmatch",
+				"cacheLength": 0
+			},
+			scrollHeight: 240,
+			max: 40
+		});
+
+		// Update button visibility on page load
+		updateButtonVisibility();
+	});
+
+	function addFirstAssociation() {
+		var field = document.getElementById("associated_with");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add first term (no separator needed)
+		associationsList.push({value: currentValue, separator: ""});
+
+		// Update display and hidden field
+		updateAssociationDisplay();
+		updateHiddenField();
+		updateButtonVisibility();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function connectAssociation(separator) {
+		var field = document.getElementById("associated_with");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add term with the specified separator
+		associationsList.push({value: currentValue, separator: separator});
+
+		// Update display and hidden field
+		updateAssociationDisplay();
+		updateHiddenField();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function updateButtonVisibility() {
+		var addBtn = document.getElementById("btn_add_first");
+		var connectBtns = document.getElementById("btn_connect_group");
+
+		if (associationsList.length === 0) {
+			// Show only Add button
+			addBtn.style.display = "inline";
+			connectBtns.style.display = "none";
+		} else {
+			// Show Connect buttons
+			addBtn.style.display = "none";
+			connectBtns.style.display = "inline";
+		}
+	}
+
+	function updateAssociationDisplay() {
+		var displayField = document.getElementById("associated_with_display");
+		var html = "";
+
+		for (var i = 0; i < associationsList.length; i++) {
+			if (i > 0) {
+				var sepLabel = associationsList[i].separator === "|" ? " <strong>OR</strong> " : " <strong>AND</strong> ";
+				html += sepLabel;
+			}
+			html += "<span style=\"background-color:#e7f3ff; padding:2px 5px; border-radius:3px; margin:2px;\">" + associationsList[i].value + "</span>";
+		}
+		displayField.innerHTML = html;
+	}
+
+	function updateHiddenField() {
+		var hiddenField = document.getElementById("associated_with_values");
+		var combinedValue = "";
+
+		for (var i = 0; i < associationsList.length; i++) {
+			if (i > 0) {
+				combinedValue += associationsList[i].separator;
+			}
+			combinedValue += associationsList[i].value;
+		}
+		hiddenField.value = combinedValue;
+
+		// Update the "stored in database" display with extracted accession IDs
+		updateStoredDisplay(combinedValue);
+	}
+
+	// Extract accession IDs from the combined value while preserving | and , separators
+	function extractAccessionIds(value) {
+		if (!value) return "";
+		// Split by | and , while keeping the delimiters
+		var parts = value.split(/([|,])/);
+		var result = "";
+		for (var i = 0; i < parts.length; i++) {
+			if (parts[i] === "|" || parts[i] === ",") {
+				result += parts[i];
+			} else {
+				// Extract accession ID from this term (e.g., "term name (RDO:0000123)" -> "RDO:0000123")
+				var match = parts[i].match(/\(([A-Z]+:\d+)\)/);
+				if (match) {
+					result += match[1];
+				} else {
+					result += parts[i].trim(); // Keep original if no accession ID found
+				}
+			}
+		}
+		return result;
+	}
+
+	function updateStoredDisplay(combinedValue) {
+		var storedField = document.getElementById("associated_with_stored");
+		if (storedField) {
+			storedField.value = extractAccessionIds(combinedValue);
+		}
+	}
+
+	function clearAssociations() {
+		associationsList = [];
+		document.getElementById("associated_with").value = "";
+		document.getElementById("associated_with_values").value = "";
+		document.getElementById("associated_with_display").innerHTML = "";
+		var storedField = document.getElementById("associated_with_stored");
+		if (storedField) storedField.value = "";
+		updateButtonVisibility();
+	}
+
+	// ========== Alteration Location Functions ==========
+	function addFirstAlterationLocation() {
+		var field = document.getElementById("alteration_location");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add first term (no separator needed)
+		alterationLocationsList.push({value: currentValue, separator: ""});
+
+		// Update display and hidden field
+		updateAlterationLocationDisplay();
+		updateAlterationLocationHiddenField();
+		updateAlterationLocationButtonVisibility();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function connectAlterationLocation(separator) {
+		var field = document.getElementById("alteration_location");
+		var currentValue = field.value.trim();
+		if (currentValue === "") return;
+
+		// Add term with the specified separator
+		alterationLocationsList.push({value: currentValue, separator: separator});
+
+		// Update display and hidden field
+		updateAlterationLocationDisplay();
+		updateAlterationLocationHiddenField();
+
+		// Clear the input field for next entry
+		field.value = "";
+	}
+
+	function updateAlterationLocationButtonVisibility() {
+		var addBtn = document.getElementById("btn_add_first_loc");
+		var connectBtns = document.getElementById("btn_connect_group_loc");
+
+		if (alterationLocationsList.length === 0) {
+			// Show only Add button
+			addBtn.style.display = "inline";
+			connectBtns.style.display = "none";
+		} else {
+			// Show Connect buttons
+			addBtn.style.display = "none";
+			connectBtns.style.display = "inline";
+		}
+	}
+
+	function updateAlterationLocationDisplay() {
+		var displayField = document.getElementById("alteration_location_display");
+		var html = "";
+
+		for (var i = 0; i < alterationLocationsList.length; i++) {
+			if (i > 0) {
+				var sepLabel = alterationLocationsList[i].separator === "|" ? " <strong>OR</strong> " : " <strong>AND</strong> ";
+				html += sepLabel;
+			}
+			html += "<span style=\"background-color:#e7f3ff; padding:2px 5px; border-radius:3px; margin:2px;\">" + alterationLocationsList[i].value + "</span>";
+		}
+		displayField.innerHTML = html;
+	}
+
+	function updateAlterationLocationHiddenField() {
+		var hiddenField = document.getElementById("alteration_location_values");
+		var combinedValue = "";
+
+		for (var i = 0; i < alterationLocationsList.length; i++) {
+			if (i > 0) {
+				combinedValue += alterationLocationsList[i].separator;
+			}
+			combinedValue += alterationLocationsList[i].value;
+		}
+		hiddenField.value = combinedValue;
+
+		// Update the "stored in database" display with extracted accession IDs
+		updateAlterationLocationStoredDisplay(combinedValue);
+	}
+
+	function updateAlterationLocationStoredDisplay(combinedValue) {
+		var storedField = document.getElementById("alteration_location_accession");
+		if (storedField) {
+			storedField.value = extractAccessionIds(combinedValue);
+		}
+	}
+
+	function clearAlterationLocations() {
+		alterationLocationsList = [];
+		document.getElementById("alteration_location").value = "";
+		document.getElementById("alteration_location_values").value = "";
+		document.getElementById("alteration_location_display").innerHTML = "";
+		var storedField = document.getElementById("alteration_location_accession");
+		if (storedField) storedField.value = "";
+		updateAlterationLocationButtonVisibility();
+	}
+
+	// Before form submit, copy the combined values to main fields
+	$(document).ready(function(){
+		$("form").on("submit", function() {
+			// Copy associated_with_values to associated_with
+			var hiddenField = document.getElementById("associated_with_values");
+			var mainField = document.getElementById("associated_with");
+			if (hiddenField && hiddenField.value !== "") {
+				mainField.value = hiddenField.value;
+			}
+			// Copy alteration_location_values to alteration_location
+			var hiddenFieldLoc = document.getElementById("alteration_location_values");
+			var mainFieldLoc = document.getElementById("alteration_location");
+			if (hiddenFieldLoc && hiddenFieldLoc.value !== "") {
+				mainFieldLoc.value = hiddenFieldLoc.value;
+			}
+		});
+
+		// Initialize the "stored in database" display on page load if associated_with has a value
+		var initialAssociatedWith = document.getElementById("associated_with");
+		if (initialAssociatedWith && initialAssociatedWith.value) {
+			updateStoredDisplay(initialAssociatedWith.value);
+		}
+
+		// Initialize the "stored in database" display on page load if alteration_location has a value
+		var initialAlterationLocation = document.getElementById("alteration_location");
+		if (initialAlterationLocation && initialAlterationLocation.value) {
+			updateAlterationLocationStoredDisplay(initialAlterationLocation.value);
+		}
+
+		// Update button visibility for both fields on page load
+		updateButtonVisibility();
+		updateAlterationLocationButtonVisibility();
+	});
+
+	// Autocomplete for Alteration Location field - limited to UBERON, CL, and SO ontologies
+	$(document).ready(function(){
+		// Extract accession ID from value like "brain (UBERON:0000955)" -> "UBERON:0000955"
+		function extractAccessionId(value) {
+			var match = value.match(/\(([A-Z]+:\d+)\)/);
+			return match ? match[1] : "";
+		}
+
+		$("#alteration_location").autocomplete("/solr/OntoSolr/select", {
+			extraParams:{
+				"fq": "cat:(UBERON CL SO)",
+				"wt": "velocity",
+				"bf": "term_len_l^.02",
+				"v.template": "termmatch",
+				"cacheLength": 0
+			},
+			scrollHeight: 240,
+			max: 40
+		}).result(function(event, data, formatted) {
+			// Update test field when autocomplete result is selected
+			var accessionId = extractAccessionId($(this).val());
+			$("#alteration_location_accession").val(accessionId);
+		});
+
+		// Also update on blur (for manual entry)
+		$("#alteration_location").on("blur", function() {
+			var accessionId = extractAccessionId($(this).val());
+			$("#alteration_location_accession").val(accessionId);
+		});
+
+		// Also update on page load if field has a value
+		var initialValue = $("#alteration_location").val();
+		if (initialValue) {
+			$("#alteration_location_accession").val(extractAccessionId(initialValue));
+		}
+	});
+	</script>';
+
 	setPageTitle("Make an Annotation");
 	if (!userLoggedIn()) {
 		return NOTLOGGEDIN_MSG;
@@ -1687,11 +2254,20 @@ function curation_linkAnnotation() {
 	$theform->addMultipleCheckBox('references', '', $referenceArray, true);
 
 	$theform->addSelect('qualifier', 'Qualifier', $ontQualifierCodeArray, false);
+	$theform->addSelect('qualifier2', 'Qualifier 2', $ontQualifierCodeArray, false);
 	$theform->addSelect('evidence', 'Evidence Code', $evidenceCodesArray, true);
 	$theform->addText('with_info', 'With Info. ', 20, 200, false);
 	$theform->addHidden('command', 'generate');
 
-	$theform->addTextArea('notes', 'Notes', 10, 40, 1024, false);
+	$theform->addTextArea('notes', 'Notes', 3, 40, 1024, false);
+	$theform->addTextArea('associated_with', 'Associated With', 1, 20, 100, false);
+	$theform->addSelect('molecular_entity', 'Molecular Entity', getMolecularEntityArray(), false);
+	$theform->addTextArea('alteration_location', 'Alteration Location', 1, 20, 100, false);
+	$theform->addSelect('alteration', 'Alteration', getAllAlterationOptions(), false);
+	$theform->addText('variant_nomenclature', 'Variant Nomenclature', 20, 100, false);
+	$theform->addHidden('annotation_extension', '');
+	$theform->addHidden('gene_product_form_id', '');
+
 	// set up objectRGDIDS to be passed into getAnnotationsHTMLTableByGenes() method later. 
 	$objectRGDIDS = array ();
 	foreach ($objectArray as $objkey => $objvalue) {
@@ -1745,13 +2321,26 @@ function curation_linkAnnotation() {
 			$toString .= $resultAnnotationForm->formStart();
 			
 			// $toString .= dump ( $resultArray ) ;
-			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Evidence', 'With Info', 'Species', 'Select');
+			$table = newTable('ObjectName', 'Reference', '['.hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) <br> Chebi Ontology(E) ', CENTER", 'T').'] Term', 'Qualifier', 'Qualifier 2', 'Evidence', 'With Info', 'Associated With', 'Molecular Entity', 'Alteration', 'Variant Nomenclature', 'Alteration Location', 'Species', 'Select');
 			$table->setAttributes('class="simple" width="100%"');
 			// foreach ( $resultArray as $objkey => $rowValue ) {
-			//   extract($rowValue) ; 
+			//   extract($rowValue) ;
 			// $table->addRow( $objectname, 'RGD:' . $refvalue, $ontDesc, $qualifier, $evidence, $with_info);
 			for ($i = 0; $i < $relCount; $i++) {
-				$table->addRow($resultAnnotationForm->renderLabeledFields('objectnameL' . $i), 'RGD:' . $resultAnnotationForm->renderLabeledFields('refvalueL' . $i), $resultAnnotationForm->renderLabeledFields('ontDesc' . $i), $resultAnnotationForm->renderLabeledFields('qualifierL'), $resultAnnotationForm->renderLabeledFields('evidenceL' . $i), $resultAnnotationForm->renderLabeledFields('with_infoL' . $i), makeSpeciesLink($resultAnnotationForm->getValue('species' . $i)), $resultAnnotationForm->renderLabeledFields('select' . $i));
+				$table->addRow($resultAnnotationForm->renderLabeledFields('objectnameL' . $i),
+					'RGD:' . $resultAnnotationForm->renderLabeledFields('refvalueL' . $i),
+					$resultAnnotationForm->renderLabeledFields('ontDesc' . $i),
+					$resultAnnotationForm->renderLabeledFields('qualifierL'),
+					$resultAnnotationForm->renderLabeledFields('qualifier2L'),
+					$resultAnnotationForm->renderLabeledFields('evidenceL' . $i),
+					$resultAnnotationForm->renderLabeledFields('with_infoL' . $i),
+					$resultAnnotationForm->renderLabeledFields('associated_withL'),
+					$resultAnnotationForm->renderLabeledFields('molecular_entityL'),
+					$resultAnnotationForm->renderLabeledFields('alterationL'),
+					$resultAnnotationForm->renderLabeledFields('variant_nomenclatureL'),
+					$resultAnnotationForm->renderLabeledFields('alteration_locationL'),
+					makeSpeciesLink($resultAnnotationForm->getValue('species' . $i)),
+					$resultAnnotationForm->renderLabeledFields('select' . $i));
 			}
 			// }
     
@@ -2038,26 +2627,25 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 	}
 	// generate the SQL to return all annotations for the objects that the user has in their bucket
 	// except CHEBI and ClinVar pipeline annotations
-	$sql = 'select 1 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
-	$sql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-	$sql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-	$sql .= ' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+	$sqq = 'a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, '
+		  .'a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes, r.species_type_key, a.ASSOCIATED_WITH, '
+		  .'a.MOLECULAR_ENTITY, a.ALTERATION, a.ALTERATION_LOCATION, a.VARIANT_NOMENCLATURE, a.QUALIFIER2, a.annotation_extension, a.gene_product_form_id '
+		  .'from full_annot a, rgd_ids r '
+	      .'WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND '
+	      .'  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds
+		  .' ) and  a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+
+	$sql = 'select 1 as score, '.$sqq;
 //	$sql .= '  order by object_symbol, EVIDENCE, term ';
 
 	if($refIds != '' && $termAcc != '') {
-        $comboSql = 'select 5 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
-        $comboSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-        $comboSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-        $comboSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+        $comboSql = 'select 5 as score, '.$sqq;
         $comboSql .= ' and a.ref_rgd_id in (' . $refIds . ') and a.term_acc in (' . $termAccs . ')';
         $sql .= ' and a.ref_rgd_id not in (' . $refIds . ') and a.term_acc not in (' . $termAccs . ')';
         $sql = $comboSql . ' union ' . $sql;
     }
 	if ($refIds != '') {
-		$refSql = 'select 2 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes, r.species_type_key from full_annot a, rgd_ids r ';
-		$refSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-		$refSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-		$refSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+		$refSql = 'select 2 as score, '.$sqq;
 		$refSql .= ' and a.ref_rgd_id in (' . $refIds . ')';
 		if ($termAcc != '') {
 		    $refSql .= ' and a.term_acc not in (' . $termAccs . ')';
@@ -2067,10 +2655,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		$sql = $refSql . ' union ' . $sql;
 	} 
 	if ($termAcc != '') {
-		$termSql = 'select 4 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
-		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+		$termSql = 'select 4 as score, '.$sqq;
 		$termSql .= ' and a.term_acc in (' . $termAccs . ')';
 		if ($refIds != '') {
             $termSql .= ' and a.ref_rgd_id not in (' . $refIds . ')';
@@ -2078,10 +2663,7 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 		    $sql .= ' and a.term_acc not in (' . $termAccs . ')';
 		}
 		$sql = $termSql. ' union ' . $sql;
-		$termSql = 'select 3 as score, a.FULL_ANNOT_KEY, a.TERM, a.ANNOTATED_OBJECT_RGD_ID, a.DATA_SRC, a.OBJECT_SYMBOL, a.REF_RGD_ID, a.EVIDENCE, a.WITH_INFO, a.ASPECT, a.OBJECT_NAME, a.QUALIFIER, a.CREATED_DATE, a.LAST_MODIFIED_DATE, a.TERM_ACC, a.CREATED_BY, a.LAST_MODIFIED_BY, a.XREF_SOURCE, substr(a.notes, 1, 3999) notes,	 r.species_type_key from full_annot a, rgd_ids r ';
-		$termSql .= '  WHERE a.data_src NOT IN(\'CTD\',\'ClinVar\') AND ';
-		$termSql .= '  ANNOTATED_OBJECT_RGD_ID in ( ' . $objIds;
-		$termSql .= ' ) and a.ANNOTATED_OBJECT_RGD_ID = r.RGD_ID ';
+		$termSql = 'select 3 as score, '.$sqq;
 		$termSql .= ' and a.term_acc in (WITH RECURSIVE d(acc) AS (SELECT od.CHILD_TERM_ACC FROM ONT_DAG od WHERE od.PARENT_TERM_ACC in (' . $termAccs . ') UNION SELECT od.CHILD_TERM_ACC FROM ONT_DAG od JOIN d ON od.PARENT_TERM_ACC = d.acc) SELECT acc FROM d)';
 		$termSql .= ' and a.term_acc not in (' . $termAccs . ')';
 		$sql .= ' and a.term_acc not in (WITH RECURSIVE d(acc) AS (SELECT od.CHILD_TERM_ACC FROM ONT_DAG od WHERE od.PARENT_TERM_ACC in (' . $termAccs . ') UNION SELECT od.CHILD_TERM_ACC FROM ONT_DAG od JOIN d ON od.PARENT_TERM_ACC = d.acc) SELECT acc FROM d)';
@@ -2091,38 +2673,77 @@ function getAnnotationsHTMLTableByGenes($objectRGDIDArray, $ontTerms, $reference
 
 	$finalSql = 'select * from (' . $sql . ') b order by score desc, object_symbol, EVIDENCE, term';
 	$records = fetchRecords($finalSql);
-	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Evidence',  'With Info', hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'), 'Species', 'Modified','Notes');
-  
+	$table = newTable('Edit', 'Object name', 'Reference', 'Term', 'Qualifier', 'Qualifier 2', 'Evidence',  'With Info', 'Assoc.With', 'Mol.Entity', 'Altr.', 'Altr.Loc',
+		hrefOverlib("'Biological Process(P)<br>  Behavioral Process(B)<br>  Cellular Component(C)<br> Disease Ontology(D)<br> Mammalian Phenotype(N)<br> Molecular Function(F)<br> Pathway(W) ', CENTER", 'T'),
+		'Species', 'Modified','Notes');
+
 	$table->setAttributes('class="simple" width="100%"');
 	foreach ($records as $record) {
 		extract($record);
-		//$table->addRow(makeLink('<img src="icons/page_white_edit.png" border=0 title="Edit" alt="Edit">', 'curation', 'editAnnotation', array (
-	//		"fullAnnotKey",
-	//		$FULL_ANNOT_KEY
+
+		$editLink = makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token);
+		$colWithInfo = str_replace("|", "| ", $WITH_INFO ?? '');
+		$colAssociatedWith = str_replace("|", "| ", $ASSOCIATED_WITH ?? '');
+		$colMolecularEntity = $MOLECULAR_ENTITY ?? '';
+		$colAlteration = $ALTERATION ?? '';
+		$altLocVal = $ALTERATION_LOCATION ?? '';
+		$colAlterationLocation = $altLocVal ? '<div style="max-width:180px; word-wrap:break-word;">' . str_replace(["|", ","], ["|<br>", ",<br>"], $altLocVal) . '</div>' : '';
+		//$colNotes = substr(str_replace('|','| ',$NOTES ?? ''), 0, 80);
+		$colNotes = str_replace('|','| ',$NOTES ?? '');
 	switch ($SCORE) {
 		case 5:
-    		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+    		$table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)),
+				'<font color="red">'.$TERM.'</font>',
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
     		break;
 		case 4:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="red">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
+				'<font color="red">'.$TERM.'</font>',
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		case 3:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), '<font color="orange">'.$TERM.'</font>', $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
+				'<font color="orange">'.$TERM.'</font>',
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		case 2:
-		    $table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+		    $table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink('<font color="red">'.$REF_RGD_ID."</font>", makeReferenceURL($REF_RGD_ID)),
+				$TERM,
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 			break;
 		default:
-		$table->addRow(makeExternalLink("<img src='icons/page_white_edit.png' border=0 title='Edit' alt='Edit'>","/rgdweb/curation/edit/editAnnotation.html?rgdId=" . $FULL_ANNOT_KEY."&token=".$token), $OBJECT_SYMBOL, makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)), $TERM, $QUALIFIER, $EVIDENCE, str_replace("|","| ",$WITH_INFO),  $ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, substr($NOTES,0,80));
+			$table->addRow($editLink,
+				$OBJECT_SYMBOL,
+				makeExternalLink($REF_RGD_ID, makeReferenceURL($REF_RGD_ID)),
+				$TERM,
+				$QUALIFIER, $QUALIFIER2, $EVIDENCE,
+				$colWithInfo, $colAssociatedWith, $colMolecularEntity, $colAlteration, $colAlterationLocation,
+				$ASPECT, makeSpeciesLink($SPECIES_TYPE_KEY), $LAST_MODIFIED_DATE, $colNotes);
 	}
 	}
 	$toReturn .= $table->toHtml();
 	return $toReturn;
 }
-/** 
+/**
  * Returns true if constraints will be ok , else returns false. 
  */
-function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key) {
+function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_info, $qualifier, &$full_annot_key, $qualifier2='', $associated_with='') {
 
 	$sql = "select FULL_ANNOT_KEY,NOTES from full_annot " .
 	'where ' .
@@ -2140,15 +2761,27 @@ function verifyLinkConstraints($termAcc, $objRgdID, $refRGDID, $evidence, $with_
 	} else {
 		$sql .= ' and QUALIFIER is NULL ';
 	}
+	if (isReallySet($qualifier2)) {
+		$sql .= ' and QUALIFIER2 = ' . dbQuoteString($qualifier2) . ' ';
+	} else {
+		$sql .= ' and QUALIFIER2 is NULL ';
+	}
+	if (isReallySet($associated_with)) {
+		$sql .= ' and ASSOCIATED_WITH = ' . dbQuoteString($associated_with) . ' ';
+	} else {
+		$sql .= ' and ASSOCIATED_WITH is NULL ';
+	}
 
 	dump ($sql ) ;
-	// There is a constraint that the following foelds don't already exist. 
-	//            @TERM_ACC 
+	// There is a constraint that the following fields don't already exist.
+	//            @TERM_ACC
 	//            @ANNOTATED_OBJECT_RGD_ID
-	//            @REF_RGD_ID 
+	//            @REF_RGD_ID
 	//            @EVIDENCE
 	//            @WITH_INFO
 	//            @QUALIFIER
+	//            @QUALIFIER2
+	//            @ASSOCIATED_WITH
 	$full_annot_key = 0;
 	$resultConstraint = fetchRecord($sql);
 	if (count($resultConstraint) > 0) {
@@ -2208,7 +2841,9 @@ function createReftoObject($refDBKey, $objRgdID, & $returnMessage) {
  * Variable $transferredNotes will get number of annotations that had their notes transferred
  * Returns the number of assocations created. 
  */
-function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, &$transferredNotes, &$not4curation) {
+function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, &$transferredNotes, &$not4curation, $associated_with='',
+	$molecular_entity='', $alteration='', $alteration_location='', $variant_nomenclature='', $qualifier2='', $annotation_extension='', $gene_product_form_id='') {
+		
 	// Core Object information 
 	// echo " $evidence, $termAcc, $with_info, $notes, $refRGDID, $coreObjectRGDID  " ; 
 	$objArray = getObjectInfoByRGID($coreObjectRGDID);
@@ -2246,6 +2881,28 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
         $with_info_str=dbQuoteString($with_info);
     }
 
+    // Handle NULL for qualifier2, associated_with, alteration_location
+    if (!isReallySet($qualifier2)) {
+        $qualifier2 = null;
+        $qualifier2_str = 'null';
+    } else {
+        $qualifier2_str = dbQuoteString($qualifier2);
+    }
+
+    if (!isReallySet($associated_with)) {
+        $associated_with = null;
+        $associated_with_str = 'null';
+    } else {
+        $associated_with_str = dbQuoteString($associated_with);
+    }
+
+    if (!isReallySet($alteration_location)) {
+        $alteration_location = null;
+        $alteration_location_str = 'null';
+    } else {
+        $alteration_location_str = dbQuoteString($alteration_location);
+    }
+
 	$sql = 'INSERT INTO full_annot ('.
 		'full_annot_key, '.
 		'term, '.
@@ -2265,13 +2922,21 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 		"CREATED_DATE," .
 		'last_modified_date,' .
 		'curation_flag,' .
-		'qualifier'.
+		'qualifier,' .
+		'qualifier2,'.
+		'associated_with,' .
+		'molecular_entity,' .
+		'alteration,' .
+		'alteration_location,' .
+		'variant_nomenclature,' .
+		'annotation_extension,' .
+		'gene_product_form_id' .
 	') VALUES ( '.
 	"nextval('full_annot_seq'),".
 	dbQuoteString($termName) . "," . // from ONT_TERMS.TERM
 	$coreObjectRGDID . ", " . // Object RGD ID
 	$objectTypeKey . "," . //RGD_OBJECT_KEY
-	"'RGD'," . // Hardcoded ? 
+	"'RGD'," . // Hardcoded ?
 	dbQuoteString($objectSymbol).','.
 	$refRGDID . ','.
 	dbQuoteString($evidence) . ','.
@@ -2283,12 +2948,20 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
 	$useridKey . ','.
 	$useridKey . ','.
 	"LOCALTIMESTAMP(0), LOCALTIMESTAMP(0), 'DO',".
-	'NULLIF(' . dbQuoteString($qualifier) . ", ''))";
+	'NULLIF(' . dbQuoteString($qualifier) . ", ''),".
+	'NULLIF(' . $qualifier2_str . ", ''),".
+	'NULLIF(' . $associated_with_str . ", ''),".
+	'NULLIF(' . dbQuoteString($molecular_entity) . ", ''),".
+	'NULLIF(' . dbQuoteString($alteration) . ", ''),".
+	'NULLIF(' . $alteration_location_str . ", ''),".
+	'NULLIF(' . dbQuoteString($variant_nomenclature) . ", ''),".
+	'NULLIF(' . dbQuoteString($annotation_extension) . ", ''),".
+	'NULLIF(' . dbQuoteString($gene_product_form_id) . ", ''))";
 
 	 dump ( "SQL " . $sql ) ;
 	// Check for constraint 
 	$full_annot_key = 0;
-	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key)) {
+	if (!verifyLinkConstraints($termAcc, $coreObjectRGDID, $refRGDID, $evidence, $with_info, $qualifier, $full_annot_key, $qualifier2, $associated_with)) {
 
 		// This record already exists -- upgrade notes in already existing annotations
 		if( $full_annot_key>0 && isReallySet($notes) && strlen($notes)>0 ) {
@@ -2310,15 +2983,33 @@ function createAnnotations($evidence, $termAcc, $with_info, $notes, $refRGDID, $
         if ($rowsUpdated==0) {
             $sql='update full_annot set data_src=\'RGD\' where term_acc= ' . dbQuoteString($termAcc) .
                 ' and ANNOTATED_OBJECT_RGD_ID=' . $coreObjectRGDID  .
-                  ' and REF_RGD_ID=' . $refRGDID .
-                   ' and EVIDENCE=' . dbQuoteString($evidence);
+                ' and REF_RGD_ID=' . $refRGDID .
+                ' and EVIDENCE=' . dbQuoteString($evidence);
 
-                   if ($with_info === null) {
-                        $sql = $sql . ' and WITH_INFO is null ';
-                    }else {
-                        $sql = $sql . ' and WITH_INFO=' . dbQuoteString($with_info);
-                    }
-                    $sql = $sql . ' and QUALIFIER= NULLIF(' . dbQuoteString($qualifier) . ", '')";
+            // WITH_INFO null check
+            if (!isReallySet($with_info)) {
+                $sql .= ' and WITH_INFO is null ';
+            } else {
+                $sql .= ' and WITH_INFO=' . dbQuoteString($with_info);
+            }
+            // QUALIFIER null check
+            if (!isReallySet($qualifier)) {
+                $sql .= ' and QUALIFIER is null ';
+            } else {
+                $sql .= ' and QUALIFIER=' . dbQuoteString($qualifier);
+            }
+            // QUALIFIER2 null check
+            if (!isReallySet($qualifier2)) {
+                $sql .= ' and QUALIFIER2 is null ';
+            } else {
+                $sql .= ' and QUALIFIER2=' . dbQuoteString($qualifier2);
+            }
+            // ASSOCIATED_WITH null check
+            if (!isReallySet($associated_with)) {
+                $sql .= ' and ASSOCIATED_WITH is null ';
+            } else {
+                $sql .= ' and ASSOCIATED_WITH=' . dbQuoteString($associated_with);
+            }
 
             dump($sql);
             $rowsUpdated = executeUpdate($sql);
@@ -2380,11 +3071,19 @@ function processAnnotationForm($theform) {
 	$referenceArray = $theform->getValue('references');
 	$onttermArray = $theform->getValue('ontterms');
 	$ontTermsSessionArray = getOntTermsArrayFromSession();
-	// Other fields to be added to the form once, they do not vary per row 
+	// Other fields to be added to the form once, they do not vary per row
 	$qualifier = $theform->getValue('qualifier');
 	$primeEvidence = $theform->getValue('evidence');
 	$with_info = $theform->getValue('with_info');
 	$notes = $theform->getValue('notes');
+	$associated_with = $theform->getValue('associated_with');
+	$molecular_entity = $theform->getValue('molecular_entity');
+	$alteration = $theform->getValue('alteration');
+	$alteration_location = $theform->getValue('alteration_location');
+	$variant_nomenclature = $theform->getValue('variant_nomenclature');
+	$qualifier2 = $theform->getValue('qualifier2');
+	$annotation_extension = $theform->getValue('annotation_extension');
+	$gene_product_form_id = $theform->getValue('gene_product_form_id');
 	//  $resultArray = array(); 
 	// dump ( $objectArray)  ;  dump (  $referenceArray) ; dump (  $onttermArray) ;
 	$relCnt = 0; // keep tack of each row being added.  
@@ -2432,7 +3131,7 @@ function processAnnotationForm($theform) {
 			foreach ($onttermArray as $ontkey => $ontvalue) {
 				if ($autoAnn && substr($ontvalue, 0, 2) != 'DO'
 						&& substr($ontvalue, 0, 2) != 'PW' && substr($ontvalue, 0, 5) != 'CHEBI') break;
-				// restrict IGI orthologous ISO to disease terms
+				// restrict IGI Gorthologous ISO to disease terms
 				if ($autoAnn && $primeEvidence === 'IGI' && $evidence === 'ISO' && substr($ontvalue, 0, 2) != 'DO' ) break;
 
 				$oTermDescription = $ontTermsSessionArray[$ontvalue]; // f.e. '[C] clathrin complex'
@@ -2464,7 +3163,7 @@ function processAnnotationForm($theform) {
 			}
 		}
 	}
-	// fields that don't vary per row. 
+	// fields that don't vary per row.
 	$theRelform->AddHidden('notes', $theform->getValue('notes'));
 	$theRelform->addReadOnlyLabel('with_infoL', $theform->getValue('with_info'));
 //	$theRelform->addReadOnlyLabel('evidenceL', $theform->getValue('evidence'));
@@ -2472,6 +3171,64 @@ function processAnnotationForm($theform) {
 	$theRelform->AddHidden('evidence', $theform->getValue('evidence'));
 	$theRelform->addReadOnlyLabel('qualifierL', $theform->getValue('qualifier'));
 	$theRelform->AddHidden('qualifier', $theform->getValue('qualifier'));
+	$theRelform->addReadOnlyLabel('qualifier2L', $theform->getValue('qualifier2'));
+	$theRelform->AddHidden('qualifier2', $theform->getValue('qualifier2'));
+	// Extract accession IDs from associated_with while preserving | and , separators
+	// e.g., "heart disease (RDO:0000123)|brain tumor (RDO:0000456),liver disease (RDO:0000789)"
+	// becomes "RDO:0000123|RDO:0000456,RDO:0000789"
+	$associated_with_raw = $theform->getValue('associated_with');
+	$associated_with_accession = $associated_with_raw;
+	if (!empty($associated_with_raw)) {
+		// Split by | and , while keeping the delimiters
+		$parts = preg_split('/([|,])/', $associated_with_raw, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				// Extract accession ID from this term
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part); // Keep original if no accession ID found
+				}
+			}
+		}
+		$associated_with_accession = $result;
+	}
+	$theRelform->addReadOnlyLabel('associated_withL', $associated_with_accession);
+	$theRelform->AddHidden('associated_with', $associated_with_accession);
+	$theRelform->addReadOnlyLabel('associated_with_storedL', $associated_with_accession);
+	$theRelform->addReadOnlyLabel('molecular_entityL', $theform->getValue('molecular_entity'));
+	$theRelform->AddHidden('molecular_entity', $theform->getValue('molecular_entity'));
+	$theRelform->addReadOnlyLabel('alterationL', $theform->getValue('alteration'));
+	$theRelform->AddHidden('alteration', $theform->getValue('alteration'));
+	// Extract accession IDs from alteration_location while preserving | and , separators
+	// e.g., "brain (UBERON:0000955)|liver (UBERON:0002107)" -> "UBERON:0000955|UBERON:0002107"
+	$alteration_location_raw = $theform->getValue('alteration_location');
+	$alteration_location_accession = $alteration_location_raw;
+	if (!empty($alteration_location_raw)) {
+		$parts = preg_split('/([|,])/', $alteration_location_raw, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part);
+				}
+			}
+		}
+		$alteration_location_accession = $result;
+	}
+	$theRelform->addReadOnlyLabel('alteration_locationL', $alteration_location_accession);
+	$theRelform->AddHidden('alteration_location', $alteration_location_accession);
+	$theRelform->addReadOnlyLabel('variant_nomenclatureL', $theform->getValue('variant_nomenclature'));
+	$theRelform->AddHidden('variant_nomenclature', $theform->getValue('variant_nomenclature'));
+	$theRelform->AddHidden('annotation_extension', $theform->getValue('annotation_extension'));
+	$theRelform->AddHidden('gene_product_form_id', $theform->getValue('gene_product_form_id'));
 	$theRelform->AddHidden('relCount', $relCnt);
 	$theRelform->AddHidden('command', 'create');
 	
@@ -2886,6 +3643,50 @@ function curation_createAnnotationRelationship() {
 
 	$qualifier = getRequestVarString('qualifier');
 	$notes = getRequestVarString('notes');
+	$associated_with = getRequestVarString('associated_with');
+	// Extract accession IDs from associated_with while preserving | and , separators
+	// e.g., "heart disease (RDO:0000123)|brain tumor (RDO:0000456)" -> "RDO:0000123|RDO:0000456"
+	if (!empty($associated_with)) {
+		$parts = preg_split('/([|,])/', $associated_with, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part);
+				}
+			}
+		}
+		$associated_with = $result;
+	}
+	$molecular_entity = getRequestVarString('molecular_entity');
+	$alteration = getRequestVarString('alteration');
+	$alteration_location = getRequestVarString('alteration_location');
+	// Extract accession IDs from alteration_location while preserving | and , separators
+	// e.g., "brain (UBERON:0000955)|liver (UBERON:0002107)" -> "UBERON:0000955|UBERON:0002107"
+	if (!empty($alteration_location)) {
+		$parts = preg_split('/([|,])/', $alteration_location, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$result = '';
+		foreach ($parts as $part) {
+			if ($part === '|' || $part === ',') {
+				$result .= $part;
+			} else {
+				if (preg_match('/\(([A-Z]+:\d+)\)/', $part, $matches)) {
+					$result .= $matches[1];
+				} else {
+					$result .= trim($part);
+				}
+			}
+		}
+		$alteration_location = $result;
+	}
+	$variant_nomenclature = getRequestVarString('variant_nomenclature');
+	$qualifier2 = getRequestVarString('qualifier2');
+	$annotation_extension = getRequestVarString('annotation_extension');
+	$gene_product_form_id = getRequestVarString('gene_product_form_id');
 
 	$returnMessage = '';
 	for ($i = 0; $i < $relCnt; $i++) {
@@ -2899,7 +3700,8 @@ function curation_createAnnotationRelationship() {
 		if ($selected == 'on') {
 			$transferredNotes = 0;
 			$not4curation = 0;
-			$numCreated += createAnnotations($evidence, $ontKeyRGDID, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, $transferredNotes, $not4curation);
+			$numCreated += createAnnotations($evidence, $ontKeyRGDID, $with_info, $notes, $refRGDID, $coreObjectRGDID, $useridKey, $qualifier, $transferredNotes, $not4curation,
+				$associated_with, $molecular_entity, $alteration, $alteration_location, $variant_nomenclature, $qualifier2, $annotation_extension, $gene_product_form_id);
 			if( $transferredNotes>0 ) {
 				$numTransferredNotes += $transferredNotes;
 			}
@@ -3191,13 +3993,68 @@ function generateLinkAnnotaionForm($theform, $geneArray, $refArray = null) {
 	$toString .= $theform->renderLabeledFieldsInColumns(1, 'references');
 //    if ($refArray != null)	$toString .= getReferenceOntoPubLink($refArray);
 	$toString .= $theform->endGroup();
-	$toString .= '<table width=100%><tr><td align=left width=40%>';
 
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'evidence', 'with_info', 'aspect');
-	$toString .= '</td><td width=60% align=left valign=bottom>';
+	$toString .= '<table width=100%><tr><td align=left>';
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'qualifier', 'qualifier2', 'evidence', 'with_info');
+
+	// Custom rendering for Associated With field with Add buttons, grey div, and stored field (all on one row)
+	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
+	$toString .= '<span style="vertical-align:middle;">Associated With </span>';
+	$toString .= '<span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('associated_with') . '</span> ';
+	$toString .= '<button type="button" id="btn_add_first" onclick="addFirstAssociation(); return false;" title="Add association" style="vertical-align:middle;">Add</button> ';
+	$toString .= '<span id="btn_connect_group" style="display:none;">';
+	$toString .= '<button type="button" onclick="connectAssociation(\'|\'); return false;" title="Connect with OR" style="vertical-align:middle;">Connect with OR</button> ';
+	$toString .= '<button type="button" onclick="connectAssociation(\',\'); return false;" title="Connect with AND" style="vertical-align:middle;">Connect with AND</button> ';
+	$toString .= '</span>';
+	$toString .= '<button type="button" onclick="clearAssociations(); return false;" title="Clear all associations" style="vertical-align:middle;">Clear</button>';
+	$toString .= '<input type="hidden" id="associated_with_values" name="associated_with_values" value="">';
+	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="associated_with_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
+	$toString .= ' &nbsp;&nbsp; <span style="vertical-align:middle; color:#666;">Associated With (stored in database): </span><span style="display:inline-block; vertical-align:middle;"><textarea id="associated_with_stored" readonly rows="1" cols="25" style="background-color:#f0f0f0; resize:vertical;"></textarea></span>';
+	$toString .= '</div>';
+
+	// Molecular Entity | Alteration | Alteration Location (all inline on one line)
+	$toString .= '<div style="margin-top:5px; white-space:nowrap;">';
+	$toString .= '<span style="vertical-align:middle;">Molecular Entity </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('molecular_entity') . '</span>';
+	$toString .= ' &nbsp;&nbsp;&nbsp; <span style="vertical-align:middle;">Alteration </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration') . '</span>';
+	$toString .= ' &nbsp;&nbsp;&nbsp; ';
+	$toString .= '<span id="alteration_location_label" style="vertical-align:middle;">Alteration Location </span><span style="display:inline-block; vertical-align:middle;">' . $theform->renderField('alteration_location') . '</span> ';
+	$toString .= '<button type="button" id="btn_add_first_loc" onclick="addFirstAlterationLocation(); return false;" title="Add location" style="vertical-align:middle;">Add</button> ';
+	$toString .= '<span id="btn_connect_group_loc" style="display:none;">';
+	$toString .= '<button type="button" onclick="connectAlterationLocation(\'|\'); return false;" title="Connect with OR" style="vertical-align:middle;">Connect with OR</button> ';
+	$toString .= '<button type="button" onclick="connectAlterationLocation(\',\'); return false;" title="Connect with AND" style="vertical-align:middle;">Connect with AND</button> ';
+	$toString .= '</span>';
+	$toString .= '<button type="button" onclick="clearAlterationLocations(); return false;" title="Clear all locations" style="vertical-align:middle;">Clear</button>';
+	$toString .= '<input type="hidden" id="alteration_location_values" name="alteration_location_values" value="">';
+	$toString .= ' &nbsp;&nbsp; <span style="display:inline-block; vertical-align:middle; width:300px;"><div id="alteration_location_display" style="padding:3px; min-height:20px; background-color:#f9f9f9; border:1px solid #ddd; border-radius:3px; font-size:11px; word-wrap:break-word; white-space:normal;"></div></span>';
+	$toString .= '</div>';
+	$toString .= '<div id="alteration_location_stored_div" style="margin-top:3px;"><span style="color:#666;">Alteration Location (stored in database): </span><textarea id="alteration_location_accession" readonly rows="1" cols="35" style="background-color:#f0f0f0; resize:vertical; vertical-align:middle;"></textarea></div>';
+	$toString .= '<script>
+	function alignStoredDiv() {
+		var label = document.getElementById("alteration_location_label");
+		var storedDiv = document.getElementById("alteration_location_stored_div");
+		if (label && storedDiv) {
+			var labelLeft = label.getBoundingClientRect().left;
+			var storedLeft = storedDiv.getBoundingClientRect().left;
+			storedDiv.style.paddingLeft = Math.max(0, labelLeft - storedLeft) + "px";
+		}
+	}
+	window.addEventListener("load", alignStoredDiv);
+	document.addEventListener("DOMContentLoaded", function() {
+		setTimeout(alignStoredDiv, 100);
+		var mol = document.querySelector("[name=molecular_entity]");
+		var alt = document.querySelector("[name=alteration]");
+		if (mol) mol.addEventListener("change", function() { setTimeout(alignStoredDiv, 50); });
+		if (alt) alt.addEventListener("change", function() { setTimeout(alignStoredDiv, 50); });
+	});
+	</script>';
+
+	// Variant Nomenclature and Notes
+	$toString .= $theform->renderLabeledFieldsInColumns(1, 'variant_nomenclature', 'notes');
+	$toString .= '</td></tr>';
+
 	$toString .= '<a name=\'result\'>&nbsp;</a>';
-	$toString .= $theform->renderLabeledFieldsInColumns(1, 'notes');
-	$toString .= '</td></tr></table>';
+	$toString .= '</table>';
+
 	$toString .= $theform->formEnd();
 
 	return $toString;
